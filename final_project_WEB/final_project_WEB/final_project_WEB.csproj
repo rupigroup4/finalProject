@@ -175,7 +175,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="css\style.css" />
-    <Content Include="documentation\documentation.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -275,7 +274,6 @@
     <Content Include=".DS_Store" />
     <Content Include=".gitignore" />
     <Content Include="CHANGELOG.md" />
-    <Content Include="documentation\.DS_Store" />
     <Content Include="fonts\.DS_Store" />
     <Content Include="fonts\Roboto\.DS_Store" />
     <Content Include="fonts\Roboto\Roboto-Black.eot" />
