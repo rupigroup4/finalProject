@@ -20690,10 +20690,12 @@ dl li {
 .rtl .sidebar .nav .nav-item .nav-link i.menu-icon {
   margin-left: 2rem;
   margin-right: 0;
+  padding-left:5px;
 }
 
 .sidebar .nav .nav-item .nav-link i.menu-icon:before {
   vertical-align: middle;
+  padding-left:5px;
 }
 
 .sidebar .nav .nav-item .nav-link i.menu-arrow {
@@ -20731,6 +20733,7 @@ dl li {
   line-height: 1;
   vertical-align: middle;
   margin-top: 2px;
+
 }
 
 .sidebar .nav .nav-item .nav-link .badge {
@@ -20796,12 +20799,13 @@ dl li {
 }
 
 .sidebar .nav.sub-menu {
-  margin-bottom: 0;
-  margin-top: 0;
-  list-style: none;
-  padding: 0.25rem 0 0 3.07rem;
-  background: #e8e7ec;
-  padding-bottom: 12px;
+    margin-bottom: 0;
+    margin-top: 0;
+    list-style: none;
+    padding: 0.25rem 0 0 3.07rem;
+    background: #e8e7ec;
+    padding-bottom: 12px;
+    padding-right: 30.992px;
 }
 
 .sidebar .nav.sub-menu .nav-item {
