@@ -20980,12 +20980,13 @@ dl li {
   margin-left: 2rem;
 }
 
-.navbar .navbar-menu-wrapper .navbar-nav .nav-item.nav-search .input-group {
-  padding: 0 1.1rem;
-  width: 400px;
-  border: 1px solid #c9ccd7;
-  border-radius: 2rem;
-}
+    .navbar .navbar-menu-wrapper .navbar-nav .nav-item.nav-search .input-group {
+        padding: 0 1.1rem;
+        width: 400px;
+        border: 1px solid #c9ccd7;
+        border-radius: 2rem;
+        margin-left: 300px;
+    }
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item.nav-search .input-group .form-control,
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item.nav-search .input-group .input-group-text {
@@ -21056,14 +21057,14 @@ dl li {
   box-shadow: 0px 3px 21px 0px rgba(0, 0, 0, 0.2);
 }
 
-.navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .navbar-dropdown {
-  position: absolute;
-  font-size: 0.9rem;
-  margin-top: 0;
-  right: 0;
-  left: auto;
-  top: 70px;
-}
+    .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .navbar-dropdown {
+        position: absolute;
+        font-size: 0.9rem;
+        margin-top: 0;
+        right: auto;
+        left: 0;
+        top: 60px;
+    }
 
 .rtl .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .navbar-dropdown {
   right: auto;
@@ -21166,7 +21167,7 @@ dl li {
 
 @media (min-width: 992px) {
   .navbar .navbar-menu-wrapper .navbar-nav.navbar-nav-right {
-    margin-left: auto;
+    /*margin-left: auto;*/
   }
   .rtl .navbar .navbar-menu-wrapper .navbar-nav.navbar-nav-right {
     margin-left: 0;
