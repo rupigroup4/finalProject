@@ -38,10 +38,10 @@ namespace final_project_WEB.Models
             Email = email;
         }
 
-        public List<Customer> Read_customer()
+        public List<Customer> Read_customers()
         {
             DBservices dbs = new DBservices();
-            return dbs.Read_customer();
+            return dbs.Read_customers();
 
         }
     }

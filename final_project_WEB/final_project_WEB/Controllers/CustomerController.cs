@@ -8,13 +8,13 @@ using final_project_WEB.Models;
 
 namespace final_project_WEB.Controllers
 {
-    public class CusromerController : ApiController
+    public class CustomerController : ApiController
     {
         // GET api/<controller>
         public List<Customer> Get()
         {
             Customer customer = new Customer();
-            return customer.Read_customer();
+            return customer.Read_customers();
         }
 
         // GET api/<controller>/5

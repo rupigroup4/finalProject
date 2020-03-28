@@ -76,7 +76,7 @@ public class DBservices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}')", customer.FirstName, customer.SureName, customer.UserName, customer.Password, customer.PhoneNumber.ToString(), customer.Email);
+        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}')", customer.FirstName, customer.SureName, customer.UserName, customer.Password, customer.PhoneNumber.ToString(), customer.BirthDay.ToString(), customer.Email);
         String prefix = "INSERT INTO contry_2020_roni_T1 " + "(id,continent,name,lang) ";
         command = prefix + sb.ToString();
 
@@ -99,7 +99,7 @@ public class DBservices
         return cmd;
     }
 
-    public List<Customer> Read_customer()
+    public List<Customer> Read_customers()
     {
         List<Customer> customer_list = new List<Customer>();
         SqlConnection con = null;
@@ -122,7 +122,7 @@ public class DBservices
                 c.UserName = (string)dr["userName"];
                 c.Password = (string)dr["password1"];
                 c.PhoneNumber = Convert.ToInt32(dr["phoneNumber"]);
-                c.BirthDay = (string)dr["birthDay"];
+                c.BirthDay = Convert.ToDateTime(dr["birthDay"]);
                 c.Email = (string)dr["email"];
                 customer_list.Add(c);
             }
