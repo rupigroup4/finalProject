@@ -122,6 +122,7 @@ public class DBservices
                 c.UserName = (string)dr["userName"];
                 c.Password = (string)dr["password1"];
                 c.PhoneNumber = Convert.ToInt32(dr["phoneNumber"]);
+                c.BirthDay = (string)dr["birthDay"];
                 c.Email = (string)dr["email"];
                 customer_list.Add(c);
             }
