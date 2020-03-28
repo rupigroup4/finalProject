@@ -7,8 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>RoyalUI Admin</title>
     <script src="../../../Scripts/ajaxCalls.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
+            integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
+            crossorigin="anonymous"></script>
     <!--data table customer list-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
@@ -16,6 +18,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
 
     <!-- plugins:css -->
     <link rel="stylesheet" href="../../../vendors/ti-icons/css/themify-icons.css">
@@ -46,14 +49,16 @@
 
     <script>
         $(document).ready(function () {
-            ajaxCall("GET", "../api/Customer", "", successCustomer_list, errorCustomer_list)
+
+            ajaxCall("GET", "../../../api/Customer", "", successCustomer_list, errorCustomer_list)
         });
         function successCustomer_list(customers_list) {
             try {
                 if (customers_list.count == 0)
                     alert("No customers");
                 else {
-                    tbl = $('#Table_customers').DataTable({
+                    debugger
+                    $('#Table_customers').DataTable({
                         data: customers_list,
                         pageLength: 5,
                         //"fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
