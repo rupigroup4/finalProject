@@ -16,6 +16,35 @@
   <link rel="stylesheet" href="../../../css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../../images/favicon.png" />
+
+    <script>
+        $(document).ready(function () {
+            function AddCustomer() {
+                firstName = $('#firstName').val();
+                sureName = $('#sureName').val();
+                userName = $('#userName').val();
+                password = $('#password').val();
+                passwordVerication = $('#passwordVerication').val();
+                if (password =! passwordVerication) {
+                    alert("אימות סיסמא נכשל");
+                }
+                phoneNumber = $('#phoneNumber').val();
+                birthDay = $('#birthDay').val();
+                email = $('#email').val();
+
+                newCustomer = {
+                    "FirstName" : firstName,
+                    "SureName" : sureName,
+                    "UserName" : userName,
+                    "Password": password,
+                    "PhoneNumber": phoneNumber,
+                    "BirthDay": birthDay,
+                    "Email": email
+                }
+                ajaxCall("POST", "../../../api/Customer", JSON.stringify(newCustomer), POSTsuccessNewCustomer, POSTerrorNewCustomer)
+            }
+        });
+    </script>
 </head>
 
 <body dir="rtl">
@@ -363,35 +392,48 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Basic form elements</h4>
+                                <h4 class="card-title">הוספת לקוח חדש</h4> <!--הראשי-->
                                 <p class="card-description">
-                                    Basic form elements
+                                    פרטים אישיים
                                 </p>
                                 <form class="forms-sample">
                                     <div class="form-group">
-                                        <label for="exampleInputName1">Name</label>
-                                        <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                                        <label for="exampleInputName1">שם פרטי</label>
+                                        <input type="text" class="form-control" id="firstName" placeholder="">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputEmail3">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+                                        <label for="exampleInputName1">שם משפחה</label>
+                                        <input type="text" class="form-control" id="sureName" placeholder="">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputPassword4">Password</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
+                                        <label for="exampleInputName1">שם משתמש</label>
+                                        <input type="text" class="form-control" id="userName" placeholder="">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleSelectGender">Gender</label>
-                                        <select class="form-control" id="exampleSelectGender">
-                                            <option>Male</option>
-                                            <option>Female</option>
-                                        </select>
+                                        <label for="exampleInputPassword4">סיסמא</label>
+                                        <input type="password" class="form-control" id="password" placeholder="">
                                     </div>
                                     <div class="form-group">
+                                        <label for="exampleInputPassword4">אישור סיסמא</label>
+                                        <input type="password" class="form-control" id="passwordVerication" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputName1">טלפון</label>
+                                        <input type="text" class="form-control" id="phoneNumber" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputName1">תאריך לידה</label>
+                                        <input class="form-control" id="birthDay" placeholder="dd/mm/yyyy" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail3">אימייל</label>
+                                        <input type="email" class="form-control" id="email" placeholder="">
+                                    </div>
+                                    <!--<div class="form-group">
                                         <label>File upload</label>
                                         <input type="file" name="img[]" class="file-upload-default">
                                         <div class="input-group col-xs-12">
@@ -400,22 +442,14 @@
                                                 <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                                             </span>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputCity1">City</label>
-                                        <input type="text" class="form-control" id="exampleInputCity1" placeholder="Location">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleTextarea1">Textarea</label>
-                                        <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                                    </div>-->
+                                    <button type="submit" class="btn btn-primary mr-2" onclick="AddCustomer()">Submit</button>
                                     <button class="btn btn-light">Cancel</button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 grid-margin stretch-card">
+                    <!--<div class="col-md-6 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Input size</h4>
@@ -722,10 +756,10 @@
                             </div>
                         </div>
                     </div>-->
-                    <div class="col-12 grid-margin"> <!--להשאיר-->
+                    <!--<div class="col-12 grid-margin">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Horizontal Two column</h4>
+                                <h4 class="card-title">Horizontal Two column</h4> לקחת עיצובים
                                 <form class="form-sample">
                                     <p class="card-description">
                                         Personal info
@@ -870,7 +904,7 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <!-- content-wrapper ends -->
