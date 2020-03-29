@@ -17,9 +17,9 @@ namespace final_project_WEB.Controllers
             return customer.Read_customers();
         }
 
-        public int Post([FromBody] Customer customer)
+        public int Post([FromBody]Customer customer)
         {
-            return customer.insert();
+            return customer.insert_customer(customer);
         }
 
         // GET api/<controller>/5

@@ -2,48 +2,67 @@
 <html lang="he">
 
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>My Agent</title>
-  <!-- plugins:css -->
-  <link rel="stylesheet" href="../../../vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="../../../vendors/base/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- plugin css for this page -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
-  <link rel="stylesheet" href="../../../css/style.css">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="../../../images/favicon.png" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>My Agent</title>
+    <script src="../../../Scripts/ajaxCalls.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
+            integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
+            crossorigin="anonymous"></script>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../../vendors/base/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../../images/favicon.png" />
 
     <script>
         $(document).ready(function () {
-            function AddCustomer() {
-                firstName = $('#firstName').val();
-                sureName = $('#sureName').val();
-                userName = $('#userName').val();
-                password = $('#password').val();
-                passwordVerication = $('#passwordVerication').val();
-                if (password =! passwordVerication) {
+            $('#form_add_customer').submit(function () {
+                let firstName = $('#firstName').val();
+                let sureName = $('#sureName').val();
+                let userName = $('#userName').val();
+                let password1 = 121212;//$('#password').val();
+                let passwordVerication = $('#passwordVerication').val();
+                if (password1 = !passwordVerication) {
                     alert("אימות סיסמא נכשל");
                 }
-                phoneNumber = $('#phoneNumber').val();
-                birthDay = $('#birthDay').val();
-                email = $('#email').val();
+                let phoneNumber = $('#phoneNumber').val();
+                let birthDay = $('#birthDay').val();
+                let email = $('#email').val();
 
                 newCustomer = {
-                    "FirstName" : firstName,
-                    "SureName" : sureName,
-                    "UserName" : userName,
-                    "Password": password,
+                    "FirstName": firstName,
+                    "SureName": sureName,
+                    "UserName": userName,
+                    "Password": '11',
                     "PhoneNumber": phoneNumber,
                     "BirthDay": birthDay,
                     "Email": email
                 }
+                    
                 ajaxCall("POST", "../../../api/Customer", JSON.stringify(newCustomer), POSTsuccessNewCustomer, POSTerrorNewCustomer)
-            }
+                return false;
+            });
         });
+
+        function POSTsuccessNewCustomer(num) {
+            if (num == 1)
+                alert("success");
+            else
+                alert("err");
+        }
+
+        function POSTerrorNewCustomer(err) {
+            console.log(err);
+            alert("error");
+        }
     </script>
 </head>
 
@@ -400,7 +419,7 @@
                                 <p class="card-description">
                                     פרטים אישיים
                                 </p>
-                                <form class="forms-sample">
+                                <form class="forms-sample" id="form_add_customer">
                                     <div class="form-group">
                                         <label for="exampleInputName1">שם פרטי</label>
                                         <input type="text" class="form-control" id="firstName" placeholder="">
@@ -414,12 +433,12 @@
                                         <input type="text" class="form-control" id="userName" placeholder="">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputPassword4">סיסמא</label>
-                                        <input type="password" class="form-control" id="password" placeholder="">
+                                        <label for="exampleInputName1">סיסמא</label>
+                                        <input type="text" class="form-control" id="password" placeholder="">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputPassword4">אישור סיסמא</label>
-                                        <input type="password" class="form-control" id="passwordVerication" placeholder="">
+                                        <label for="exampleInputName1">אישור סיסמא</label>
+                                        <input type="text" class="form-control" id="passwordVerication" placeholder="">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputName1">טלפון</label>
@@ -443,7 +462,7 @@
                                             </span>
                                         </div>
                                     </div>-->
-                                    <button type="submit" class="btn btn-primary mr-2" onclick="AddCustomer()">Submit</button>
+                                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
                                     <button class="btn btn-light">Cancel</button>
                                 </form>
                             </div>

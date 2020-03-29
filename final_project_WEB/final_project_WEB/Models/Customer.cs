@@ -44,10 +44,10 @@ namespace final_project_WEB.Models
             return dbs.Read_customers();
         }
 
-        public int insert()
+        public int insert_customer(Customer customer)
         {
             DBservices dbs = new DBservices();
-            int addedToCustomerList = dbs.insert_customer(this);
+            int addedToCustomerList = dbs.insert_customer(customer);
             return addedToCustomerList;
         }
     }
