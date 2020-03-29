@@ -17,6 +17,11 @@ namespace final_project_WEB.Controllers
             return customer.Read_customers();
         }
 
+        public int Post([FromBody] Customer customer)
+        {
+            return customer.insert();
+        }
+
         // GET api/<controller>/5
         public string Get(int id)
         {
