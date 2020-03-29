@@ -17,7 +17,7 @@ namespace final_project_WEB.Controllers
             return customer.Read_customers();
         }
 
-        public int Post([FromBody]Customer customer)
+        public int Post([FromBody] Customer customer)
         {
             return customer.insert_customer(customer);
         }
@@ -28,10 +28,10 @@ namespace final_project_WEB.Controllers
             return "value";
         }
 
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
+        ////POST api/<controller>
+        //public void Post([FromBody]string value)
+        //{
+        //}
 
         // PUT api/<controller>/5
         public void Put(int id, [FromBody]string value)

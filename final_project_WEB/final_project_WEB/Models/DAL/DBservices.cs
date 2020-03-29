@@ -77,7 +77,7 @@ public class DBservices
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
         sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}')", customer.FirstName, customer.SureName, customer.UserName, customer.Password, customer.PhoneNumber.ToString(), customer.BirthDay.ToString(), customer.Email);
-        String prefix = "INSERT INTO contry_2020_roni_T1 " + "(firstName,sureName,userName,password1,phoneNumber,email)";
+        String prefix = "INSERT INTO Customer_igroup4 " + "(firstName,sureName,userName,password1,phoneNumber,email)";
         command = prefix + sb.ToString();
 
         return command;
@@ -90,7 +90,7 @@ public class DBservices
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
         sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}')", agent.FirstName, agent.SureName, agent.UserName, agent.Password, agent.PhoneNumber.ToString(), agent.Email, agent.AgencyName);
-        String prefix = "INSERT INTO contry_2020_roni_T1 " + "(firstName,sureName,userName,password1,phoneNumber,email,agencyName) ";
+        String prefix = "INSERT INTO Agent_igroup4 " + "(firstName,sureName,userName,password1,phoneNumber,email,agencyName) ";
         command = prefix + sb.ToString();
 
         return command;
