@@ -83,6 +83,19 @@ public class DBservices
         return command;
     }
 
+    private String BuildInsertCommand(Agent agent)
+    {
+        String command;
+
+        StringBuilder sb = new StringBuilder();
+        // use a string builder to create the dynamic string
+        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}')", agent.FirstName, agent.SureName, agent.UserName, agent.Password, agent.PhoneNumber.ToString(), agent.Email, agent.AgencyName);
+        String prefix = "INSERT INTO contry_2020_roni_T1 " + "(id,continent,name,lang) ";
+        command = prefix + sb.ToString();
+
+        return command;
+    }
+
     private SqlCommand CreateCommand(String CommandSTR, SqlConnection con)
     {
 
@@ -144,4 +157,48 @@ public class DBservices
         }
     }
 
+    public List<Agent> Read_agent()
+    {
+        List<Agent> agents_list = new List<Agent>();
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT * FROM Agent_igroup4";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                Agent a = new Agent();
+                a.FirstName = (string)dr["firstName"];
+                a.SureName = (string)dr["sureName"];
+                a.UserName = (string)dr["userName"];
+                a.Password = (string)dr["password1"];
+                a.PhoneNumber = Convert.ToInt32(dr["phoneNumber"]);
+                a.Email = (string)dr["email"];
+                a.AgencyName = (string)dr["agencyName"];
+
+                agents_list.Add(a);
+            }
+            return agents_list;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
 }

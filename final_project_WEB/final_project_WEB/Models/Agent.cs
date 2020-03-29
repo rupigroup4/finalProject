@@ -36,5 +36,11 @@ namespace final_project_WEB.Models
         public int PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
         public string Email { get => email; set => email = value; }
         public string AgencyName { get => agencyName; set => agencyName = value; }
+
+        public List<Agent> Read_agent()
+        {
+            DBservices dbs = new DBservices();
+            return dbs.Read_agent();
+        }
     }
 }
