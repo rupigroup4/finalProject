@@ -27,12 +27,6 @@
             $('#form_add_customer').submit(function () {
                 let firstName = $('#firstName').val();
                 let sureName = $('#sureName').val();
-                let userName = $('#userName').val();
-                let password1 = 121212;//$('#password').val();
-                let passwordVerication = $('#passwordVerication').val();
-                if (password1 = !passwordVerication) {
-                    alert("אימות סיסמא נכשל");
-                }
                 let phoneNumber = $('#phoneNumber').val();
                 let birthDay = $('#birthDay').val();
                 let email = $('#email').val();
@@ -40,8 +34,6 @@
                 newCustomer = {
                     "FirstName": firstName,
                     "SureName": sureName,
-                    "UserName": userName,
-                    "Password": '11',
                     "PhoneNumber": phoneNumber,
                     "BirthDay": birthDay,
                     "Email": email
@@ -425,35 +417,23 @@
                                 <form class="forms-sample" id="form_add_customer">
                                     <div class="form-group">
                                         <label for="exampleInputName1">שם פרטי</label>
-                                        <input type="text" class="form-control" id="firstName" placeholder="" value="יובל">
+                                        <input type="text" class="form-control" id="firstName" placeholder="">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputName1">שם משפחה</label>
-                                        <input type="text" class="form-control" id="sureName" placeholder="" value="לוי">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputName1">שם משתמש</label>
-                                        <input type="text" class="form-control" id="userName" placeholder="" value="Yuval">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputName1">סיסמא</label>
-                                        <input type="text" class="form-control" id="password" placeholder="" value="123456">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputName1">אישור סיסמא</label>
-                                        <input type="text" class="form-control" id="passwordVerication" placeholder="" value="123456">
+                                        <input type="text" class="form-control" id="sureName" placeholder="">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputName1">טלפון</label>
-                                        <input type="text" class="form-control" id="phoneNumber" placeholder="" value="0524782748">
+                                        <input type="text" class="form-control" id="phoneNumber" placeholder="">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputName1">תאריך לידה</label>
-                                        <input class="form-control" id="birthDay" placeholder="dd/mm/yyyy" value="04121993" />
-                                    </div>
+                                        <input type="date" class="form-control" id="birthDay" placeholder="dd/mm/yyyy" />
+                                    </div> 
                                     <div class="form-group">
                                         <label for="exampleInputEmail3">אימייל</label>
-                                        <input type="email" class="form-control" id="email" placeholder="" value="yuvali@gmail.com">
+                                        <input type="email" class="form-control" id="email">
                                     </div>
                                     <!--<div class="form-group">
                                         <label>File upload</label>

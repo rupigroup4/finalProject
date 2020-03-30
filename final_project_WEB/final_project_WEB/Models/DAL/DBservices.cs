@@ -29,7 +29,7 @@ public class DBservices
         return con;
     }
 
-    public int insert_customer( Customer customer)
+    public int insert_customer(Customer customer)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -76,8 +76,8 @@ public class DBservices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}')", customer.FirstName, customer.SureName, customer.UserName, customer.Password, customer.PhoneNumber.ToString(), customer.BirthDay.ToString(), customer.Email);
-        String prefix = "INSERT INTO Customer_igroup4 " + "(firstName,sureName,userName,password1,phoneNumber,email)";
+        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}')", customer.FirstName, customer.SureName, customer.PhoneNumber.ToString(), customer.BirthDay.ToString(), customer.Email);
+        String prefix = "INSERT INTO Customer_igroup4 " + "(firstName,sureName,phoneNumber,birthday,email)";
         command = prefix + sb.ToString();
 
         return command;
@@ -132,8 +132,6 @@ public class DBservices
                 Customer c = new Customer();
                 c.FirstName = (string)dr["firstName"];
                 c.SureName = (string)dr["sureName"];
-                c.UserName = (string)dr["userName"];
-                c.Password = (string)dr["password1"];
                 c.PhoneNumber = Convert.ToInt32(dr["phoneNumber"]);
                 c.BirthDay = (string)dr["birthDay"];
                 c.Email = (string)dr["email"];
