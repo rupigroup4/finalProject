@@ -28,7 +28,7 @@
         function successCustomer_list(customers_list) {
             try {
                 if (customers_list.length == 0)
-                    alert("No customers");
+                    swal("אין לקוחות במערכת !");
                 else {
                     let str = "";
                     for (var i = 0; i < customers_list.length; i++) {
@@ -283,7 +283,7 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>    
+                                                <th>
                                                     <h4 class="card-title">רשימת לקוחות</h4>
                                                 </th>
                                                 <th>
@@ -312,7 +312,7 @@
                                                         מייל
                                                     </th>
                                                     <th>
-                                                        
+
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -349,6 +349,7 @@
     <script src="../../../js/hoverable-collapse.js"></script>
     <script src="../../../js/template.js"></script>
     <script src="../../../js/todolist.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
