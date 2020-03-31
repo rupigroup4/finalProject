@@ -28,15 +28,28 @@
                 let firstName = $('#firstName').val();
                 let sureName = $('#sureName').val();
                 let phoneNumber = $('#phoneNumber').val();
+                let gender = $('#SelectGender').val();
+                if (gender == 'נקבה') {
+                    gender = 'נ';
+                } else {
+                    gender = 'ז';
+                }
                 let birthDay = $('#birthDay').val();
                 let email = $('#email').val();
+                let dateObj = new Date();
+                let month = dateObj.getUTCMonth() + 1; 
+                let day = dateObj.getUTCDate();
+                let year = dateObj.getUTCFullYear();
+                let joinDate = year + "-" + month + "-" + day;
 
                 newCustomer = {
                     "FirstName": firstName,
                     "SureName": sureName,
                     "PhoneNumber": phoneNumber,
+                    "Gender": gender,
                     "BirthDay": birthDay,
-                    "Email": email
+                    "Email": email,
+                    "JoinDate": joinDate
                 }
 
                 ajaxCall("POST", "../../../api/Customer", JSON.stringify(newCustomer), POSTsuccessNewCustomer, POSTerrorNewCustomer);
@@ -48,6 +61,7 @@
             $('#firstName').val("");
             $('#sureName').val("");
             $('#phoneNumber').val("");
+            $('#SelectGender').val("");
             $('#birthDay').val("");
             $('#email').val("");
         }
@@ -349,6 +363,13 @@
                                         <div class="form-group">
                                             <label for="exampleInputName1">טלפון</label>
                                             <input type="text" class="form-control" value="0526657670" id="phoneNumber" placeholder="" required pattern="05[0-9]{8}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="SelectGender">מגדר</label>
+                                            <select class="form-control" id="SelectGender">
+                                                <option>זכר</option>
+                                                <option>נקבה</option>
+                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputName1">תאריך לידה</label>

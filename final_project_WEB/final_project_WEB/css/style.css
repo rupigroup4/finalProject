@@ -20387,6 +20387,9 @@ dl li {
 }
 
 /*dina*/
+.customerRadio {
+    font-size: 0.875rem;
+}
 
 Button {
     margin-left: 10px;
