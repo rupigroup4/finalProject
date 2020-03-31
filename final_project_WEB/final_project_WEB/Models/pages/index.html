@@ -28,23 +28,17 @@
         function successCustomer_list(customers_list) {
             document.getElementById("customers_numPH").innerHTML = customers_list.length;
             try {
-                if (customers_list.length == 0)
-                    alert("No customers");
-                else {
-                    let str = "";
-                    for (var i = 0; i < customers_list.length; i++) {
-                        str += "<tr><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td>";
-                        str += "<td>" + customers_list[i].PhoneNumber + "</td>";
-                        str += "<td><label class='badge badge-danger'>Pending</label></td></tr>";
-                    }
-                    document.getElementById("CustomerlistPH").innerHTML = str;
-
+                let str = "";
+                for (var i = 0; i < customers_list.length; i++) {
+                    str += "<tr><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td>";
+                    str += "<td>" + customers_list[i].PhoneNumber + "</td>";
+                    str += "<td><label class='badge badge-danger'>Pending</label></td></tr>";
                 }
+                document.getElementById("CustomerlistPH").innerHTML = str;
             }
             catch (err) {
                 alert(err);
             }
-
         }
 
         function errorCustomer_list(err) {

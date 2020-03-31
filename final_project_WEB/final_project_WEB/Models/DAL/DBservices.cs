@@ -89,8 +89,8 @@ public class DBservices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}')", agent.FirstName, agent.SureName, agent.UserName, agent.Password, agent.PhoneNumber.ToString(), agent.Email, agent.AgencyName);
-        String prefix = "INSERT INTO Agent_igroup4 " + "(firstName,sureName,userName,password1,phoneNumber,email,agencyName) ";
+        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}')",agent.AgentID.ToString(), agent.FirstName, agent.SureName, agent.Email , agent.Password, agent.PhoneNumber.ToString(), agent.AgencyName);
+        String prefix = "INSERT INTO Agent_igroup4 " + "(AgentID,firstName,sureName,email,password1,phoneNumber,agencyName)";
         command = prefix + sb.ToString();
 
         return command;
@@ -173,12 +173,12 @@ public class DBservices
             while (dr.Read())
             {
                 Agent a = new Agent();
+                a.AgentID= Convert.ToInt32(dr["AgentID"]);
                 a.FirstName = (string)dr["firstName"];
                 a.SureName = (string)dr["sureName"];
-                a.UserName = (string)dr["userName"];
+                a.Email = (string)dr["email"];
                 a.Password = (string)dr["password1"];
                 a.PhoneNumber = Convert.ToInt32(dr["phoneNumber"]);
-                a.Email = (string)dr["email"];
                 a.AgencyName = (string)dr["agencyName"];
 
                 agents_list.Add(a);
