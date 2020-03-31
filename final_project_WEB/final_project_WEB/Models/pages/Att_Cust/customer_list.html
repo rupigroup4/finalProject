@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>RoyalUI Admin</title>
+    <title>IAgent</title>
     <script src="../../../Scripts/ajaxCalls.js"></script>
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
@@ -27,7 +27,7 @@
         });
         function successCustomer_list(customers_list) {
             try {
-                if (customers_list.count == 0)
+                if (customers_list.length == 0)
                     alert("No customers");
                 else {
                     let str = "";
@@ -37,7 +37,16 @@
                         str += "<td>" + customers_list[i].PhoneNumber + "</td>";
                         str += "<td>" + customers_list[i].BirthDay + "</td>";
                         str += "<td>" + customers_list[i].Email + "</td>";
-                        str += "<td> <input type='button' class='button1' value='צפה בלקוח'> </td> </tr>";
+                        str += "<td><button  id='button_' type='button' class='btn btn-danger btn-icon-text'>הוסף טיול";
+                        str += "  <i class='ti-plus btn-icon-prepend'></i> </button >";
+                        str += "<button type='button' class='btn btn-info btn-icon-text'>ערוך לקוח";
+                        str += " <i class='ti-pencil btn-icon-append' ></i> </button > ";        
+                        str += "<button type='button' class='btn btn-warning btn-icon-text'>שלח הודעה";
+                        str += "<i class='ti-email btn-icon-prepend'></i> </button ></td > </tr >";
+                        
+
+                            //"<td> <button id='button_' type='button' class='btn btn - danger btn - icon - text'> הוסף טיול < i class='ti-plus btn-icon-prepend' ></i ></button ></td> </tr>";
+                        //str += "<td> <input type='button' class='button1' value='צפה בלקוח'> </td> </tr>";
                     }
                     document.getElementById("CustomerPH").innerHTML = str;
                     
@@ -54,7 +63,7 @@
 
         }
 
-        function myFunction() {
+        function Search_byName() {
             var input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("myInput");
             filter = input.value.toUpperCase();
@@ -274,11 +283,11 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>
+                                                <th>    
                                                     <h4 class="card-title">רשימת לקוחות</h4>
                                                 </th>
                                                 <th>
-                                                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="חיפוש שם" title="Type in a name">
+                                                    <input type="text" id="myInput" onkeyup="Search_byName()" placeholder="חיפוש לפי שם" title="Type in a name">
                                                 </th>
                                             </tr>
                                         </thead>
@@ -303,7 +312,7 @@
                                                         מייל
                                                     </th>
                                                     <th>
-                                                        פרופיל לקוח
+                                                        
                                                     </th>
                                                 </tr>
                                             </thead>
