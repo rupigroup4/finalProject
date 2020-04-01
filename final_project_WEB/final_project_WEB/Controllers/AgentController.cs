@@ -17,6 +17,11 @@ namespace final_project_WEB.Controllers
             return agent.Read_agent();
         }
 
+        public int Post([FromBody] Agent agent)
+        {
+            return agent.insert_agent(agent);
+        }
+
         // GET api/<controller>/5
         public string Get(int id)
         {
@@ -24,9 +29,9 @@ namespace final_project_WEB.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
+        //public void Post([FromBody]string value)
+        //{
+        //}
 
         // PUT api/<controller>/5
         public void Put(int id, [FromBody]string value)

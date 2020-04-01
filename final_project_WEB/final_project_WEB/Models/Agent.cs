@@ -42,5 +42,12 @@ namespace final_project_WEB.Models
             DBservices dbs = new DBservices();
             return dbs.Read_agent();
         }
+
+        public int insert_agent(Agent agent)
+        {
+            DBservices dbs = new DBservices();
+            int addedToAgentList = dbs.insert_agent(agent);
+            return addedToAgentList;
+        }
     }
 }

@@ -236,6 +236,8 @@
     <Content Include="images\PeoplePic\7.jpg" />
     <Content Include="images\PeoplePic\8.jpg" />
     <Content Include="images\PeoplePic\9.jpg" />
+    <Content Include="images\register.jpg" />
+    <Content Include="images\Welcom.jpg" />
     <Content Include="js\chart.js" />
     <Content Include="js\dashboard.js" />
     <Content Include="js\dataTable.js" />
