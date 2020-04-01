@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>RoyalUI Admin</title>
     <!-- plugins:css -->
-    <script src="../../Scripts/ajaxCalls.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
             crossorigin="anonymous"></script>
@@ -22,18 +21,62 @@
     <link rel="shortcut icon" href="../../../images/favicon.png" />
     <script>
         $(document).ready(function () {
-            ajaxCall("GET", "../../../api/Agent", "", successAgent_list, errorAgent_list)
+            $('#form_login').submit(function () {
+                ajaxCall("GET", "../../../api/Agent", "", successAgent_list, errorAgent_list);
+                return false;
+            });
         });
-        //function successAgent_list(Agent_list) {
-        //    try {
-        //        for (var i = 0; i < Agent_list.length; i++) {
-                
-        //        }
-        //    }
-        //    catch (err) {
-        //        swal("error");
-        //    }
-        //}
+      
+        function successAgent_list(Agent_list) {
+            let inputEmail = $('#InputEmail').val();
+            let inputPassword = $('#InputPassword').val();
+            try {
+                for (var i = 0; i < Agent_list.length; i++) {
+                    if (inputEmail == Agent_list[i].Email && inputPassword == Agent_list[i].Password) {
+                        localStorage.setItem('Email', inputEmail);
+                        localStorage.setItem('Password', inputPassword);
+                        window.location.href = "../index.html";
+                    }
+                }
+                swal({
+                    title: "משתמש אינו קיים במערכת, האם לעבור לעמוד הרשמה?",
+                    buttons: ["לא, התחבר מחדש", "כן, עבור לעמוד הרשמה"],
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                          window.location.href = "register-2.html";
+                        }
+                        else {
+                        }
+                    });
+                //swal("משתמש אינו קיים במערכת, האם לעבור לעמוד הרשמה?", {
+                //    buttons: ["לא, התחבר מחדש", "כן, עבור לעמוד הרשמה"]
+                //})
+                //    .then((value) => {
+                //        switch (value) {
+
+                //            case "לא, התחבר מחדש":
+                //                window.location.href = "register-2.html";
+                //                break;
+
+                //            //case "כן, עבור לעמוד הרשמה":
+                //            //    swal("Gotcha!", "Pikachu was caught!", "success");
+                //            //    break;
+                //            default:
+                //                swal("Got away safely!");
+
+                //        }
+                //    });
+            }
+            catch (err) {
+                swal(err);
+            }
+        }
+        
+        function errorAgent_list(err) {
+            swal("error");
+            }
+
     </script>
 </head>
 
@@ -41,54 +84,53 @@
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
             <div class="content-wrapper d-flex align-items-stretch auth auth-img-bg">
-                <div class="row flex-grow">
+                <div class="row flex-grow" style="font-family:Calibri">
                     <div class="col-lg-6 d-flex align-items-center justify-content-center">
-                        <div class="auth-form-transparent text-left p-3">
+                        <div class="auth-form-transparent text-right p-3">
                             <div class="brand-logo">
                                 <img src="../../../images/logo.svg" alt="logo">
                             </div>
-                            <h4>Welcome back!</h4>
-                            <h6 class="font-weight-light">Happy to see you again!</h6>
-                            <form class="pt-3">
+                            <h2 class=".h2 text_lonin" >כניסה לחשבון שלי</h2>
+                            <form id="form_login" class="pt-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail">Username</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend bg-transparent">
                                             <span class="input-group-text bg-transparent border-right-0">
                                                 <i class="ti-user text-primary"></i>
                                             </span>
                                         </div>
-                                        <input type="text" class="form-control form-control-lg border-left-0" id="exampleInputEmail" placeholder="Username">
+                                        <input type="text" class="form-control form-control-lg border-left-0" id="InputEmail" placeholder='כתובת דוא"ל' required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword">Password</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend bg-transparent">
                                             <span class="input-group-text bg-transparent border-right-0">
                                                 <i class="ti-lock text-primary"></i>
                                             </span>
                                         </div>
-                                        <input type="password" class="form-control form-control-lg border-left-0" id="exampleInputPassword" placeholder="Password">
+                                        <input type="password" class="form-control form-control-lg border-left-0" id="InputPassword" placeholder="הזנת סיסמה" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$">
                                     </div>
+                                </div>
+                                <div class="my-3">
+                                    <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">התחברות</button>
+                                    <p id="PH"></p>
                                 </div>
                                 <div class="my-2 d-flex justify-content-between align-items-center">
                                     <div class="form-check">
                                         <label class="form-check-label text-muted">
+                                            הישאר מחובר
                                             <input type="checkbox" class="form-check-input">
-                                            Keep me signed in
                                         </label>
                                     </div>
-                                    <a href="#" class="auth-link text-black">Forgot password?</a>
+                                    <a href="#" class="auth-link text-black">שכחתי סיסמה?</a>
                                 </div>
-                                <div class="my-3">
-                                    <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../index.html">LOGIN</a>
-                                </div>
+
                                 <div class="mb-2 d-flex">
 
                                 </div>
                                 <div class="text-center mt-4 font-weight-light">
-                                    Don't have an account? <a href="register-2.html" class="text-primary">Create</a>
+                                    עוד אין לכם חשבון? <a href="register-2.html" class="text-primary">הרשמו</a>
                                 </div>
                             </form>
                         </div>
@@ -104,10 +146,14 @@
     </div>
     <!-- container-scroller -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
     <!-- plugins:js -->
     <script src="../../../vendors/base/vendor.bundle.base.js"></script>
     <!-- endinject -->
+    <script src="../../../Scripts/ajaxCalls.js"></script>
+
     <!-- inject:js -->
     <script src="../../../js/off-canvas.js"></script>
     <script src="../../../js/hoverable-collapse.js"></script>

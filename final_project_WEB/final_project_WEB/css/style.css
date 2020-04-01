@@ -94,8 +94,16 @@
   }
 }
 
+.text_lonin {
+    font-family: Calibri;
+    direction: rtl;
+    border-radius: 4px;
+    padding-bottom: 4px;
+    text-align: center;
+}
+
 @-o-keyframes flash {
-  0% {
+    0% {
     opacity: 1;
   }
   25% {
@@ -20627,8 +20635,10 @@ Button {
 }
 
 .auth form .auth-form-btn {
-  padding: 1rem 3rem;
-  line-height: 1.5;
+    padding: 1rem 3rem;
+    line-height: 1.5;
+    font-size: 22px;
+    font-weight: bold;
 }
 
 .auth form .auth-link {
