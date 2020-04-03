@@ -13,6 +13,8 @@ create table Customer_igroup4 (
 	foreign key (AgentID) REFERENCES Agent_igroup4(AgentID)
 );
 
+ALTER TABLE Customer_igroup4
+ADD pnToken nvarchar(200) ;
 
 select * from Customer_igroup4
 
