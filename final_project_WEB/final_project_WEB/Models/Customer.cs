@@ -12,7 +12,7 @@ namespace final_project_WEB.Models
         private int id;
         private string firstName;
         private string sureName;
-        private int phoneNumber;
+        private string phoneNumber;
         private string gender;
         private string birthDay;
         private string email;
@@ -22,7 +22,7 @@ namespace final_project_WEB.Models
         public int Id { get => id; set => id = value; }
         public string FirstName { get => firstName; set => firstName = value; }
         public string SureName { get => sureName; set => sureName = value; }
-        public int PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
+        public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
         public string Gender { get => gender; set => gender = value; }
         public string BirthDay { get => birthDay; set => birthDay = value; }
         public string Email { get => email; set => email = value; }
@@ -31,7 +31,7 @@ namespace final_project_WEB.Models
 
         public Customer() { }
 
-        public Customer(int id, string firstName, string sureName, int phoneNumber, string gender, string birthDay, string email, string img, string joinDate)
+        public Customer(int id, string firstName, string sureName, string phoneNumber, string gender, string birthDay, string email, string img, string joinDate)
         {
             Id = id;
             FirstName = firstName;
