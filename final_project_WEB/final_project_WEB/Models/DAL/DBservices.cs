@@ -242,42 +242,4 @@ public class DBservices
 
         }
     }
-
-    public List<string> Read_Email_list()
-    {
-        List<string> Email_list = new List<string>();
-        string Email;
-        SqlConnection con = null;
-
-        try
-        {
-            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-
-            String selectSTR = "SELECT * FROM Agent_igroup4";
-            SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-            // get a reader
-            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-
-            while (dr.Read())
-            {
-                Email = (string)dr["email"];
-                Email_list.Add(Email);
-            }
-            return Email_list;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-        finally
-        {
-            if (con != null)
-            {
-                con.Close();
-            }
-
-        }
-    }
 }
