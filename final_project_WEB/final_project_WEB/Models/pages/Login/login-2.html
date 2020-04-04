@@ -30,12 +30,17 @@
         function successAgent_list(Agent_list) {
             let inputEmail = $('#InputEmail').val();
             let inputPassword = $('#InputPassword').val();
+            let save_details = $('#checkbox_saveD').is(":checked");
             try {
                 for (var i = 0; i < Agent_list.length; i++) {
                     if (inputEmail == Agent_list[i].Email && inputPassword == Agent_list[i].Password) {
-                        localStorage.setItem('Email', inputEmail);
-                        localStorage.setItem('Password', inputPassword);
+                        if (save_details == true) {
+                            localStorage.setItem('Email', inputEmail);
+                            localStorage.setItem('Password', inputPassword);
+                            localStorage.setItem('AgentID', Agent_list[i].AgentID);
+                        }
                         window.location.href = "../index.html";
+                        return;
                     }
                 }
                 swal({
@@ -82,7 +87,7 @@
                                                 <i class="ti-user text-primary"></i>
                                             </span>
                                         </div>
-                                        <input type="text" class="form-control form-control-lg border-left-0" id="InputEmail" placeholder='כתובת דוא"ל' required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                                        <input type="text" class="form-control form-control-lg border-left-0" id="InputEmail" placeholder='כתובת דוא"ל' required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" value="ana@walla.com">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -92,7 +97,7 @@
                                                 <i class="ti-lock text-primary"></i>
                                             </span>
                                         </div>
-                                        <input type="password" class="form-control form-control-lg border-left-0" id="InputPassword" placeholder="הזנת סיסמה" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$">
+                                        <input type="password" class="form-control form-control-lg border-left-0" id="InputPassword" placeholder="הזנת סיסמה" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" value="Ab121212">
                                     </div>
                                 </div>
                                 <div class="my-3">
@@ -103,7 +108,7 @@
                                     <div class="form-check">
                                         <label class="form-check-label text-muted">
                                             הישאר מחובר
-                                            <input type="checkbox" class="form-check-input">
+                                            <input id="checkbox_saveD" type="checkbox" class="form-check-input">
                                         </label>
                                     </div>
                                     <a href="#" class="auth-link text-black">שכחתי סיסמה?</a>

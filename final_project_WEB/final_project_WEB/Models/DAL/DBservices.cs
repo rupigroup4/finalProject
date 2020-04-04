@@ -221,7 +221,7 @@ public class DBservices
                 a.SureName = (string)dr["sureName"];
                 a.Email = (string)dr["email"];
                 a.Password = (string)dr["password1"];
-                a.PhoneNumber = (string)(dr["phoneNumber"]);
+                a.PhoneNumber = (string)dr["phoneNumber"];
                 a.AgencyName = (string)dr["agencyName"];
 
                 agents_list.Add(a);
