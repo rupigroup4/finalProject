@@ -76,7 +76,7 @@ public class DBservices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}', '{7}','{8}')", customer.FirstName, customer.SureName, customer.PhoneNumber, customer.Gender.ToString(), customer.BirthDay.ToString(), customer.Email, "" ,customer.JoinDate, 1);
+        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}', '{7}','{8}')", customer.FirstName, customer.SureName, customer.PhoneNumber.ToString(), customer.Gender.ToString(), customer.BirthDay.ToString(), customer.Email, "" ,customer.JoinDate, 1);
         String prefix = "INSERT INTO Customer_igroup4 " + "(firstName,sureName,phoneNumber,gender,birthday,email,img,joinDate,AgentID)";
         command = prefix + sb.ToString();
 
@@ -174,7 +174,7 @@ public class DBservices
                 c.Id = Convert.ToInt32(dr["CustomerID"]);
                 c.FirstName = (string)dr["firstName"];
                 c.SureName = (string)dr["sureName"];
-                c.PhoneNumber = (string)dr["phoneNumber"];
+                c.PhoneNumber = Convert.ToInt32(dr["phoneNumber"]);
                 c.BirthDay = (string)dr["birthDay"];
                 c.Email = (string)dr["email"];
                 c.JoinDate = (string)dr["joinDate"];
