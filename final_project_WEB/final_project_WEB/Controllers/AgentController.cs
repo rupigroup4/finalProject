@@ -17,6 +17,14 @@ namespace final_project_WEB.Controllers
             return agent.Read_agent();
         }
 
+        [HttpGet]
+        [Route("api/Agent/email_list")]
+        public List<string> GET_Email_list()
+        {
+            Agent agent = new Agent();
+            return agent.Read_Email_list();
+        }
+
         public int Post([FromBody] Agent agent)
         {
             return agent.insert_agent(agent);
