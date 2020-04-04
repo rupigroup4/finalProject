@@ -12,13 +12,13 @@ namespace final_project_WEB.Models
         private string sureName;
         private string email;
         private string password;
-        private int phoneNumber;
+        private string phoneNumber;
         private string agencyName;
 
 
         public Agent() { }
 
-        public Agent( int agentID, string firstName, string sureName, string password, int phoneNumber, string email, string agencyName)
+        public Agent( int agentID, string firstName, string sureName, string password, string phoneNumber, string email, string agencyName)
         {
             AgentID = agentID;
             FirstName = firstName;
@@ -34,7 +34,7 @@ namespace final_project_WEB.Models
         public string SureName { get => sureName; set => sureName = value; }
         public string Email { get => email; set => email = value; }
         public string Password { get => password; set => password = value; }
-        public int PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
+        public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
         public string AgencyName { get => agencyName; set => agencyName = value; }
 
         public List<Agent> Read_agent()
