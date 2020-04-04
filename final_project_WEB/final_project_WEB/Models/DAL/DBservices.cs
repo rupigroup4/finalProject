@@ -130,7 +130,7 @@ public class DBservices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}')", agent.FirstName, agent.SureName, agent.Email , agent.Password, agent.PhoneNumber, agent.AgencyName);
+        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}')", agent.FirstName, agent.SureName, agent.Email , agent.Password, agent.PhoneNumber.ToString(), agent.AgencyName);
         String prefix = "INSERT INTO Agent_igroup4 " + "(firstName,sureName,email,password1,phoneNumber,agencyName)";
         command = prefix + sb.ToString();
 
@@ -221,7 +221,7 @@ public class DBservices
                 a.SureName = (string)dr["sureName"];
                 a.Email = (string)dr["email"];
                 a.Password = (string)dr["password1"];
-                a.PhoneNumber = (string)(dr["phoneNumber"]);
+                a.PhoneNumber = Convert.ToInt32(dr["phoneNumber"]);
                 a.AgencyName = (string)dr["agencyName"];
 
                 agents_list.Add(a);
