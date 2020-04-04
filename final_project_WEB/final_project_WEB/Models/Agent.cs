@@ -49,11 +49,5 @@ namespace final_project_WEB.Models
             int addedToAgentList = dbs.insert_agent(agent);
             return addedToAgentList;
         }
-
-        public List<string> Read_Email_list()
-        {
-            DBservices dbs = new DBservices();
-            return dbs.Read_Email_list();
-        }
     }
 }
