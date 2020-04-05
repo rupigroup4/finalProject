@@ -25,37 +25,60 @@
     <script>
         $(document).ready(function () {
             $('#form_add_customer').submit(function () {
-                let firstName = $('#firstName').val();
-                let sureName = $('#sureName').val();
-                let phoneNumber = $('#phoneNumber').val();
-                let gender = $('#SelectGender').val();
-                if (gender == 'נקבה') {
-                    gender = 'נ';
-                } else {
-                    gender = 'ז';
-                }
-                let birthDay = $('#birthDay').val();
-                let email = $('#email').val();
-                let dateObj = new Date();
-                let month = dateObj.getUTCMonth() + 1; 
-                let day = dateObj.getUTCDate();
-                let year = dateObj.getUTCFullYear();
-                let joinDate = year + "-" + month + "-" + day;
 
-                newCustomer = {
-                    "FirstName": firstName,
-                    "SureName": sureName,
-                    "PhoneNumber": phoneNumber,
-                    "Gender": gender,
-                    "BirthDay": birthDay,
-                    "Email": email,
-                    "JoinDate": joinDate
-                }
-
-                ajaxCall("POST", "../../../api/Customer", JSON.stringify(newCustomer), POSTsuccessNewCustomer, POSTerrorNewCustomer);
+                ajaxCall("GET", "../../../api/Customer/email_list", "", GETsuccessCustomer_Email, GETerrorCustomer_Email);
                 return false;
+
             });
         });
+
+        function GETsuccessCustomer_Email(email_list) {
+
+            let email = $('#email').val();
+            for (var i = 0; i < email_list.length; i++) {
+                if (email_list[i] == email) {
+                    swal("איימל זה קיים במערכת", "נסה להזין איימל אחר", "error");
+
+                    $('#email').val("")
+                    return;
+                }
+            }
+
+            let firstName = $('#firstName').val();
+            let sureName = $('#sureName').val();
+            let phoneNumber = $('#phoneNumber').val();
+            let gender = $('#SelectGender').val();
+            if (gender == 'נקבה') {
+                gender = 'נ';
+            } else {
+                gender = 'ז';
+            }
+            let birthDay = $('#birthDay').val();
+            let dateObj = new Date();
+            let month = dateObj.getUTCMonth() + 1;
+            let day = dateObj.getUTCDate();
+            let year = dateObj.getUTCFullYear();
+            let joinDate = year + "-" + month + "-" + day;
+
+            newCustomer = {
+                "FirstName": firstName,
+                "SureName": sureName,
+                "PhoneNumber": phoneNumber,
+                "Gender": gender,
+                "BirthDay": birthDay,
+                "Email": email,
+                "JoinDate": joinDate
+            }
+
+            ajaxCall("POST", "../../../api/Customer", JSON.stringify(newCustomer), POSTsuccessNewCustomer, POSTerrorNewCustomer);
+            return false;
+
+        }
+
+        function GETerrorCustomer_Email(err) {
+            console.log(err);
+            swal(err);
+        }
 
         function clearFields() {
             $('#firstName').val("");
@@ -78,6 +101,7 @@
             console.log(err);
             swal("error");
         }
+
     </script>
 </head>
 
@@ -354,15 +378,15 @@
                                     <form class="forms-sample" id="form_add_customer">
                                         <div class="form-group">
                                             <label for="exampleInputName1">שם פרטי</label>
-                                            <input type="text" class="form-control" value="רוני" id="firstName" placeholder="" required>
+                                            <input type="text" class="form-control" id="firstName" placeholder="" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputName1">שם משפחה</label>
-                                            <input type="text" class="form-control" value="כהן" id="sureName" placeholder="" required>
+                                            <input type="text" class="form-control" id="sureName" placeholder="" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputName1">טלפון</label>
-                                            <input type="text" class="form-control" value="0526657670" id="phoneNumber" placeholder="" required pattern="05[0-9]{8}">
+                                            <input type="text" class="form-control" id="phoneNumber" placeholder="" required pattern="05[0-9]{8}">
                                         </div>
                                         <div class="form-group">
                                             <label for="SelectGender">מגדר</label>
@@ -373,11 +397,11 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputName1">תאריך לידה</label>
-                                            <input type="date" class="form-control" value="05/11/1994" id="birthDay" placeholder="dd/mm/yyyy" required />
+                                            <input type="date" class="form-control" id="birthDay" placeholder="dd/mm/yyyy" required />
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail3">אימייל</label>
-                                            <input type="email" class="form-control" value="roni@gmail.com" id="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                                            <input type="email" class="form-control" id="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
                                         </div>
                                         <button type="submit" class="btn btn-primary mr-2">הוסף</button>
                                         <input type="reset" value="נקה הכל" class="btn btn-secondary">

@@ -56,5 +56,11 @@ namespace final_project_WEB.Models
             int addedToCustomerList = dbs.insert_customer(customer);
             return addedToCustomerList;
         }
+
+        public List<string> Read_Email_list()
+        {
+            DBservices dbs = new DBservices();
+            return dbs.Read_Customer_Email_list();
+        }
     }
 }

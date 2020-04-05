@@ -17,6 +17,14 @@ namespace final_project_WEB.Controllers
             return customer.Read_customers();
         }
 
+        [HttpGet]
+        [Route("api/Customer/email_list")]
+        public List<string> GET_Email_list()
+        {
+            Customer customer = new Customer();
+            return customer.Read_Email_list();
+        }
+
         public int Post([FromBody] Customer customer)
         {
             return customer.insert_customer(customer);
