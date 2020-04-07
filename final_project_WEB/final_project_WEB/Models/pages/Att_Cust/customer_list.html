@@ -38,11 +38,11 @@
                         str += "<td>" + customers_list[i].BirthDay + "</td>";
                         str += "<td>" + customers_list[i].Email + "</td>";
                         str += "<td>" + customers_list[i].JoinDate + "</td>";
-                        str += "<td><button  id='button_' type='button' class='btn btn-danger btn-icon-text'>הוסף טיול";
+                        str += "<td><button  id='" + customers_list[i].Id + "' type='button' onclick='addTrip(" + customers_list[i].Id +")' class='btn btn-danger btn-icon-text'>הוסף טיול";
                         str += "  <i class='ti-plus btn-icon-prepend'></i> </button >";
-                        str += "<button type='button' class='btn btn-info btn-icon-text'>ערוך לקוח";
+                        str += "<button type='button' onclick='editCustomer(" + customers_list[i].Id +")' id='" + customers_list[i].Id +"' class='btn btn-info btn-icon-text'>ערוך לקוח";
                         str += " <i class='ti-pencil btn-icon-append' ></i> </button > ";        
-                        str += "<button type='button' class='btn btn-warning btn-icon-text'>שלח הודעה";
+                        str += "<button type='button' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id +")' class='btn btn-warning btn-icon-text'>שלח הודעה";
                         str += "<i class='ti-email btn-icon-prepend'></i> </button ></td > </tr >";
 
                             //"<td> <button id='button_' type='button' class='btn btn - danger btn - icon - text'> הוסף טיול < i class='ti-plus btn-icon-prepend' ></i ></button ></td> </tr>";
@@ -62,6 +62,37 @@
             alert(err);
 
         }
+
+        function addTrip(id) {
+            Swal.mixin({
+                showCancelButton: true,
+                showCloseButton: true,
+                input: 'text',
+                confirmButtonText: 'Next &rarr;',
+                showCancelButton: true,
+                progressSteps: ['1', '2', '3']
+            }).queue([
+                {
+                    title: 'Question 1',
+                    text: 'Chaining swal2 modals is easy'
+                },
+                'Question 2',
+                'Question 3'
+            ]).then((result) => {
+                if (result.value) {
+                    const answers = JSON.stringify(result.value)
+                    Swal.fire({
+                        title: 'All done!',
+                        html: `
+        Your answers:
+        <pre><code>${answers}</code></pre>
+      `,
+                        confirmButtonText: 'Lovely!'
+                    })
+                }
+            })
+        }    
+        
 
         function Search_byName() {
             var input, filter, table, tr, td, i, txtValue;
@@ -339,14 +370,20 @@
             </div>
             <!-- main-panel ends -->
         </div>
+
         <!-- page-body-wrapper ends -->
     </div>
+
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="../../../vendors/base/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page-->
     <!-- End plugin js for this page-->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+
     <!-- inject:js -->
     <script src="../../../js/off-canvas.js"></script>
     <script src="../../../js/hoverable-collapse.js"></script>

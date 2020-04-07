@@ -19679,6 +19679,7 @@ code {
 
 .card .card-body {
   padding: 1.25rem 1.437rem;
+  width: 100%;
 }
 
 .card .card-body + .card-body {
@@ -21461,3 +21462,4 @@ Button {
 }
 
 /*# sourceMappingURL=maps/style.css.map */
+
