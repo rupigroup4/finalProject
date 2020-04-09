@@ -34,10 +34,10 @@
             try {
                 for (var i = 0; i < Agent_list.length; i++) {
                     if (inputEmail == Agent_list[i].Email && inputPassword == Agent_list[i].Password) {
+                        localStorage.setItem('AgentID', Agent_list[i].AgentID);
                         if (save_details == true) {
                             localStorage.setItem('Email', inputEmail);
                             localStorage.setItem('Password', inputPassword);
-                            localStorage.setItem('AgentID', Agent_list[i].AgentID);
                         }
                         window.location.href = "../index.html";
                         return;

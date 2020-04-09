@@ -10,14 +10,12 @@
     <script src="Scripts/ajaxCalls.js"></script>
 
     <script>
-
-
-
+        
         $(document).ready(function () {
             url = "https://www.triposo.com/api/20190906/common_tag_labels.json";
             $.get(url).done(successCB);
             $.get(url).fail(errorCB);
-        
+       
 
         });
 
