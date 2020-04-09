@@ -9,8 +9,7 @@ create table Agent_igroup4 (
 	primary key (AgentID)
 );
 
-select * from Agent_igroup4
-
+select * from Agent_igroup4 where AgentID='2'
 
 
 
