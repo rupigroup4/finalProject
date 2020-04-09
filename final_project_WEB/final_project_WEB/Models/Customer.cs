@@ -19,15 +19,17 @@ namespace final_project_WEB.Models
         private string img;
         private string joinDate;
 
-        public int Id { get => id; set => id = value; }
-        public string FirstName { get => firstName; set => firstName = value; }
-        public string SureName { get => sureName; set => sureName = value; }
-        public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
-        public string Gender { get => gender; set => gender = value; }
-        public string BirthDay { get => birthDay; set => birthDay = value; }
-        public string Email { get => email; set => email = value; }
-        public string Img { get => img; set => img = value; }
-        public string JoinDate { get => joinDate; set => joinDate = value; }
+        public int Id { get {return id; }  set{ id = value; }}
+        public string FirstName { get { return firstName; } set { firstName = value; } }
+        public string SureName { get { return sureName; } set { sureName = value; } }
+        public string PhoneNumber { get { return phoneNumber; } set { phoneNumber = value; } }
+        public string Gender { get { return gender; } set { gender = value; } }
+        public string BirthDay { get { return birthDay; } set { birthDay = value; } }
+        public string Email { get { return email; } set { email = value; } }
+        public string Img { get { return img; } set { img = value; } }
+        public string JoinDate { get { return joinDate; } set { joinDate = value; } }
+
+       
 
         public Customer() { }
 

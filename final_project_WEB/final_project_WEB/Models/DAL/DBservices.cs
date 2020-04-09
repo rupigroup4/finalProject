@@ -124,6 +124,61 @@ public class DBservices
 
     }
 
+    public int insert_trip(Trip trip)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildInsertCommand(trip);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildInsertCommand(Trip trip)
+    {
+        String command;
+
+        StringBuilder sb = new StringBuilder();
+        // use a string builder to create the dynamic string
+        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}')", trip.TripID.ToString(),trip.Destination, trip.DepartDate, trip.ReternDate,trip.CustomerID.ToString(), trip.TripProfileID.ToString());
+        String prefix = "INSERT INTO Trip_igroup4 " + "(_id,_destination,_depart,_return,_id_customer,_id_TripProfile)";
+        command = prefix + sb.ToString();
+
+        return command;
+    }
+
+
     private String BuildInsertCommand(Agent agent)
     {
         String command;
