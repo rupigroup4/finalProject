@@ -7,8 +7,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
-    <script src="Scripts/ajaxCalls.js"></script>
-
+    <script src="../Scripts/ajaxCalls.js"></script>
     <script>
 
 
@@ -25,7 +24,7 @@
         function successCB(data) {
             str = "";
             arr_data = data.results;
-            console.log(data.results);
+            //console.log(data.results);
             for (var i = 0; i < 427; i++) {
                 str += "id: " + data.results[i].id + " name:" + data.results[i].name;
                 str += "<button id='"+i+"' onclick='add_Tag("+i+")'> add </button> </br>";
@@ -39,10 +38,14 @@
                 'Name_EN': arr_data[i].name
             }
 
-           ajaxCall("POST", "../api/Tag_labels", JSON.stringify(x), POSTsuccess, POSTerror);
+            document.getElementById(i).style.backgroundColor = '#4CAF50';
+
+
+            ajaxCall("POST", "../api/Tag_labels", JSON.stringify(x), POSTsuccess, POSTerror);
+            return false;
         }
         function POSTsuccess(num) {
-            alert('ok'+num);
+            alert(num +' Tag_label added');
         }
 
         function POSTerror(err) {

@@ -77,7 +77,7 @@ public class DBservices
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
         sb.AppendFormat("Values('{0}', '{1}')", tag_labels.Id_, tag_labels.Name_EN);
-        String prefix = "INSERT INTO Tag_labels_igroup4 " + "(id,name_EN) ";
+        String prefix = "INSERT INTO Tag_labels_igroup4 " + "(id_,name_EN) ";
         command = prefix + sb.ToString();
 
         return command;

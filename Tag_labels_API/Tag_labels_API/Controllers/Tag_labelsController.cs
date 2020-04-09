@@ -22,7 +22,7 @@ namespace Tag_labels_API.Controllers
         }
 
         // POST api/<controller>
-        public int Post(Tag_labels tag_labels)
+        public int Post([FromBody] Tag_labels tag_labels)
         {
           return tag_labels.insert(tag_labels);
 
