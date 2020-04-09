@@ -10,19 +10,19 @@ namespace final_project_WEB.Models
         private int tripID;
         private string destination;
         private string departDate;
-        private string reternDate;
+        private string returnDate;
         private int customerID;
         private int tripProfileID;
 
         public Trip() { }
 
 
-        public Trip(int tripID, string destination, string departDate, string reternDate, int customerID, int tripProfileID)
+        public Trip(int tripID, string destination, string departDate, string returnDate, int customerID, int tripProfileID)
         {
             TripID = tripID;
             Destination = destination;
             DepartDate = departDate;
-            ReternDate = reternDate;
+            ReturnDate = returnDate;
             CustomerID = customerID;
             TripProfileID = tripProfileID;
         }
@@ -30,7 +30,7 @@ namespace final_project_WEB.Models
         public int TripID { get { return tripID; } set { tripID = value; } }
         public string Destination { get { return destination; } set { destination = value; } }
         public string DepartDate { get { return departDate; } set { departDate = value; } }
-        public string ReternDate { get { return reternDate; } set { reternDate = value; } }
+        public string ReturnDate { get { return returnDate; } set { returnDate = value; } }
         public int CustomerID { get { return customerID; } set { customerID = value; } }
         public int TripProfileID { get { return tripProfileID; } set { tripProfileID = value; } }
 

@@ -171,8 +171,8 @@ public class DBservices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}')", trip.TripID.ToString(),trip.Destination, trip.DepartDate, trip.ReternDate,trip.CustomerID.ToString(), trip.TripProfileID.ToString());
-        String prefix = "INSERT INTO Trip_igroup4 " + "(_id,_destination,_depart,_return,_id_customer,_id_TripProfile)";
+        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}')", trip.CustomerID.ToString(),trip.Destination, trip.DepartDate, trip.ReturnDate, "1");
+        String prefix = "INSERT INTO Trip_igroup4 " + "(_id_customer,_destination,_depart,_return,_id_TripProfile)";
         command = prefix + sb.ToString();
 
         return command;

@@ -157,18 +157,23 @@
             let customer_id = id_customer;
             let destination = $('#destination').val();
             let departure = $('#departure').val();
-            let landing = $('#landing').val();
+            let returnDate = $('#return').val();
 
 
             newTrip = {
-                "IDcustomer": customer_id,
                 "Destination": destination,
-                "Departure": departure,
-                "Landing": landing,
+                "DepartDate": departure,
+                "ReturnDate": returnDate,
+                "CustomerID": customer_id,
             }
-
-            ajaxCall("POST", "../../../api/Customer", JSON.stringify(newTrip), POSTsuccessNewTrip, POSTerrorNewTrip);
+            ajaxCall("POST", "../../../api/Trip", JSON.stringify(newTrip), POSTsuccessNewTrip, POSTerrorNewTrip);        
             return false;
+        }
+
+        function clearFields() {
+            $('#destination').val("");
+            $('#departure').val("");
+            $('#return').val("");
         }
 
         function POSTsuccessNewTrip(num) {
@@ -177,6 +182,7 @@
             else
                 swal("שגיאה", "טיול לא נוסף", "error");
             clearFields();
+            closeForm();
         }
 
         function POSTerrorNewTrip(err) {
@@ -463,11 +469,11 @@
                                     <strong>טיסה הלוך</strong>
                                 </label>
                                 <input type="date" class="form-control" id="departure" placeholder="dd/mm/yyyy" required />
-                                <label for="landing">
+                                <label for="return">
                                     <strong>טיסה חזור</strong>
                                 </label>
-                                <input type="date" class="form-control" id="landing" placeholder="dd/mm/yyyy" required />
-                                <button type="submit" class="btn" onclick="addTrip()">אישור</button>
+                                <input type="date" class="form-control" id="return" placeholder="dd/mm/yyyy" required />
+                                <button type="button" class="btn" onclick="addTrip()">אישור</button>
                                 <button type="button" class="btn cancel" onclick="closeForm()">ביטול</button>
                             </form>
                         </div>
