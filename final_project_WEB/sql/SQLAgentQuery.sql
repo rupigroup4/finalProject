@@ -9,9 +9,10 @@ create table Agent_igroup4 (
 	primary key (AgentID)
 );
 
-
-
 select * from Agent_igroup4
+
+
+
 
 drop table Agent_igroup4
 
