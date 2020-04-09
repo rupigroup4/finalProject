@@ -17,6 +17,14 @@ namespace final_project_WEB.Controllers
             return agent.Read_agent();
         }
 
+        // GET api/<controller>/5
+
+        public string Get(string id)
+        {
+            Agent agent = new Agent();
+            return agent.Get_Agentname(id);
+        }
+
         [HttpGet]
         [Route("api/Agent/email_list")]
         public List<string> GET_Email_list()
@@ -30,11 +38,7 @@ namespace final_project_WEB.Controllers
             return agent.insert_agent(agent);
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
+      
 
         // POST api/<controller>
         //public void Post([FromBody]string value)

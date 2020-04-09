@@ -43,6 +43,12 @@ namespace final_project_WEB.Models
             return dbs.Read_agent();
         }
 
+        public string Get_Agentname(string id)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.Get_Agentname(id);
+        }
+
         public int insert_agent(Agent agent)
         {
             DBservices dbs = new DBservices();

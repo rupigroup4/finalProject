@@ -198,6 +198,44 @@ public class DBservices
         }
     }
 
+    public string Get_Agentname(string id_agent)
+    {
+        var name_agent="";
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "select * from Agent_igroup4 where AgentID='"+ id_agent + "'";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                name_agent = (string)dr["firstName"];
+            }
+
+            return name_agent;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+
     public List<string> Read_Customer_Email_list()
     {
         List<string> Email_list = new List<string>();
