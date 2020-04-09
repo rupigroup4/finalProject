@@ -17,17 +17,18 @@
             $.get(url).done(successCB);
             $.get(url).fail(errorCB);
         
-
         });
 
 
         function successCB(data) {
             str = "";
+            parent = "";
             arr_data = data.results;
             //console.log(data.results);
             for (var i = 0; i < 427; i++) {
                 str += "id: " + data.results[i].id + " name:" + data.results[i].name;
-                str += "<button id='"+i+"' onclick='add_Tag("+i+")'> add </button> </br>";
+                str += "<button id='" + i + "' onclick='add_Tag(" + i + ")'> add </button> </br>";
+                parent += data.results[i].parents[0] + " ";
             }
             document.getElementById('ph').innerHTML = str;
         }
