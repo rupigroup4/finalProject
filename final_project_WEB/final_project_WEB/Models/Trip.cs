@@ -16,7 +16,6 @@ namespace final_project_WEB.Models
 
         public Trip() { }
 
-
         public Trip(int tripID, string destination, string departDate, string returnDate, int customerID, int tripProfileID)
         {
             TripID = tripID;
@@ -41,5 +40,6 @@ namespace final_project_WEB.Models
             int addedToTripList = dbs.insert_trip(trip);
             return addedToTripList;
         }
+
     }
 }
