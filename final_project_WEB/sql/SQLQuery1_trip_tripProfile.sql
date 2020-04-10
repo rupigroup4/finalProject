@@ -21,3 +21,4 @@ create table Trip_igroup4 (
 select * from Trip_igroup4
 drop table Trip_igroup4
 
+select * from countryCode_igroup4
