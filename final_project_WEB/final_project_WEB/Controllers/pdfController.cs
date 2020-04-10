@@ -28,9 +28,6 @@ namespace final_project_WEB.Controllers
                 {
                     HttpPostedFile httpPostedFile = httpContext.Request.Files[i];
 
-                    // this is an example of how you can extract addional values from the Ajax call
-                    string name = httpContext.Request.Form["user"];
-
                     if (httpPostedFile != null)
                     {
                         // Construct file save path  
