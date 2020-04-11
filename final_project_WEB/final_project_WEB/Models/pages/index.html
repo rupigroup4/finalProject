@@ -24,9 +24,10 @@
     <script>
         $(document).ready(function () {
             setInterval(Check_new_message, 10000);
+            Agent_ID = localStorage.getItem('AgentID');
+
             ajaxCall("GET", "../../api/Customer", "", successCustomer_list, errorCustomer_list)
 
-            Agent_ID = localStorage.getItem('AgentID');
             ajaxCall("GET", "../../api/Agent?id=" + '2', "", successAgent_name, errorAgent_name)
 
             $('#upload').click(function () {
