@@ -23,7 +23,7 @@
     <link rel="shortcut icon" href="../../images/favicon.png" />
     <script>
         $(document).ready(function () {
-            setInterval(Check_new_message, 3000);//1800000 שניות בחצי שעה
+            setInterval(Check_new_message, 10000);
             ajaxCall("GET", "../../api/Customer", "", successCustomer_list, errorCustomer_list)
 
             Agent_ID = localStorage.getItem('AgentID');
