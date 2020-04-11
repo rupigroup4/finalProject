@@ -59,7 +59,7 @@ namespace final_project_WEB.Models
         public List<string> Read_Email_list()
         {
             DBservices dbs = new DBservices();
-            return dbs.Read_Email_list();
+            return dbs.Read_Agent_Email_list();
         }
     }
 }

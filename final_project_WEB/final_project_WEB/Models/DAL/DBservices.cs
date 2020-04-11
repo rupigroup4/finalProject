@@ -124,6 +124,18 @@ public class DBservices
 
     }
 
+    private String BuildInsertCommand(Agent agent)
+    {
+        String command;
+
+        StringBuilder sb = new StringBuilder();
+        // use a string builder to create the dynamic string
+        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}')", agent.FirstName, agent.SureName, agent.Email , agent.Password, agent.PhoneNumber, agent.AgencyName);
+        String prefix = "INSERT INTO Agent_igroup4 " + "(firstName,sureName,email,password1,phoneNumber,agencyName)";
+        command = prefix + sb.ToString();
+
+        return command;
+    }
     public int insert_trip(Trip trip)
     {
         SqlConnection con;
@@ -178,19 +190,96 @@ public class DBservices
         return command;
     }
 
+    public int Update_status(string stat, int RequestID)
+    {
 
-    private String BuildInsertCommand(Agent agent)
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String rStr = BuildUpdateCommand(stat, RequestID);      // helper method to build the insert string
+
+        cmd = CreateCommand(rStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildUpdateCommand(string stat, int RequestID)
     {
         String command;
-
-        StringBuilder sb = new StringBuilder();
-        // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}')", agent.FirstName, agent.SureName, agent.Email , agent.Password, agent.PhoneNumber, agent.AgencyName);
-        String prefix = "INSERT INTO Agent_igroup4 " + "(firstName,sureName,email,password1,phoneNumber,agencyName)";
-        command = prefix + sb.ToString();
-
+        command = "UPDATE Request_igroup4 SET _status = '" + stat + "' WHERE requestID = " + RequestID.ToString();
         return command;
     }
+
+
+    public int getCountRequest()
+    {
+        var CountRequest = 0;
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT COUNT(_requestID) as count_ FROM Request_igroup4 where _status='new'";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                CountRequest = Convert.ToInt32(dr["count_"]);
+            }
+
+            return CountRequest;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+
+  
 
     private SqlCommand CreateCommand(String CommandSTR, SqlConnection con)
     {
@@ -207,6 +296,8 @@ public class DBservices
 
         return cmd;
     }
+
+
 
     public List<Customer> Read_customers()
     {
@@ -289,7 +380,6 @@ public class DBservices
 
         }
     }
-
 
     public List<string> Read_Customer_Email_list()
     {
@@ -374,7 +464,7 @@ public class DBservices
         }
     }
 
-    public List<string> Read_Email_list()
+    public List<string> Read_Agent_Email_list()
     {
         List<string> Email_list = new List<string>();
         string Email;
