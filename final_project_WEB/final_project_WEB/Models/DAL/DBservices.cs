@@ -76,7 +76,7 @@ public class DBservices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}', '{7}','{8}')", customer.FirstName, customer.SureName, customer.PhoneNumber, customer.Gender.ToString(), customer.BirthDay.ToString(), customer.Email, "" ,customer.JoinDate, 1);
+        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}', '{7}','{8}')", customer.FirstName, customer.SureName, customer.PhoneNumber, customer.Gender.ToString(), customer.BirthDay.ToString(), customer.Email, "" ,customer.JoinDate, customer.AgentID);
         String prefix = "INSERT INTO Customer_igroup4 " + "(firstName,sureName,phoneNumber,gender,birthday,email,img,joinDate,AgentID)";
         command = prefix + sb.ToString();
 
@@ -308,7 +308,7 @@ public class DBservices
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "SELECT * FROM Customer_igroup4";
+            String selectSTR = "SELECT * FROM Customer_igroup4"; // להוסיף where idAgent = למה שנשלח
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader

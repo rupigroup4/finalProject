@@ -59,6 +59,7 @@
             let day = dateObj.getUTCDate();
             let year = dateObj.getUTCFullYear();
             let joinDate = year + "-" + month + "-" + day;
+            let agentID = localStorage.getItem('AgentID');
 
             newCustomer = {
                 "FirstName": firstName,
@@ -67,7 +68,8 @@
                 "Gender": gender,
                 "BirthDay": birthDay,
                 "Email": email,
-                "JoinDate": joinDate
+                "JoinDate": joinDate,
+                "AgentID": agentID
             }
 
             ajaxCall("POST", "../../../api/Customer", JSON.stringify(newCustomer), POSTsuccessNewCustomer, POSTerrorNewCustomer);
@@ -378,15 +380,15 @@
                                     <form class="forms-sample" id="form_add_customer">
                                         <div class="form-group">
                                             <label for="exampleInputName1">שם פרטי</label>
-                                            <input type="text" class="form-control" id="firstName" placeholder="" required>
+                                            <input type="text" class="form-control" id="firstName" placeholder="" required value="שמשון">
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputName1">שם משפחה</label>
-                                            <input type="text" class="form-control" id="sureName" placeholder="" required>
+                                            <input type="text" class="form-control" id="sureName" placeholder="" required value="הגיבור">
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputName1">טלפון</label>
-                                            <input type="text" class="form-control" id="phoneNumber" placeholder="" required pattern="05[0-9]{8}">
+                                            <input type="text" class="form-control" id="phoneNumber" placeholder="" required pattern="05[0-9]{8}" value="0546872213">
                                         </div>
                                         <div class="form-group">
                                             <label for="SelectGender">מגדר</label>
@@ -401,7 +403,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail3">אימייל</label>
-                                            <input type="email" class="form-control" id="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                                            <input type="email" class="form-control" id="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" value="shimsonH@walla.com">
                                         </div>
                                         <button type="submit" class="btn btn-primary mr-2">הוסף</button>
                                         <input type="reset" value="נקה הכל" class="btn btn-secondary">

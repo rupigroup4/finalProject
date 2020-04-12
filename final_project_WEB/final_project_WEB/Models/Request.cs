@@ -20,8 +20,8 @@ namespace final_project_WEB.Models
 
         public Request(int id, string request_dateTime, int numTickets, string status, string pdfFile, string order_date, int tripID, string attractionID)
         {
-            Id = id;
-            Request_dateTime = request_dateTime;
+           Id = id;
+           Request_dateTime = request_dateTime;
            NumTickets = numTickets;
            Status = status;
            PdfFile = pdfFile;

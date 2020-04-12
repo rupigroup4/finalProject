@@ -18,6 +18,7 @@ namespace final_project_WEB.Models
         private string email;
         private string img;
         private string joinDate;
+        private int agentID;
 
         public int Id { get {return id; }  set{ id = value; }}
         public string FirstName { get { return firstName; } set { firstName = value; } }
@@ -28,12 +29,14 @@ namespace final_project_WEB.Models
         public string Email { get { return email; } set { email = value; } }
         public string Img { get { return img; } set { img = value; } }
         public string JoinDate { get { return joinDate; } set { joinDate = value; } }
+        public int AgentID { get { return agentID; } set { agentID = value; } }
 
-       
+
+
 
         public Customer() { }
 
-        public Customer(int id, string firstName, string sureName, string phoneNumber, string gender, string birthDay, string email, string img, string joinDate)
+        public Customer(int id, string firstName, string sureName, string phoneNumber, string gender, string birthDay, string email, string img, string joinDate, int agentID)
         {
             Id = id;
             FirstName = firstName;
@@ -44,6 +47,7 @@ namespace final_project_WEB.Models
             Email = email;
             Img = img;
             JoinDate = joinDate;
+            AgentID = agentID;
         }
 
         public List<Customer> Read_customers()
