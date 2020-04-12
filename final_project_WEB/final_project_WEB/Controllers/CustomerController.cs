@@ -10,11 +10,11 @@ namespace final_project_WEB.Controllers
 {
     public class CustomerController : ApiController
     {
-        // GET api/<controller>
-        public List<Customer> Get()
+      
+        public List<Customer> Get(int Agent_ID)
         {
             Customer customer = new Customer();
-            return customer.Read_customers();
+            return customer.Read_customers(Agent_ID);
         }
 
         [HttpGet]
@@ -22,7 +22,7 @@ namespace final_project_WEB.Controllers
         public List<string> GET_Email_list()
         {
             Customer customer = new Customer();
-            return customer.Read_Email_list();
+            return customer.Read_Customer_Email_list();
         }
 
         public int Post([FromBody] Customer customer)
@@ -31,10 +31,10 @@ namespace final_project_WEB.Controllers
         }
 
         // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
         //////POST api/<controller>
         //public void Post([FromBody]string value)
@@ -47,8 +47,11 @@ namespace final_project_WEB.Controllers
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public int Delete(int customerID)
         {
+            Customer customer = new Customer();
+            return customer.Delete_customer(customerID);
+
         }
     }
 }

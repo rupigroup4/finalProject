@@ -50,10 +50,10 @@ namespace final_project_WEB.Models
             AgentID = agentID;
         }
 
-        public List<Customer> Read_customers()
+        public List<Customer> Read_customers(int Agent_ID)
         {
             DBservices dbs = new DBservices();
-            return dbs.Read_customers();
+            return dbs.Read_customers(Agent_ID);
         }
 
         public int insert_customer(Customer customer)
@@ -63,7 +63,19 @@ namespace final_project_WEB.Models
             return addedToCustomerList;
         }
 
+        public int Delete_customer(int customerID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.Delete_customer(customerID);
+        }
+
         public List<string> Read_Email_list()
+        {
+            DBservices dbs = new DBservices();
+            return dbs.Read_Customer_Email_list();
+        }
+
+        public List<string> Read_Customer_Email_list()
         {
             DBservices dbs = new DBservices();
             return dbs.Read_Customer_Email_list();

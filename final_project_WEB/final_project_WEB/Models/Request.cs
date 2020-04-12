@@ -48,10 +48,15 @@ namespace final_project_WEB.Models
             return numEffected;
         }
         
-        public int getCountRequest()
+        public int getCountNEWRequest(int Agent_ID)
         {
             DBservices dbs = new DBservices();
-            return dbs.getCountRequest(); ;
+            return dbs.getCountNEWRequest(Agent_ID); ;
+        }
+        public int getCountALLRequest(int Agent_ID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.getCountALLRequest(Agent_ID); ;
         }
     }
 }

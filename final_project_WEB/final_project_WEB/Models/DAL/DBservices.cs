@@ -241,7 +241,7 @@ public class DBservices
     }
 
 
-    public int getCountRequest()
+    public int getCountNEWRequest(int Agent_ID)
     {
         var CountRequest = 0;
         SqlConnection con = null;
@@ -250,7 +250,43 @@ public class DBservices
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "SELECT COUNT(_requestID) as count_ FROM Request_igroup4 where _status='new'";
+            String selectSTR = "SELECT  COUNT(requestID) as count_ FROM Request_igroup4 LEFT JOIN Trip_igroup4 ON Request_igroup4.TripID = Trip_igroup4._id LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where status_='new' AND Customer_igroup4.AgentID=" + Agent_ID;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                CountRequest = Convert.ToInt32(dr["count_"]);
+            }
+
+            return CountRequest;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+    public int getCountALLRequest(int Agent_ID)
+    {
+        var CountRequest = 0;
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT COUNT(requestID) as count_ FROM Request_igroup4 LEFT JOIN Trip_igroup4 ON Request_igroup4.TripID = Trip_igroup4._id LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where Customer_igroup4.AgentID=" + Agent_ID;
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -278,28 +314,61 @@ public class DBservices
         }
     }
 
-
-  
-
-    private SqlCommand CreateCommand(String CommandSTR, SqlConnection con)
+    public int Delete_customer(int customerID)
     {
 
-        SqlCommand cmd = new SqlCommand(); // create the command object
+        SqlConnection con;
+        SqlCommand cmd;
 
-        cmd.Connection = con;              // assign the connection to the command object
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
 
-        cmd.CommandText = CommandSTR;      // can be Select, Insert, Update, Delete 
+        String rStr = BuildDelete_CustomerCommand(customerID);      // helper method to build the insert string
 
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+        cmd = CreateCommand(rStr, con);             // create the command
 
-        cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
 
-        return cmd;
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildDelete_CustomerCommand(int customerID)
+    {
+        String command;
+        command = "DELETE FROM Customer_igroup4 WHERE CustomerID='"+ customerID+"'";//להוסיף פקודת מחיקה מהSQL
+        return command;
     }
 
 
 
-    public List<Customer> Read_customers()
+
+
+    public List<Customer> Read_customers(int Agent_ID)
     {
         List<Customer> customer_list = new List<Customer>();
         SqlConnection con = null;
@@ -308,7 +377,7 @@ public class DBservices
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "SELECT * FROM Customer_igroup4"; // להוסיף where idAgent = למה שנשלח
+            String selectSTR = "SELECT * FROM Customer_igroup4 where AgentID="+Agent_ID ;
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -324,6 +393,7 @@ public class DBservices
                 c.BirthDay = (string)dr["birthDay"];
                 c.Email = (string)dr["email"];
                 c.JoinDate = (string)dr["joinDate"];
+                c.AgentID = Convert.ToInt32(dr["AgentID"]);
                 customer_list.Add(c);
             }
 
@@ -502,7 +572,6 @@ public class DBservices
         }
     }
 
-
     public List<string> Read_City_list()
     {
         List<string> City_list = new List<string>();
@@ -540,4 +609,20 @@ public class DBservices
 
         }
     }
+    private SqlCommand CreateCommand(String CommandSTR, SqlConnection con)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = CommandSTR;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
+
+        return cmd;
+    }
+
 }

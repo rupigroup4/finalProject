@@ -21,14 +21,17 @@
     <link rel="shortcut icon" href="../../../images/favicon.png" />
     <!--style for customer list data table-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
 
 
     <script>
+        var Agent_ID = 0;
         $(document).ready(function () {
-            ajaxCall("GET", "../../../api/Customer", "", successCustomer_list, errorCustomer_list)
+            Agent_ID = localStorage.getItem('AgentID');
+            
+            ajaxCall("GET", "../../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
         });
-            function successCustomer_list(customers_list) {
+        function successCustomer_list(customers_list) {
                 try {
                     if (customers_list.length == 0)
                         swal("אין לקוחות במערכת !");
@@ -41,15 +44,12 @@
                             str += "<td>" + customers_list[i].BirthDay + "</td>";
                             str += "<td>" + customers_list[i].Email + "</td>";
                             str += "<td>" + customers_list[i].JoinDate + "</td>";
-                            str += "<td><button  id='" + customers_list[i].Id + "' type='button' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-danger btn-icon-text'>הוסף טיול";
-                            str += "  <i class='ti-plus btn-icon-prepend'></i> </button >";
-                            str += "<button type='button' onclick='editCustomer(" + customers_list[i].Id + ")' id='" + customers_list[i].Id + "' class='btn btn-info btn-icon-text'>ערוך לקוח";
-                            str += " <i class='ti-pencil btn-icon-append' ></i> </button > ";
-                            str += "<button type='button' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-warning btn-icon-text'>שלח הודעה";
-                            str += "<i class='ti-email btn-icon-prepend'></i> </button ></td > </tr >";
 
-                            //"<td> <button id='button_' type='button' class='btn btn - danger btn - icon - text'> הוסף טיול < i class='ti-plus btn-icon-prepend' ></i ></button ></td> </tr>";
-                            //str += "<td> <input type='button' class='button1' value='צפה בלקוח'> </td> </tr>";
+                            str += " <td> <button type='button' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
+                            str += "<button type='button' id='" + customers_list[i].Id + "' onclick='editCustomer(" + customers_list[i].Id + ")' class='btn btn-primary btn-rounded btn-icon'><i class='ti-pencil'></i></button>"
+                            str += "<button type='button' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-email' ></i></button>";
+                            str += "<button type='button' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
+
                         }
                         document.getElementById("CustomerPH").innerHTML = str;
 
@@ -61,35 +61,53 @@
 
             }
 
-            function errorCustomer_list(err) {
-                alert(err);
+        function errorCustomer_list(err) {
+            alert("errorCustomer_list");
 
+        }
+
+        function deleteC(id) {
+            ajaxCall("DELETE", "../../../api/Customer?customerID=" + id, "", successdeleteCustomer, errordeleteCustomer)
+        }
+
+        function successdeleteCustomer(num) {
+            if (num == 1) {
+                swal("נמחק בהצלחה", "הלקוח נמחק מהמערכת", "success");
+                ajaxCall("GET", "../../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
             }
+            else {
+                swal("הלקוח לא נמחק", "ללקוח זה קיים טיול זמין במערכת", "error");// בהמשך לבדוק האם הטיל עבר 
+            }
+            clearFields();
+        }
+
+        function errordeleteCustomer(err) {
+            alert("errordeleteCustomer");
+        }
 
             function showPopUp(id) {
                 document.getElementById("loginPopup").style.display = "block";
+                document.getElementById("PHaddtrip").innerHTML = "הזן פרטי טיסה";
+
                 id_customer = id;
             }
             function closeForm() {
                 document.getElementById("loginPopup").style.display = "none";
             }
+        $('#form_addtrip').submit(function () {
+            let destination = $('#destination').val();
+            let departure = $('#departure').val();
+            let returnDate = $('#return').val();
 
-            function addTrip() {
-                let customer_id = id_customer;
-                let destination = $('#destination').val();
-                let departure = $('#departure').val();
-                let returnDate = $('#return').val();
-
-
-                newTrip = {
-                    "Destination": destination,
-                    "DepartDate": departure,
-                    "ReturnDate": returnDate,
-                    "CustomerID": customer_id,
-                }
-                ajaxCall("POST", "../../../api/Trip", JSON.stringify(newTrip), POSTsuccessNewTrip, POSTerrorNewTrip);
-                return false;
+            newTrip = {
+                "Destination": destination,
+                "DepartDate": departure,
+                "ReturnDate": returnDate,
+                "CustomerID": id_customer,
             }
+            ajaxCall("POST", "../../../api/Trip", JSON.stringify(newTrip), POSTsuccessNewTrip, POSTerrorNewTrip);
+            return false;
+        });
 
             function clearFields() {
                 $('#destination').val("");
@@ -382,8 +400,8 @@
                 <footer class="footer">
                     <div class="form-popup" id="loginPopup">
                         <div id="popupForm">
-                            <form class="form-container" autocomplete="off">
-                                <h2>הזן פרטי טיסה</h2>
+                            <form class="form-container" autocomplete="off" id="form_addtrip">
+                                <h2 id="PHaddtrip"></h2>
                                 <label for="destination">
                                     <strong>יעד טיסה</strong>
                                 </label>
@@ -396,7 +414,7 @@
                                     <strong>טיסה חזור</strong>
                                 </label>
                                 <input type="date" class="form-control" id="return" placeholder="dd/mm/yyyy" required />
-                                <button type="button" class="btn" onclick="addTrip()">אישור</button>
+                                <button type="submit" class="btn" style="margin-top:10px">הוסף טיול</button>
                                 <button type="button" class="btn cancel" onclick="closeForm()">ביטול</button>
                             </form>
                         </div>
@@ -435,10 +453,22 @@
 
     <script>
         $(function () {
+            var availableTags = [
+                "roni",
+                "roni cohen",
+                "rona",
+                "ronina",
+                "Scala",
+                "Scheme"
+            ];
             $("#destination").autocomplete({
-                source: cityArr
+                source: availableTags
             });
+            
         });
+
+
+
     </script>
     <!-- endinject -->
     <!-- Custom js for this page-->

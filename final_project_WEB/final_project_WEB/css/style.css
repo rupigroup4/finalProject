@@ -21509,6 +21509,7 @@ body {
     top: 5%;
     transform: translate(-45%,5%);
     border: 2px solid #666;
+    border-radius: 12px;
     z-index: 9;
     background-color: white;
     margin-top: 150px;
@@ -21518,6 +21519,7 @@ body {
     max-width: 300px;
     padding: 20px;
     background-color: #fff;
+    border-radius: 12px;
 }
     /* Full-width for input fields */
     .form-container input[type=text], .form-container input[type=password] {
@@ -21534,7 +21536,7 @@ body {
         }
     /* Style submit/login button */
     .form-container .btn {
-        background-color: #8ebf42;
+        background-color: #71c016;
         color: #fff;
         padding: 12px 20px;
         border: none;
@@ -21545,9 +21547,16 @@ body {
     }
     /* Style cancel button */
     .form-container .cancel {
-        background-color: #cc0000;
+        background-color: #ff4747;
     }
     /* Hover effects for buttons */
     .form-container .btn:hover, .open-button:hover {
         opacity: 1;
     }
+#formaddtrip {
+    font-family: Calibri;
+}
+
+/*    background-color: #ff4747;
+    71c016
+*/

@@ -19,11 +19,19 @@ namespace final_project_WEB.Controllers
 
         // GET api/<controller>/5
         [HttpGet]
-        [Route("api/Request/CountRequest")]
-        public int GetCount()
+        [Route("api/Request/CountNEWRequest")]
+        public int GetCountNEWRequest(int Agent_ID)
         {
             Request request = new Request();
-            return request.getCountRequest();
+            return request.getCountNEWRequest(Agent_ID);
+        }
+
+        [HttpGet]
+        [Route("api/Request/CountALLRequest")]
+        public int GetCountALLRequest(int Agent_ID)
+        {
+            Request request = new Request();
+            return request.getCountALLRequest(Agent_ID);
         }
 
         // POST api/<controller>

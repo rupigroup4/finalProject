@@ -22,13 +22,15 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="../../images/favicon.png" />
     <script>
+        var Agent_ID = 0;
         $(document).ready(function () {
             setInterval(Check_new_message, 10000);
             Agent_ID = localStorage.getItem('AgentID');
 
-            ajaxCall("GET", "../../api/Customer", "", successCustomer_list, errorCustomer_list)
+            ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
+            ajaxCall("GET", "../../api/Request/CountALLRequest?Agent_ID=" + Agent_ID, "", successCountALLRequest, errorCountALLRequest);
 
-            ajaxCall("GET", "../../api/Agent?id=" + '2', "", successAgent_name, errorAgent_name)
+            ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
 
             $('#upload').click(function () {
                 var data = new FormData();
@@ -56,6 +58,14 @@
 
         });
 
+        function successCountALLRequest(count) {
+            document.getElementById("Request_numPH").innerHTML = count;
+        }
+
+        function errorCountALLRequest(err) {
+            alert("errorCountALLRequest");
+        }
+
         function uploadPdfSuccess(dataPath) {
             var str = `http://proj.ruppin.ac.il/igroup4/${dataPath}`;
 
@@ -64,10 +74,10 @@
         function uploadPdfError(err) { console.log(err) }
 
         function Check_new_message() {
-            ajaxCall("GET", "../../api/Request/CountRequest", "", successCountRequest, errorCountRequest)
+            ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
         }
 
-        function successCountRequest(count) {
+        function successCountNEWRequest(count) {
             if (count) {
                 document.getElementById("newRequest").style.display = "block";
                 return;
@@ -75,8 +85,8 @@
             document.getElementById("newRequest").style.display = "none";
         }
 
-        function errorCountRequest(err) {
-            alert("error");
+        function errorCountNEWRequest(err) {
+            alert("errorCountNEWRequest");
         }
 
         function successAgent_name(name) {
@@ -85,7 +95,7 @@
         }
 
         function errorAgent_name(err) {
-            alert("error");
+            alert("errorAgent_name");
         }
 
         function Moveto_login() {
@@ -110,7 +120,7 @@
         }
 
         function errorCustomer_list(err) {
-            alert(err);
+            alert("errorCustomer_list");
 
         }
     </script>
@@ -349,7 +359,7 @@
                                 <div class="card-body">
                                     <p class="card-title text-md-center text-xl-right">הזמנות</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">3</h3>
+                                        <h3 id="Request_numPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">3</h3>
                                         <i class="ti-files icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
                                     <p class="mb-0 mt-2 text-success">23.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>

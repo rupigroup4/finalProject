@@ -19,6 +19,8 @@ ALTER TABLE Customer_igroup4
 ADD pnToken nvarchar(200) ;
 
 select * from Customer_igroup4
+DELETE FROM Customer_igroup4 WHERE CustomerID='1003';
+
 
 Alter table Customer_igroup4
 Alter column birthday varchar(10)
