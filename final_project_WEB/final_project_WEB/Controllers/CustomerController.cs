@@ -25,6 +25,15 @@ namespace final_project_WEB.Controllers
             return customer.Read_Customer_Email_list();
         }
 
+        [HttpGet]
+        [Route("api/Customer/ShowCustomerRequest")]
+        public List<Customer> GetShowALLCustomerRequest(int Agent_ID)
+        {
+            Customer customers = new Customer();
+            return customers.getShowALLCustomerRequest(Agent_ID);
+        }
+
+
         public int Post([FromBody] Customer customer)
         {
             return customer.insert_customer(customer);

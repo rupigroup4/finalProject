@@ -80,5 +80,11 @@ namespace final_project_WEB.Models
             DBservices dbs = new DBservices();
             return dbs.Read_Customer_Email_list();
         }
+
+        public List<Customer> getShowALLCustomerRequest(int Agent_ID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.getShowALLCustomerRequest(Agent_ID); ;
+        }
     }
 }

@@ -450,19 +450,10 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="../../../Scripts/city.js"></script>
-
     <script>
         $(function () {
-            var availableTags = [
-                "roni",
-                "roni cohen",
-                "rona",
-                "ronina",
-                "Scala",
-                "Scheme"
-            ];
             $("#destination").autocomplete({
-                source: availableTags
+                source: cityName
             });
             
         });

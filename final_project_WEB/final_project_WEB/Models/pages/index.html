@@ -28,7 +28,10 @@
             Agent_ID = localStorage.getItem('AgentID');
 
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
+
             ajaxCall("GET", "../../api/Request/CountALLRequest?Agent_ID=" + Agent_ID, "", successCountALLRequest, errorCountALLRequest);
+
+            //ajaxCall("GET", "../../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
 
             ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
 
@@ -123,6 +126,34 @@
             alert("errorCustomer_list");
 
         }
+
+        function successShowALLRequest(Request_list) {
+            if (Request_list) {
+                Request_list_Save = Request_list;
+                ajaxCall("GET", "../../api/Customer/ShowCustomerRequest?Agent_ID=" + Agent_ID + "", successCustomer_Request, errorCustomer_Request); 
+            }
+        }
+        function errorShowALLRequest(err) {
+            alert("errorRequest_list");
+
+        }
+
+        function successCustomer_Request(CustomerWithRequest) {
+            strRequest = "";
+            for (var i = 0; i < Request_list_Save.length; i++) {
+                strRequest += "<tr><td>" + CustomerWithRequest[i].FirstName + " " + CustomerWithRequest[i].SureName + "</td>";
+                strRequest += "<td>" + Request_list_Save[i].Id + "</td>";
+                strRequest += "<td><label class='badge badge-danger'>" + Request_list_Save[i].Status + "</label></td></tr>";
+            }
+            document.getElementById("requestPH").innerHTML = strRequest;
+        }
+
+        function errorCustomer_Request(err) {
+            alert("errorCustomerRequest_list");
+        }
+
+        
+
     </script>
 </head>
 
@@ -408,15 +439,15 @@
                                                         <th>Status</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                    <tr>
+                                                <tbody id="requestPH">
+                                                    <!--<tr>
                                                         <td>
                                                             <input id="chooseFile" type="file" />
                                                             <input type="button" id="upload" value="שמור תמונה"  />
                                                         </td>
                                                         <td>Madame Tussauds</td>
                                                         <td><label class="badge badge-danger">Pending</label></td>
-                                                    </tr>
+                                                    </tr>-->
                                                 </tbody>
                                             </table>
                                         </div>

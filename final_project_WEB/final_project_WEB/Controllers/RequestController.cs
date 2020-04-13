@@ -34,6 +34,14 @@ namespace final_project_WEB.Controllers
             return request.getCountALLRequest(Agent_ID);
         }
 
+        [HttpGet]
+        [Route("api/Request/ShowAllRequest")]
+        public List<Request> GetShowALLRequest(int Agent_ID)
+        {
+            Request request = new Request();
+            return request.getShowALLRequest(Agent_ID);
+        }
+
         // POST api/<controller>
         public void Post([FromBody]string value)
         {
