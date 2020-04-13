@@ -9,8 +9,6 @@ create table Request_igroup4 (
 	foreign key (TripID) REFERENCES Trip_igroup4(_id)
 );
 
-drop table Request_igroup4;
-
 select * from Request_igroup4;
 
 

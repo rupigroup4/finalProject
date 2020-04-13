@@ -35,7 +35,7 @@
 
             ajaxCall("GET", "../../api/Request/CountALLRequest?Agent_ID=" + Agent_ID, "", successCountALLRequest, errorCountALLRequest);
 
-            //ajaxCall("GET", "../../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
+            ajaxCall("GET", "../../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
 
             ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
 
@@ -135,7 +135,7 @@
         function successShowALLRequest(Request_list) {
             if (Request_list) {
                 Request_list_Save = Request_list;
-                ajaxCall("GET", "../../api/Customer/ShowCustomerRequest?Agent_ID=" + Agent_ID + "", successCustomer_Request, errorCustomer_Request); 
+                ajaxCall("GET", "../../api/Customer/ShowCustomerRequest/" + Agent_ID ,"", successCustomer_Request, errorCustomer_Request); 
             }
         }
         function errorShowALLRequest(err) {
@@ -145,10 +145,17 @@
 
         function successCustomer_Request(CustomerWithRequest) {
             strRequest = "";
-            for (var i = 0; i < Request_list_Save.length; i++) {
+            for (var i = 0; i < CustomerWithRequest.length; i++) {
                 strRequest += "<tr><td>" + CustomerWithRequest[i].FirstName + " " + CustomerWithRequest[i].SureName + "</td>";
                 strRequest += "<td>" + Request_list_Save[i].Id + "</td>";
-                strRequest += "<td><label class='badge badge-danger'>" + Request_list_Save[i].Status + "</label></td></tr>";
+                if (Request_list_Save[i].Status == 'new') {
+                    strRequest += "<td><label class='badge badge-success'>" + Request_list_Save[i].Status + "</label></td></tr>";
+                } else if (Request_list_Save[i].Status == 'in process') {
+                    strRequest += "<td><label class='badge badge-warning'>" + Request_list_Save[i].Status + "</label></td></tr>";
+                }
+                else {
+                    strRequest += "<td><label class='badge badge-danger'>" + Request_list_Save[i].Status + "</label></td></tr>";
+                }
             }
             document.getElementById("requestPH").innerHTML = strRequest;
         }

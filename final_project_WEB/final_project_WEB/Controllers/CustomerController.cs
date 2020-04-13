@@ -26,11 +26,11 @@ namespace final_project_WEB.Controllers
         }
 
         [HttpGet]
-        [Route("api/Customer/ShowCustomerRequest")]
+        [Route("api/Customer/ShowCustomerRequest/{Agent_ID}")]
         public List<Customer> GetShowALLCustomerRequest(int Agent_ID)
         {
-            Customer customers = new Customer();
-            return customers.getShowALLCustomerRequest(Agent_ID);
+            Customer customer = new Customer();
+            return customer.getShowALLCustomerRequest(Agent_ID);
         }
 
 

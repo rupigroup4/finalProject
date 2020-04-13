@@ -42,7 +42,7 @@
                             str += '<td> <div class="progress"><div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div> </div> </td>';
                             if (trip_list[i].Pdf_Flightticket == "") {
                                 let dataTrip = "data-tripId='" + trip_list[i].TripID + "'";
-                                str += '<td><input id = "chooseFile" type = "file" /><button id="upload" class="savePdf" ' + dataTrip + '>שמור קובץ</button> </td >';
+                                str += '<td><input id = "chooseFile' + trip_list[i].TripID + '" type = "file" /><button id="upload" class="savePdf" ' + dataTrip + '>שמור קובץ</button> </td >';
                             }
 
                             str += "<td>" + trip_list[i].TripProfileID + "</td></tr>";
@@ -63,7 +63,7 @@
             $(document).on("click", ".savePdf", function () {
                 selectedTrip = this.getAttribute('data-tripId'); //זה מחזיק את ה TRIPiD
                 var data = new FormData();
-                var files = $("#chooseFile").get(0).files;
+                var files = $("#chooseFile" + selectedTrip).get(0).files;
                 // Add the uploaded file to the form data collection
                 if (files.length > 0) {
                     for (f = 0; f < files.length; f++) {
@@ -86,10 +86,11 @@
             })
 
             function SavePdfSuccess(dataPath) {
-                let arr = dataPath[0].split('!')
-                ajaxCall("POST", "../../../api/Trip/Add_pdf_Flightticket?id="+arr[0], arr[1], POSTsuccessAddPDF, POSTerrorAddPDF)
+                let arr = dataPath[0].split('!');
+                /*encodeURIComponent(arr[1]);*/ //check if needed
+                ajaxCall("POST", "/api/Trip/Add_pdf_Flightticket?id=" + arr[0] + "&pdf=" + arr[1], {}, POSTsuccessAddPDF, POSTerrorAddPDF);
 
-                //להעלות את הניתוב לשרת ולשלוח בסוף נוטיפיקציה
+
             }
 
             function SavedPdfError(err) {
