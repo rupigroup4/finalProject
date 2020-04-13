@@ -11,22 +11,25 @@ namespace final_project_WEB.Controllers
     public class TripController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<string> Get()
+        public List<Trip> Get(int Agent_ID)
         {
-            return new string[] { "value1", "value2" };
+            Trip trip = new Trip();
+            return trip.Read_AllTrips(Agent_ID);
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
+        
 
         // POST api/<controller>
-        public int Post([FromBody]Trip trip)
+        //public int Post([FromBody]Trip trip)
+        //{
+        //    return trip.insert_trip(trip);
+        //}
+        [HttpPost]
+        [Route("api/Trip/Add_pdf_Flightticket")]
+        public int Post(string id, string pdf)
         {
-            return trip.insert_trip(trip);
-
+            Trip trip = new Trip();
+            return trip.Add_pdf_Flightticket( id, pdf);
         }
 
         // PUT api/<controller>/5

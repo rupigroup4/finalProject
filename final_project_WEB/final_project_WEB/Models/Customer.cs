@@ -59,8 +59,8 @@ namespace final_project_WEB.Models
         public int insert_customer(Customer customer)
         {
             DBservices dbs = new DBservices();
-            int addedToCustomerList = dbs.insert_customer(customer);
-            return addedToCustomerList;
+            return dbs.insert_customer(customer);
+             
         }
 
         public int Delete_customer(int customerID)

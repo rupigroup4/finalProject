@@ -190,7 +190,7 @@ public class DBservices
         return command;
     }
 
-    public int Update_status(string stat, int RequestID)
+    public int Add_pdf_Flightticket(string id, string pdf)
     {
 
         SqlConnection con;
@@ -206,7 +206,7 @@ public class DBservices
             throw (ex);
         }
 
-        String rStr = BuildUpdateCommand(stat, RequestID);      // helper method to build the insert string
+        String rStr = "update Trip_igroup4 set pdf_Flightticket ='" + pdf + "' where _id = '" + id + "'";      // helper method to build the insert string
 
         cmd = CreateCommand(rStr, con);             // create the command
 
@@ -233,12 +233,56 @@ public class DBservices
 
     }
 
-    private String BuildUpdateCommand(string stat, int RequestID)
+    public int Update_status(string stat, int RequestID)
     {
-        String command;
-        command = "UPDATE Request_igroup4 SET _status = '" + stat + "' WHERE requestID = " + RequestID.ToString();
-        return command;
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String command = "UPDATE Request_igroup4 SET _status = '" + stat + "' WHERE requestID = " + RequestID.ToString();
+
+
+        cmd = CreateCommand(command, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
     }
+
+    //private String BuildUpdateCommand(string stat, int RequestID)
+    //{
+    //    String command;
+    //    command = "UPDATE Request_igroup4 SET _status = '" + stat + "' WHERE requestID = " + RequestID.ToString();
+    //    return command;
+    //}
 
 
     public int getCountNEWRequest(int Agent_ID)
@@ -484,6 +528,51 @@ public class DBservices
             }
 
             return customer_list;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+    public List<Trip> Read_AllTrips(int Agent_ID)
+    {
+        List<Trip> trip_list = new List<Trip>();
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT * FROM Trip_igroup4 LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where Agent_igroup4.AgentID=" + Agent_ID;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                Trip t = new Trip();
+                t.TripID = Convert.ToInt32(dr["_id"]);
+                t.CustomerID = Convert.ToInt32(dr["_id_customer"]);
+                t.Destination = (string)dr["_destination"];
+                t.DepartDate = (string)dr["_depart"];
+                t.ReturnDate = (string)dr["_return"];
+                t.TripProfileID = 1;//Convert.ToInt32(dr["_id_TripProfile"]);
+                t.Pdf_Flightticket = "";//(string)dr["pdf_Flightticket"];
+                trip_list.Add(t);
+            }
+
+            return trip_list;
         }
         catch (Exception ex)
         {

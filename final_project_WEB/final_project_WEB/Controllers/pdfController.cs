@@ -27,7 +27,7 @@ namespace final_project_WEB.Controllers
                 for (int i = 0; i < httpContext.Request.Files.Count; i++)
                 {
                     HttpPostedFile httpPostedFile = httpContext.Request.Files[i];
-
+                    string tripId = httpContext.Request.Files.AllKeys[0];
                     if (httpPostedFile != null)
                     {
                         // Construct file save path  
@@ -36,7 +36,7 @@ namespace final_project_WEB.Controllers
                         var fileSavePath = Path.Combine(HostingEnvironment.MapPath("~/pdfFiles"), fname);
                         // Save the uploaded file  
                         httpPostedFile.SaveAs(fileSavePath);
-                        imageLinks.Add("pdfFiles/" + fname);
+                        imageLinks.Add(tripId+"!"+"pdfFiles/" + fname);
                     }
                 }
             }

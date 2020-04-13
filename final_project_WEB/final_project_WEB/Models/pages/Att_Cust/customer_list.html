@@ -25,8 +25,9 @@
 
 
     <script>
-        var Agent_ID = 0;
-        $(document).ready(function () {
+        if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
+            window.location.href = "Login/login-2.html";
+        }        $(document).ready(function () {
             Agent_ID = localStorage.getItem('AgentID');
             
             ajaxCall("GET", "../../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
@@ -397,7 +398,7 @@
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:../../partials/_footer.html -->
-                <footer class="footer">
+                <footer class="footer dropdown">
                     <div class="form-popup" id="loginPopup">
                         <div id="popupForm">
                             <form class="form-container" autocomplete="off" id="form_addtrip">
