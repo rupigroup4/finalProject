@@ -24,3 +24,8 @@ SELECT COUNT(requestID) as count_ FROM Request_igroup4 where status_='new'
 drop table Trip_igroup4
 
 select * from countryCode_igroup4
+
+SELECT * FROM Trip_igroup4 LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where Agent_igroup4.AgentID=1
+ALTER TABLE Trip_igroup4
+ADD pdf_Flightticket varchar(max);
+
