@@ -34,9 +34,12 @@
             let city = $('#city').val();
             let MainCategory = $('#ancestor_lable').val();
             //url = "https://www.triposo.com/api/20200405/tag.json?location_id=" + city + "&ancestor_label=" + MainCategory + "&order_by=-score&fields=name";
-            url = "https://www.triposo.com/api/20200405/tag.json?location_id=Amsterdam&ancestor_label=do&order_by=-score&fields=name"
+            url = "https://www.triposo.com/api/20190906/tag.json?location_id=Amsterdam&ancestor_label=do&order_by=-score&fields=name"
             $.get(url).done(successCB);
             $.get(url).fail(errorCB);
+
+            //ajaxCall("GET", url, "", successCB, errorCB);
+
         }
 
         function successCB(data) {
