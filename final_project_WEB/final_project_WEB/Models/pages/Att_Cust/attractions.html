@@ -71,7 +71,7 @@
                 str_buildAtt += '<p class="card-description"><button onclick="promotionAtt('+arr_data[i].id+')" type="button" class="btn btn-success btn-sm">קדם</button>';
                 str_buildAtt += '<button type="button" onclick="remove_promotionAtt(' + arr_data[i].id +')" class="btn btn-danger btn-sm">הסר קידום</button></p>';
                 str_buildAtt += '<p class="card-description">ציון: ' + (arr_data[i].score).toFixed(2) + '</p>';
-                str_buildAtt += '<div class="row"><div class="col-md-6 overflow1" ><p>' + arr_data[i].intro + '</p><br/></div>';
+                str_buildAtt += '<div class="row"><div class="col-md-6 overflow1" >' + arr_data[i].intro + '<br/></div>';
                 str_buildAtt += '<div class="col-md-6"><img  class="img_att" src="' + arr_data[i].images[0].sizes.medium.url+'" /></div></div> </div></div></div>';
                 console.log(arr_data[i].images);
 
@@ -82,9 +82,17 @@
             console.log(err);
         }
 
-        function promotionAtt(id__att) {
-            //ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
+        function promotionAtt(id_att) {
+            ajaxCall("GET", "../../api/Promotion?id=" + id_att, "", successGetAttrationID, errorGetAttrationID);
 
+        }
+
+        function successGetAttrationID(check) {
+            console.log("נכנס");
+        }
+
+        function errorGetAttrationID(err) {
+            console.log("שגיאה");
         }
 
         function remove_promotionAtt(id__att) {
