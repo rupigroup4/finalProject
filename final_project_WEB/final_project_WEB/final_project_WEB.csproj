@@ -171,6 +171,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\pdfController.cs" />
+    <Compile Include="Controllers\PromotionController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\TripController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Models\Agent.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DAL\DBservices.cs" />
+    <Compile Include="Models\Promotion.cs" />
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\Trip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
