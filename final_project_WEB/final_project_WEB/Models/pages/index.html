@@ -147,9 +147,15 @@
             strRequest = "";
             for (var i = 0; i < CustomerWithRequest.length; i++) {
                 strRequest += "<tr><td>" + CustomerWithRequest[i].FirstName + " " + CustomerWithRequest[i].SureName + "</td>";
-                strRequest += "<td>" + Request_list_Save[i].Id + "</td>";
+                strRequest += "<td>" + Request_list_Save[i].AttractionName + "</td>";
                 if (Request_list_Save[i].Status == 'new') {
-                    strRequest += "<td><label class='badge badge-success'>" + Request_list_Save[i].Status + "</label></td></tr>";
+                    strRequest += '<td><div class="input-group-prepend">';
+                    strRequest += '<button class="btn btn-sm btn-outline-primary dropdown-toggle" type = "button" data - toggle="dropdown" aria - haspopup="true" aria - expanded="false" >new</button >';
+                    strRequest += ' <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 46px, 0px);">';
+                    strRequest += '<a class="dropdown-item" href="#">new</a><a class="dropdown-item" href="#">in prosess</a><a class="dropdown-item" href="#">done</a><a class="dropdown-item" href="#">failed</a>';
+                    strRequest +='<div role="separator" class="dropdown-divider"></div><a class="dropdown-item" href="#">Separated link</a> </div></div></td>';
+                            
+                   // strRequest += "<td><label class='badge badge-success'>" + Request_list_Save[i].Status + "</label></td></tr>";
                 } else if (Request_list_Save[i].Status == 'in process') {
                     strRequest += "<td><label class='badge badge-warning'>" + Request_list_Save[i].Status + "</label></td></tr>";
                 }
@@ -159,6 +165,7 @@
             }
             document.getElementById("requestPH").innerHTML = strRequest;
         }
+
 
         function errorCustomer_Request(err) {
             alert("errorCustomerRequest_list");

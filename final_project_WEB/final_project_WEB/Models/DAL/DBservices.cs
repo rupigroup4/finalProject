@@ -469,6 +469,8 @@ public class DBservices
                 Request r = new Request();
                 r.Id = Convert.ToInt32(dr["requestID"]);
                 r.Status = (string)dr["status_"];
+                r.AttractionID = (string)dr["attractionID"];
+                r.AttractionName = (string)dr["attractionName"];
                 Request_list.Add(r);
 
             }
@@ -610,10 +612,11 @@ public class DBservices
                 c.SureName = (string)dr["sureName"];
                 c.PhoneNumber = (string)dr["phoneNumber"];
                 c.BirthDay = (string)dr["birthDay"];
-                //c.Img = (string)dr["img"];
+                c.Img = (string)dr["img"];
                 c.Email = (string)dr["email"];
                 c.JoinDate = (string)dr["joinDate"];
                 c.AgentID = Convert.ToInt32(dr["AgentID"]);
+                
                 customer_list.Add(c);
             }
 
