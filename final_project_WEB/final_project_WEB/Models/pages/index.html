@@ -148,24 +148,35 @@
             for (var i = 0; i < CustomerWithRequest.length; i++) {
                 strRequest += "<tr><td>" + CustomerWithRequest[i].FirstName + " " + CustomerWithRequest[i].SureName + "</td>";
                 strRequest += "<td>" + Request_list_Save[i].AttractionName + "</td>";
-                if (Request_list_Save[i].Status == 'new') {
-                    strRequest += '<td><div class="input-group-prepend">';
-                    strRequest += '<button class="btn btn-sm btn-outline-primary dropdown-toggle" type = "button" data - toggle="dropdown" aria - haspopup="true" aria - expanded="false" >new</button >';
-                    strRequest += ' <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 46px, 0px);">';
-                    strRequest += '<a class="dropdown-item" href="#">new</a><a class="dropdown-item" href="#">in prosess</a><a class="dropdown-item" href="#">done</a><a class="dropdown-item" href="#">failed</a>';
-                    strRequest +='<div role="separator" class="dropdown-divider"></div><a class="dropdown-item" href="#">Separated link</a> </div></div></td>';
-                            
-                   // strRequest += "<td><label class='badge badge-success'>" + Request_list_Save[i].Status + "</label></td></tr>";
-                } else if (Request_list_Save[i].Status == 'in process') {
-                    strRequest += "<td><label class='badge badge-warning'>" + Request_list_Save[i].Status + "</label></td></tr>";
+                strRequest += '<td><div class="input-group-prepend">';
+                switch (Request_list_Save[i].Status) {
+                    case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
+                break;
+                    case "in process": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-warning dropdown-toggle" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
+                        break;
+                    case "success": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-success dropdown-toggle" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
+                        break;
+                    default: strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-danger dropdown-toggle" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
                 }
-                else {
-                    strRequest += "<td><label class='badge badge-danger'>" + Request_list_Save[i].Status + "</label></td></tr>";
-                }
+                strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
+                strRequest += `<a class="dropdown-item " onclick="Change_status('new',${Request_list_Save[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_list_Save[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_list_Save[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_list_Save[i].Id})">failed</a></div></div></td>`;
             }
             document.getElementById("requestPH").innerHTML = strRequest;
         }
 
+
+        function Change_status(status, RequestID) {
+            ajaxCall("PUT", "../../api/Request?status=" + status + "&RequestID=" + RequestID, "", successChange_status, errorChange_status)
+
+        }
+
+        function successChange_status(num) {
+            alert("ok");
+            location.reload();
+        }
+        function errorChange_status(num) {
+            alert("error");
+        }
 
         function errorCustomer_Request(err) {
             alert("errorCustomerRequest_list");

@@ -291,7 +291,7 @@ public class DBservices
             throw (ex);
         }
 
-        String command = "UPDATE Request_igroup4 SET _status = '" + stat + "' WHERE requestID = " + RequestID.ToString();
+        String command = "UPDATE Request_igroup4 SET status_ = '" + stat + "' WHERE requestID = " + RequestID.ToString();
 
 
         cmd = CreateCommand(command, con);             // create the command
