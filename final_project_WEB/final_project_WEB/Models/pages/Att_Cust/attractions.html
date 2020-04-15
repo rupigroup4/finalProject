@@ -32,12 +32,13 @@
 
         function sendToAPI() {
             city = $('#city').val();
-            MainCategory = $('#ancestor_lable').val();
+            MainCategory = $('#ancestor_lable').val();//קטגוריה של אב קדמון
             url = "https://www.triposo.com/api/20200405/tag.json?location_id=" + city + "&ancestor_label=" + MainCategory + "&order_by=-score&fields=name&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
             $.get(url).done(successCategory);
             $.get(url).fail(errorCategory);
 
-            urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + MainCategory + "&fields=id,name,score&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+            urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + MainCategory + "&fields=id,name,score,intro,images&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+            console.log(urlResults);
             $.get(urlResults).done(successAttractions);
             $.get(urlResults).fail(errorAttractions);
 
@@ -46,7 +47,6 @@
         function successCategory(data) {
             str = "<select class='form-control' required>";
             arr_data = data.results;
-            console.log(data.results);
             for (var i = 0; i < arr_data.length; i++) {
                 str += "<option id='" + arr_data[i].name + "' value='" + arr_data[i].name + "'>" + arr_data[i].name + "</option>";
             }
@@ -61,20 +61,19 @@
 
         //ResultsURL
 
-        function successAttractions(data2) {
+        function successAttractions(data) {
             str_buildAtt = "";
-            arr_data = data2.results;
+            arr_data = data.results;
             text = "";
             for (var i = 0; i < arr_data.length; i++) {
-
-                urlImage = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&id=" + arr_data[i].id + "&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
-
-                str_buildAtt += ' <div class="col-md-12 grid-margin"> <div class="card"> <div class="card-body">';
+                str_buildAtt += '<div class="col-md-12 grid-margin"> <div class="card"> <div class="card-body">';
                 str_buildAtt += '<h4 class="card-title">' + arr_data[i].name + '</h4>';
+                str_buildAtt += '';
                 str_buildAtt += '<p class="card-description">ציון: ' + (arr_data[i].score).toFixed(2) + '</p>';
                 str_buildAtt += '<div class="row"><div class="col-md-6"><p>' + arr_data[i].intro + '</p><br/></div>';
-                str_buildAtt += '<div class="col-md-6">תמונה של האטרקציה</div></div> </div></div></div>';
-                //str_buildAtt += '<div class="col-md-6"><img src="' + urlImage.results.images.sizes.medium.url + '"/> </div></div> </div></div></div>';
+                str_buildAtt += '<div class="col-md-6"><img  class="img_att" src="' + arr_data[i].images[0].sizes.medium.url+'" /></div></div> </div></div></div>';
+                console.log(arr_data[i].images);
+
             }
             document.getElementById('PH_Attraction').innerHTML = str_buildAtt;
         }
