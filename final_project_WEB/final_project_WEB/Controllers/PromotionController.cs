@@ -21,10 +21,8 @@ namespace final_project_WEB.Controllers
         //{
         //    return "value";
         //}
-
-        [HttpGet]
-        [Route("api/Promotion/{AttracionID}")]
-        public int GET_AttracionID(int AttracionID)
+        
+        public int GET_AttracionID(string AttracionID)
         {
             Promotion promotion = new Promotion();
             return promotion.CheckAttracionID(AttracionID);
@@ -35,9 +33,13 @@ namespace final_project_WEB.Controllers
         //{
         //}
 
+        [HttpPut]
+        [Route("api/Promotion/removePromotion")]
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public int PUT_removePromotion(string attracionID)
         {
+            Promotion promotion = new Promotion();
+            return promotion.RemovePromotion(attracionID);
         }
 
         // DELETE api/<controller>/5

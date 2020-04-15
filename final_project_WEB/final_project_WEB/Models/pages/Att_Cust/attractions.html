@@ -38,7 +38,6 @@
             $.get(url).fail(errorCategory);
 
             urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + MainCategory + "&fields=id,name,score,intro,images&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
-            console.log(urlResults);
             $.get(urlResults).done(successAttractions);
             $.get(urlResults).fail(errorAttractions);
 
@@ -68,12 +67,12 @@
             for (var i = 0; i < arr_data.length; i++) {
                 str_buildAtt += '<div class="col-md-12 grid-margin"> <div class="card"> <div class="card-body">';
                 str_buildAtt += '<h4 class="card-title">' + arr_data[i].name + '</h4>';
-                str_buildAtt += '<p class="card-description"><button onclick="promotionAtt('+arr_data[i].id+')" type="button" class="btn btn-success btn-sm">קדם</button>';
-                str_buildAtt += '<button type="button" onclick="remove_promotionAtt(' + arr_data[i].id +')" class="btn btn-danger btn-sm">הסר קידום</button></p>';
+                //'+arr_data[i].id+'
+                str_buildAtt += `<p class='card-description'><button onclick='promotionAtt("${arr_data[i].id}")' type='button' class='btn btn-success btn-sm'>קדם</button>`;
+                str_buildAtt += `<button type="button" onclick="remove_promotionAtt('${arr_data[i].id }')" class="btn btn-danger btn-sm">הסר קידום</button></p>`;
                 str_buildAtt += '<p class="card-description">ציון: ' + (arr_data[i].score).toFixed(2) + '</p>';
-                str_buildAtt += '<div class="row"><div class="col-md-6 overflow1" >' + arr_data[i].intro + '<br/></div>';
+                str_buildAtt += '<div class="row"><div dir="rtl" class="col-md-6 overflow1" ><p style="text-align: left;">' + arr_data[i].intro + '</p><br/></div>';
                 str_buildAtt += '<div class="col-md-6"><img  class="img_att" src="' + arr_data[i].images[0].sizes.medium.url+'" /></div></div> </div></div></div>';
-                console.log(arr_data[i].images);
 
             }
             document.getElementById('PH_Attraction').innerHTML = str_buildAtt;
@@ -83,21 +82,27 @@
         }
 
         function promotionAtt(id_att) {
-            ajaxCall("GET", "../../api/Promotion?id=" + id_att, "", successGetAttrationID, errorGetAttrationID);
-
+            ajaxCall("GET", "../../../api/Promotion?AttracionID=" + id_att, "", successGetAttrationID, errorGetAttrationID);
         }
 
         function successGetAttrationID(check) {
-            console.log("נכנס");
+            console.log(check);
         }
 
         function errorGetAttrationID(err) {
             console.log("שגיאה");
         }
 
-        function remove_promotionAtt(id__att) {
-            //ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
+        function remove_promotionAtt(id_att) {
+            ajaxCall("PUT", "../../../api/Promotion/removePromotion?AttracionID=" + id_att, "", successRemovePromotion, errorRemovePromotion);
 
+        }
+
+        function successRemovePromotion() {
+            alert("קידום נמחק");
+        }
+        function errorRemovePromotion() {
+            alert(errorRemovePromotion);
         }
 
     </script>
@@ -140,6 +145,7 @@
                                 <div class="item-thumbnail">
                                     <img src="../../../images/faces/face4.jpg" alt="image" class="profile-pic">
                                 </div>
+
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
                                         David Grey
@@ -388,14 +394,17 @@
                                             </select>
                                             <button onclick="sendToAPI()" class="btn btn-primary mr-2">חפש</button>
                                         </div>
-                                        <div class="col-lg-4 grid-margin stretch-card">
-                                            <label for="attraction">
-                                                <strong>בחר אטרקציה</strong>
-                                            </label>
-                                            <div id="attractionPH" >
-                                                <select class="form-control" required></select>
+
+                                        <p class="card-description">
+
+                                            <div class="col-lg-4 grid-margin stretch-card">
+                                                <label for="attraction">
+                                                    <strong>בחר אטרקציה</strong>
+                                                </label>
+                                                <div id="attractionPH">
+                                                    <select class="form-control" required></select>
+                                                </div>
                                             </div>
-                                        </div>
                                     </div>
                                     <!--<div class="row">
                                         <div id="resultsPH" class="col-lg-12 grid-margin stretch-card">

@@ -232,6 +232,48 @@ public class DBservices
         }
 
     }
+    public int changePromotion(string attracionID,int x)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String rStr = "UPDATE PromotedAttraction_igroup4 SET promoted = "+x+" WHERE attracionID = '"+ attracionID + "'";
+
+        cmd = CreateCommand(rStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
     public int Update_status(string stat, int RequestID)
     {
@@ -277,12 +319,59 @@ public class DBservices
 
     }
 
-    //private String BuildUpdateCommand(string stat, int RequestID)
-    //{
-    //    String command;
-    //    command = "UPDATE Request_igroup4 SET _status = '" + stat + "' WHERE requestID = " + RequestID.ToString();
-    //    return command;
-    //}
+    public int insert_Attraction_promotion(string AttracionID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildInsertATT_PROCommand(AttracionID);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildInsertATT_PROCommand(string AttracionID)
+    {
+        String command;
+
+        StringBuilder sb = new StringBuilder();
+        // use a string builder to create the dynamic string
+        sb.AppendFormat("Values('{0}','{1}')", AttracionID,true);
+        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(attracionID,promoted)";
+        command = prefix + sb.ToString();
+
+        return command;
+    }
 
 
     public int getCountNEWRequest(int Agent_ID)
@@ -521,6 +610,7 @@ public class DBservices
                 c.SureName = (string)dr["sureName"];
                 c.PhoneNumber = (string)dr["phoneNumber"];
                 c.BirthDay = (string)dr["birthDay"];
+                //c.Img = (string)dr["img"];
                 c.Email = (string)dr["email"];
                 c.JoinDate = (string)dr["joinDate"];
                 c.AgentID = Convert.ToInt32(dr["AgentID"]);
@@ -800,16 +890,16 @@ public class DBservices
         return cmd;
     }
 
-    public int check_AttracionID(int AttracionID)
+    public int check_AttracionID(string AttracionID)
     {
-        int checkAttracionID;
+        int checkAttracionID=0;
         SqlConnection con = null;
 
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "SELECT * FROM PromotedAttraction_igroup4 WHERE attracionID =" + AttracionID;
+            String selectSTR = "select COUNT(attracionID) as count_ from PromotedAttraction_igroup4 where attracionID='" + AttracionID+"'";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -817,7 +907,7 @@ public class DBservices
 
             while (dr.Read())
             {
-                checkAttracionID = Convert.ToInt32(dr["AttracionID"]);
+                checkAttracionID = Convert.ToInt32(dr["count_"]);
             }
             return checkAttracionID;
         }

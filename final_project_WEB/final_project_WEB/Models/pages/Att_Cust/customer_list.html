@@ -39,14 +39,17 @@
                     else {
                         let str = "";
                         for (var i = 0; i < customers_list.length; i++) {
+                            console.log(customers_list[i].Img);
+                            //if (customers_list[i].Img)
+                             //   str += "<tr> <td><img src='" + customers_list[i].Img+"' /> </td>";
                             str += "<tr> <td><img src='../../../images/PeoplePic/" + (Math.floor(Math.random() * 12) + 1) + ".jpg' /> </td>";
                             str += "<td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td>";
                             str += "<td>" + customers_list[i].PhoneNumber + "</td>";
                             str += "<td>" + customers_list[i].BirthDay + "</td>";
                             str += "<td>" + customers_list[i].Email + "</td>";
                             str += "<td>" + customers_list[i].JoinDate + "</td>";
-
-                            str += " <td> <button type='button' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
+                            //" + customers_list[i].Id + "
+                            str += " <td> <button type='button' id='" + customers_list[i].Id + "' onclick='showPopUp('Kalverstraat')' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
                             str += "<button type='button' id='" + customers_list[i].Id + "' onclick='editCustomer(" + customers_list[i].Id + ")' class='btn btn-primary btn-rounded btn-icon'><i class='ti-pencil'></i></button>"
                             str += "<button type='button' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-email' ></i></button>";
                             str += "<button type='button' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
