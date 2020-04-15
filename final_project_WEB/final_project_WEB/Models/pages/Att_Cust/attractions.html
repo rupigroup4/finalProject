@@ -68,9 +68,10 @@
             for (var i = 0; i < arr_data.length; i++) {
                 str_buildAtt += '<div class="col-md-12 grid-margin"> <div class="card"> <div class="card-body">';
                 str_buildAtt += '<h4 class="card-title">' + arr_data[i].name + '</h4>';
-                str_buildAtt += '';
+                str_buildAtt += '<p class="card-description"><button onclick="promotionAtt('+arr_data[i].id+')" type="button" class="btn btn-success btn-sm">קדם</button>';
+                str_buildAtt += '<button type="button" onclick="remove_promotionAtt(' + arr_data[i].id +')" class="btn btn-danger btn-sm">הסר קידום</button></p>';
                 str_buildAtt += '<p class="card-description">ציון: ' + (arr_data[i].score).toFixed(2) + '</p>';
-                str_buildAtt += '<div class="row"><div class="col-md-6"><p>' + arr_data[i].intro + '</p><br/></div>';
+                str_buildAtt += '<div class="row"><div class="col-md-6 overflow1" ><p>' + arr_data[i].intro + '</p><br/></div>';
                 str_buildAtt += '<div class="col-md-6"><img  class="img_att" src="' + arr_data[i].images[0].sizes.medium.url+'" /></div></div> </div></div></div>';
                 console.log(arr_data[i].images);
 
@@ -81,6 +82,15 @@
             console.log(err);
         }
 
+        function promotionAtt(id__att) {
+            //ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
+
+        }
+
+        function remove_promotionAtt(id__att) {
+            //ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
+
+        }
 
     </script>
 
@@ -387,7 +397,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="PH_Attraction" class="col-md-12 grid-margin"></div>
+                        <div dir="ltr" id="PH_Attraction" class="col-md-12 grid-margin"></div>
                     </div>
                 </div>
                 <!-- content-wrapper ends -->
