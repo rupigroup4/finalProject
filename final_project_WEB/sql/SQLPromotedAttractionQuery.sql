@@ -5,9 +5,13 @@ create table PromotedAttraction_igroup4 (
 	primary key (attracionID)
 );
 
+UPDATE PromotedAttraction_igroup4 SET promoted = 0 WHERE attracionID = 'Kalverstraat';
+
 select * from PromotedAttraction_igroup4
 
 select COUNT(attracionID) from PromotedAttraction_igroup4 where attracionID='kkk'
 
 
 drop table PromotedAttraction_igroup4
+
+select COUNT(attracionID) as count_ from PromotedAttraction_igroup4 where attracionID='Kalverstraat'
