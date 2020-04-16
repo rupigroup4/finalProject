@@ -1,124 +1,127 @@
 ﻿<!DOCTYPE html>
-<html lang="he">
+<html lang="he" dir="rtl">
 
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>My Agent</title>
-    <script src="../../../Scripts/ajaxCalls.js"></script>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <title>RoyalUI Admin</title>
+    <script src="../../Scripts/ajaxCalls.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
             crossorigin="anonymous"></script>
     <!-- plugins:css -->
-    <link rel="stylesheet" href="../../../vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="../../../vendors/base/vendor.bundle.base.css">
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/base/vendor.bundle.base.css">
     <!-- endinject -->
-    <!-- plugin css for this page -->
-    <!-- End plugin css for this page -->
     <!-- inject:css -->
-    <link rel="stylesheet" href="../../../css/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
     <!-- endinject -->
-    <link rel="shortcut icon" href="../../../images/favicon.png" />
+    <link rel="shortcut icon" href="../../images/favicon.png" />
 
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
             window.location.href = "Login/login-2.html";
         }
+
         $(document).ready(function () {
-            $('#form_add_customer').submit(function () {
 
-                ajaxCall("GET", "../../../api/Customer/email_list", "", GETsuccessCustomer_Email, GETerrorCustomer_Email);
-                return false;
 
-            });
         });
 
-        function GETsuccessCustomer_Email(email_list) {
+        function sendToAPI() {
+            city = $('#city').val();
+            MainCategory = $('#ancestor_lable').val();//קטגוריה של אב קדמון
+            url = "https://www.triposo.com/api/20200405/tag.json?location_id=" + city + "&ancestor_label=" + MainCategory + "&order_by=-score&fields=name&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+            $.get(url).done(successCategory);
+            $.get(url).fail(errorCategory);
 
-            let email = $('#email').val();
-            for (var i = 0; i < email_list.length; i++) {
-                if (email_list[i] == email) {
-                    swal("איימל זה קיים במערכת", "נסה להזין איימל אחר", "error");
-
-                    $('#email').val("")
-                    return;
-                }
-            }
-
-            let firstName = $('#firstName').val();
-            let sureName = $('#sureName').val();
-            let phoneNumber = $('#phoneNumber').val();
-            let gender = $('#SelectGender').val();
-            if (gender == 'נקבה') {
-                gender = 'נ';
-            } else {
-                gender = 'ז';
-            }
-            let birthDay = $('#birthDay').val();
-            let dateObj = new Date();
-            let month = dateObj.getUTCMonth() + 1;
-            let day = dateObj.getUTCDate();
-            let year = dateObj.getUTCFullYear();
-            let joinDate = year + "-" + month + "-" + day;
-            let agentID = localStorage.getItem('AgentID');
-
-            newCustomer = {
-                "FirstName": firstName,
-                "SureName": sureName,
-                "PhoneNumber": phoneNumber,
-                "Gender": gender,
-                "BirthDay": birthDay,
-                "Email": email,
-                "JoinDate": joinDate,
-                "AgentID": agentID
-            }
-
-            ajaxCall("POST", "../../../api/Customer", JSON.stringify(newCustomer), POSTsuccessNewCustomer, POSTerrorNewCustomer);
-            return false;
+            urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + MainCategory + "&fields=id,name,score,intro,images&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+            $.get(urlResults).done(successAttractions);
+            $.get(urlResults).fail(errorAttractions);
 
         }
 
-        function GETerrorCustomer_Email(err) {
+        function successCategory(data) {
+            str = "<select class='form-control' required>";
+            arr_data = data.results;
+            for (var i = 0; i < arr_data.length; i++) {
+                str += "<option id='" + arr_data[i].name + "' value='" + arr_data[i].name + "'>" + arr_data[i].name + "</option>";
+            }
+            str += "</select>";
+            document.getElementById('attractionPH').innerHTML = str;
+        }
+
+        function errorCategory(err) {
             console.log(err);
-            swal("GETerrorCustomer_Email");
         }
 
-        function clearFields() {
-            $('#firstName').val("");
-            $('#sureName').val("");
-            $('#phoneNumber').val("");
-            $('#SelectGender').val("");
-            $('#birthDay').val("");
-            $('#email').val("");
+
+        //ResultsURL
+
+        function successAttractions(data) {
+            str_buildAtt = "";
+            arr_data = data.results;
+            text = "";
+            for (var i = 0; i < arr_data.length; i++) {
+                str_buildAtt += '<div class="col-md-12 grid-margin"> <div class="card"> <div class="card-body">';
+                str_buildAtt += '<h4 class="card-title">' + arr_data[i].name + '</h4>';
+                //'+arr_data[i].id+'
+                str_buildAtt += `<p class='card-description'><button onclick='promotionAtt("${arr_data[i].id}")' type='button' class='btn btn-success btn-sm'>קדם</button>`;
+                str_buildAtt += `<button type="button" onclick="remove_promotionAtt('${arr_data[i].id }')" class="btn btn-danger btn-sm">הסר קידום</button></p>`;
+                str_buildAtt += '<p class="card-description">ציון: ' + (arr_data[i].score).toFixed(2) + '</p>';
+                str_buildAtt += '<div class="row"><div dir="rtl" class="col-md-6 overflow1" ><p style="text-align: left;">' + arr_data[i].intro + '</p><br/></div>';
+                if (arr_data[i].images[0] == null || arr_data[i].images[0].sizes == null || arr_data[i].images[0].sizes.medium == null || arr_data[i].images[0].sizes.medium.url == null) {
+                    str_buildAtt += '<div class="col-md-6"> <img class="img_att" src="../../images/NoImg.png" /> </div></div> </div></div></div>';
+                }
+                else {
+                    str_buildAtt += '<div class="col-md-6"><img  class="img_att" src="' + arr_data[i].images[0].sizes.medium.url + '" /></div></div> </div></div></div>';
+                }             
+
+            }
+            document.getElementById('PH_Attraction').innerHTML = str_buildAtt;
+        }
+        function errorAttractions(err) {
+            console.log(err);
         }
 
-        function POSTsuccessNewCustomer(num) {
-            if (num == 1) 
-                swal("בוצע בהצלחה", "נוסף לקוח חדש", "success");
-            else
-                swal("שגיאה", "הלקוח לא נוסף", "error");
-            clearFields();
+        function promotionAtt(id_att) {
+            ajaxCall("GET", "../../api/Promotion?AttracionID=" + id_att, "", successGetAttrationID, errorGetAttrationID);
         }
 
-        function POSTerrorNewCustomer(err) {
-            swal("POSTerrorNewCustomer");
+        function successGetAttrationID(check) {
+            console.log(check);
+        }
+
+        function errorGetAttrationID(err) {
+            console.log("שגיאה");
+        }
+
+        function remove_promotionAtt(id_att) {
+            ajaxCall("PUT", "../../api/Promotion/removePromotion?AttracionID=" + id_att, "", successRemovePromotion, errorRemovePromotion);
+
+        }
+        
+        function successRemovePromotion() {
+            alert("קידום נמחק");
+        }
+        function errorRemovePromotion() {
+            alert(errorRemovePromotion);
         }
 
     </script>
+
+
 </head>
 
 <body dir="rtl">
     <div class="container-scroller">
-        <!-- partial:../../partials/_navbar.html -->
-
-
-
+        <!-- partial:../partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo mr-5" href="../../../index.html"><img src="../../../images/logo.svg" class="mr-2" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="../../../index.html"><img src="../../../images/logo-mini.svg" alt="logo" /></a>
+                <a class="navbar-brand brand-logo mr-5" href="../index.html"><img src="../../images/logo.svg" class="mr-2" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../../images/logo-mini.svg" alt="logo" /></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -145,8 +148,9 @@
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../../images/faces/face4.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face4.jpg" alt="image" class="profile-pic">
                                 </div>
+
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
                                         David Grey
@@ -158,7 +162,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../../images/faces/face2.jpg" alt="image" class="profile-pic">
+                                    <!--<img src="../../images/faces/face2.jpg" alt="image" class="profile-pic">-->
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -171,7 +175,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../../images/faces/face3.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face3.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -209,13 +213,13 @@
                                     <div class="item-icon bg-warning">
                                         <i class="ti-settings mx-0"></i>
                                     </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">Settings</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        Private message
-                                    </p>
-                                </div>
+                                    <!--</div>-->
+                                    <div class="item-content">
+                                        <h6 class="font-weight-normal">Settings</h6>
+                                        <p class="font-weight-light small-text mb-0 text-muted">
+                                            Private message
+                                        </p>
+                                    </div>
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
@@ -234,7 +238,7 @@
                     </li>
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img src="../../../images/faces/face28.jpg" alt="profile" />
+                            <img src="../../images/faces/face28.jpg" alt="profile" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                             <a class="dropdown-item">
@@ -253,79 +257,8 @@
                 </button>
             </div>
         </nav>
-
-
-
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
-            <!-- partial:../../partials/_sidebar.html -->
-            <!--<nav class="sidebar sidebar-offcanvas" id="sidebar">
-              <ul class="nav">
-                <li class="nav-item">
-                  <a class="nav-link" href="../index.html">
-                    <i class="ti-shield menu-icon"></i>
-                    <span class="menu-title">Dashboard</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-                    <i class="ti-palette menu-icon"></i>
-                    <span class="menu-title">UI Elements</span>
-                    <i class="menu-arrow"></i>
-                  </a>
-                  <div class="collapse" id="ui-basic">
-                    <ul class="nav flex-column sub-menu">
-                      <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/buttons.html">Buttons</a></li>
-                      <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/typography.html">Typography</a></li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="../../pages/forms/basic_elements.html">
-                    <i class="ti-layout-list-post menu-icon"></i>
-                    <span class="menu-title">Form elements</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="../../pages/charts/chartjs.html">
-                    <i class="ti-pie-chart menu-icon"></i>
-                    <span class="menu-title">Charts</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="../../pages/tables/basic-table.html">
-                    <i class="ti-view-list-alt menu-icon"></i>
-                    <span class="menu-title">Tables</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="../../pages/icons/themify.html">
-                    <i class="ti-star menu-icon"></i>
-                    <span class="menu-title">Icons</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-                    <i class="ti-user menu-icon"></i>
-                    <span class="menu-title">User Pages</span>
-                    <i class="menu-arrow"></i>
-                  </a>
-                  <div class="collapse" id="auth">
-                    <ul class="nav flex-column sub-menu">
-                      <li class="nav-item"> <a class="nav-link" href="../../pages/samples/login-2.html"> Login 2 </a></li>
-                      <li class="nav-item"> <a class="nav-link" href="../../pages/samples/register-2.html"> Register 2 </a></li>
-                      <li class="nav-item"> <a class="nav-link" href="../../pages/samples/lock-screen.html"> Lockscreen </a></li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="../../../documentation/documentation.html">
-                    <i class="ti-write menu-icon"></i>
-                    <span class="menu-title">Documentation</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>-->
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
@@ -372,52 +305,57 @@
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <div class="col-12 grid-margin stretch-card">
+                        <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">הוספת לקוח חדש</h4> <!--הראשי-->
-                                    <p class="card-description">
-                                        פרטים אישיים
-                                    </p>
-                                    <form class="forms-sample" id="form_add_customer">
-                                        <div class="form-group">
-                                            <label for="exampleInputName1">שם פרטי</label>
-                                            <input type="text" class="form-control" id="firstName" placeholder="" required value="שמשון">
+                                    <h4 class="card-title">אטרקציות</h4>
+                                    <div class="row">
+                                        <div class="col-lg-4 grid-margin stretch-card">
+                                            <label for="city">
+                                                <strong>בחר עיר</strong>
+                                            </label>
+                                            <input id="city" class="form-control" value="Amsterdam" required>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputName1">שם משפחה</label>
-                                            <input type="text" class="form-control" id="sureName" placeholder="" required value="הגיבור">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputName1">טלפון</label>
-                                            <input type="text" class="form-control" id="phoneNumber" placeholder="" required pattern="05[0-9]{8}" value="0546872213">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="SelectGender">מגדר</label>
-                                            <select class="form-control" id="SelectGender">
-                                                <option>זכר</option>
-                                                <option>נקבה</option>
+                                        <div class="col-lg-4 grid-margin stretch-card">
+                                            <label for="ancestor_lable">
+                                                <strong>בחר קטגוריה</strong>
+                                            </label>
+                                            <select id="ancestor_lable" class="form-control" required>
+                                                <option value="do">do</option>
+                                                <option value="nightlife">nightlife</option>
+                                                <option value="tours">tours</option>
+                                                <option value="sightseeing">sighseeing</option>
+                                                <option value="feature">feature</option>
+                                                <option value="practicalities">practicalities</option>
+                                                <option value="eatingout">eatingout</option>
                                             </select>
+                                            <button onclick="sendToAPI()" class="btn btn-primary mr-2">חפש</button>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputName1">תאריך לידה</label>
-                                            <input type="date" class="form-control" id="birthDay" placeholder="dd/mm/yyyy" required />
+
+                                        <p class="card-description">
+
+                                            <div class="col-lg-4 grid-margin stretch-card">
+                                                <label for="attraction">
+                                                    <strong>בחר אטרקציה</strong>
+                                                </label>
+                                                <div id="attractionPH">
+                                                    <select class="form-control" required></select>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <!--<div class="row">
+                                        <div id="resultsPH" class="col-lg-12 grid-margin stretch-card">
+
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail3">אימייל</label>
-                                            <input type="email" class="form-control" id="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" value="shimsonH@walla.com">
-                                        </div>
-                                        <button type="submit" class="btn btn-primary mr-2">הוסף</button>
-                                        <input type="reset" value="נקה הכל" class="btn btn-secondary">
-                                    </form>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
-                      
+                        <div dir="ltr" id="PH_Attraction" class="col-md-12 grid-margin"></div>
                     </div>
                 </div>
                 <!-- content-wrapper ends -->
-                <!-- partial:../../partials/_footer.html -->
+                <!-- partial:../partials/_footer.html -->
                 <footer class="footer">
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
                         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2018 <a href="https://www.templatewatch.com/" target="_blank">Templatewatch</a>. All rights reserved.</span>
@@ -432,18 +370,27 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
-    <script src="../../../vendors/base/vendor.bundle.base.js"></script>
     <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+
+    <script src="../../vendors/base/vendor.bundle.base.js"></script>
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    <!-- inject:js -->
-    <script src="../../../js/off-canvas.js"></script>
-    <script src="../../../js/hoverable-collapse.js"></script>
-    <script src="../../../js/template.js"></script>
-    <script src="../../../js/todolist.js"></script>
+    <script src="../../js/off-canvas.js"></script>
+    <script src="../../js/hoverable-collapse.js"></script>
+    <script src="../../js/template.js"></script>
+    <script src="../../js/todolist.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
-    <script src="../../../js/file-upload.js"></script>
+    <script src="../../js/file-upload.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
     <!-- End custom js for this page-->
 </body>
 

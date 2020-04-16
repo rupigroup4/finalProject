@@ -6,21 +6,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>IAgent</title>
-    <script src="../../Scripts/ajaxCalls.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
             crossorigin="anonymous"></script>
     <!-- plugins:css -->
-    <link href="../../vendors/ti-icons/css/themify-icons.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="../../vendors/base/vendor.bundle.base.css">
+    <link href="../vendors/ti-icons/css/themify-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../vendors/base/vendor.bundle.base.css">
     <!-- endinject -->
     <!-- plugin css for this page -->
     <!-- End plugin css for this page -->
     <!-- inject:css -->
-    <link href="../../css/style.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet" />
     <!-- endinject -->
-    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <link rel="shortcut icon" href="../images/favicon.png" />
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
             window.location.href = "Login/login-2.html";
@@ -31,13 +31,13 @@
             setInterval(Check_new_message, 10000);
             Agent_ID = localStorage.getItem('AgentID');
 
-            ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
+            ajaxCall("GET", "../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
 
-            ajaxCall("GET", "../../api/Request/CountALLRequest?Agent_ID=" + Agent_ID, "", successCountALLRequest, errorCountALLRequest);
+            ajaxCall("GET", "../api/Request/CountALLRequest?Agent_ID=" + Agent_ID, "", successCountALLRequest, errorCountALLRequest);
 
-            ajaxCall("GET", "../../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
+            ajaxCall("GET", "../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
 
-            ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
+            ajaxCall("GET", "../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
 
             $('#upload').click(function () {
                 var data = new FormData();
@@ -52,7 +52,7 @@
                 // Ajax upload  
                 $.ajax({
                     type: "POST",
-                    url: "../../Api/pdf/uploadpdf",
+                    url: "../Api/pdf/uploadpdf",
                     contentType: false,
                     processData: false,
                     data: data,
@@ -81,7 +81,7 @@
         function uploadPdfError(err) { console.log(err) }
 
         function Check_new_message() {
-            ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
+            ajaxCall("GET", "../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
         }
 
         function successCountNEWRequest(count) {
@@ -135,7 +135,7 @@
         function successShowALLRequest(Request_list) {
             if (Request_list) {
                 Request_list_Save = Request_list;
-                ajaxCall("GET", "../../api/Customer/ShowCustomerRequest/" + Agent_ID ,"", successCustomer_Request, errorCustomer_Request); 
+                ajaxCall("GET", "../api/Customer/ShowCustomerRequest/" + Agent_ID ,"", successCustomer_Request, errorCustomer_Request); 
             }
         }
         function errorShowALLRequest(err) {
@@ -166,7 +166,7 @@
 
 
         function Change_status(status, RequestID) {
-            ajaxCall("PUT", "../../api/Request?status=" + status + "&RequestID=" + RequestID, "", successChange_status, errorChange_status)
+            ajaxCall("PUT", "../api/Request?status=" + status + "&RequestID=" + RequestID, "", successChange_status, errorChange_status)
 
         }
 
@@ -193,10 +193,10 @@
     
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <!--src="../../images/logo_iAgent_png.png"-->
+                <!--src="../images/logo_iAgent_png.png"-->
 
-                <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="../../images/logo_iAgent_png.png" class="mr-2" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../../../images/logo-mini.svg" alt="logo" /></a>
+                <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="../images/logo_iAgent_png.png" class="mr-2" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../../images/logo-mini.svg" alt="logo" /></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -223,7 +223,7 @@
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../../images/faces/face4.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face4.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -236,7 +236,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../../images/faces/face2.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face2.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -249,7 +249,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../../images/faces/face3.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face3.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -312,7 +312,7 @@
                     </li>
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img class="center" src="../../images/PeoplePic/11.jpg" alt="profile" />
+                            <img class="center" src="../images/PeoplePic/11.jpg" alt="profile" />
                             <p id="PH_name_agent"></p>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -491,20 +491,20 @@
         </div>
         <!-- container-scroller -->
         <!-- plugins:js -->
-        <script src="../../vendors/base/vendor.bundle.base.js"></script>
+        <script src="../vendors/base/vendor.bundle.base.js"></script>
         <!-- endinject -->
         <!-- Plugin js for this page-->
-        <script src="../../vendors/chart.js/Chart.min.js"></script>
-        <script src="../../vendors/chart.js/Chart.min.js"></script>
+        <script src="../vendors/chart.js/Chart.min.js"></script>
+        <script src="../vendors/chart.js/Chart.min.js"></script>
         <!-- End plugin js for this page-->
         <!-- inject:js -->
-        <script src="../../js/off-canvas.js"></script>
-        <script src="../../js/hoverable-collapse.js"></script>
-        <script src="../../js/template.js"></script>
-        <script src="../../js/todolist.js"></script>
+        <script src="../js/off-canvas.js"></script>
+        <script src="../js/hoverable-collapse.js"></script>
+        <script src="../js/template.js"></script>
+        <script src="../js/todolist.js"></script>
         <!-- endinject -->
         <!-- Custom js for this page-->
-        <script src="../../js/dashboard.js"></script>
+        <script src="../js/dashboard.js"></script>
         <!-- End custom js for this page-->
       
     </div>

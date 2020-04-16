@@ -7,17 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>RoyalUI Admin</title>
     <!-- plugins:css -->
-    <script src="../../../Scripts/ajaxCalls.js"></script>
-    <link rel="stylesheet" href="../../../vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="../../../vendors/base/vendor.bundle.base.css">
+    <script src="../../Scripts/ajaxCalls.js"></script>
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/base/vendor.bundle.base.css">
 
     <!-- endinject -->
     <!-- plugin css for this page -->
     <!-- End plugin css for this page -->
     <!-- inject:css -->
-    <link rel="stylesheet" href="../../../css/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
     <!-- endinject -->
-    <link rel="shortcut icon" href="../../../images/favicon.png" />
+    <link rel="shortcut icon" href="../../images/favicon.png" />
 
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
@@ -28,7 +28,7 @@
     <script>
         $(document).ready(function () {
             $('#form_add_Agent').submit(function () {
-                ajaxCall("GET", "../../../api/Agent/email_list", "", GETsuccessAgent_Email, GETerrorAgent_Email);
+                ajaxCall("GET", "../../api/Agent/email_list", "", GETsuccessAgent_Email, GETerrorAgent_Email);
                 return false;
             });
         });
@@ -67,7 +67,7 @@
                 "AgencyName": agencyName,
             }
 
-            ajaxCall("POST", "../../../api/Agent", JSON.stringify(newAgent), POSTsuccessNewAgent, POSTerrorNewAgent);
+            ajaxCall("POST", "../../api/Agent", JSON.stringify(newAgent), POSTsuccessNewAgent, POSTerrorNewAgent);
             return false;
         }
         function clearFields() {
@@ -192,7 +192,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 d-flex flex-row">
-                        <img style="max-width:100%;max-height:100%" src="../../../images/register.jpg" />
+                        <img style="max-width:100%;max-height:100%" src="../../images/register.jpg" />
                     </div>
                 </div>
             </div>
@@ -202,14 +202,14 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
-    <script src="../../../vendors/base/vendor.bundle.base.js"></script>
+    <script src="../../vendors/base/vendor.bundle.base.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- endinject -->
     <!-- inject:js -->
-    <script src="../../../js/off-canvas.js"></script>
-    <script src="../../../js/hoverable-collapse.js"></script>
-    <script src="../../../js/template.js"></script>
-    <script src="../../../js/todolist.js"></script>
+    <script src="../../js/off-canvas.js"></script>
+    <script src="../../js/hoverable-collapse.js"></script>
+    <script src="../../js/template.js"></script>
+    <script src="../../js/todolist.js"></script>
     <!-- endinject -->
 </body>
 

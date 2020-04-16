@@ -20692,7 +20692,7 @@ Button {
 .content-wrapper {
 
   background: #dddce1;
-  padding: 1.5rem 2.5rem;
+  padding: 1.5rem 1rem;
   width: 100%;
   -webkit-flex-grow: 1;
   flex-grow: 1;
@@ -21517,7 +21517,7 @@ body {
     border-radius: 12px;
     z-index: 9;
     background-color: white;
-    margin-top: 150px;
+    margin-top: 70px;
 }
 /* Styles for the form container */
 .form-container {
