@@ -238,6 +238,7 @@
     <Content Include="images\logo-mini.svg" />
     <Content Include="images\logo.svg" />
     <Content Include="images\logo_iAgent_png.png" />
+    <Content Include="images\logo_mini_iAgent.png" />
     <Content Include="images\NoImg.png" />
     <Content Include="images\PeoplePic\1.jpg" />
     <Content Include="images\PeoplePic\10.jpg" />

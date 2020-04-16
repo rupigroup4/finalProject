@@ -29,3 +29,4 @@ SELECT * FROM Trip_igroup4 LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_custom
 ALTER TABLE Trip_igroup4
 ADD pdf_Flightticket varchar(max);
 
+INSERT INTO Trip_igroup4 (_id_customer,_destination,_depart,_return,_id_TripProfile)Values('1000', 'Berlin','2020-04-16', '2020-04-22','1')

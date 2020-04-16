@@ -1,0 +1,12 @@
+        function Moveto_login() {
+            localStorage.setItem('Email', "");
+            localStorage.setItem('AgentID', "");
+            window.location.href = "Login/login-2.html";
+        }
+
+        if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
+            window.location.href = "Login/login-2.html";
+        }
+
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

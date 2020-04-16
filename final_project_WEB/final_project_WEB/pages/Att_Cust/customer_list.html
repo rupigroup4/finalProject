@@ -27,11 +27,31 @@
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
             window.location.href = "Login/login-2.html";
-        }        $(document).ready(function () {
+        }
+
+        $(document).ready(function () {
             Agent_ID = localStorage.getItem('AgentID');
-            
+            minDate();
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
+
+
+            $('#form_addtrip').submit(function () {
+                let destination = $('#destination').val();
+                let departure = $('#departure').val();
+                let returnDate = $('#return').val();
+
+                newTrip = {
+                    "Destination": destination,
+                    "DepartDate": departure,
+                    "ReturnDate": returnDate,
+                    "CustomerID": id_customer,
+                }
+                ajaxCall("POST", "../../api/Trip", JSON.stringify(newTrip), POSTsuccessNewTrip, POSTerrorNewTrip);
+                return false;
+            });
+
         });
+
         function successCustomer_list(customers_list) {
                 try {
                     if (customers_list.length == 0)
@@ -41,8 +61,7 @@
                         for (var i = 0; i < customers_list.length; i++) {
                            
                             if (customers_list[i].Img!=" ")
-                              //  str += "<tr> <td><img src='" + customers_list[i].Img + "' /> </td>";
-                                str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 12) + 1) + ".jpg' /> </td>";
+                              str += "<tr> <td><img src='" + customers_list[i].Img + "' /> </td>";
                             else if (customers_list[i].Gender=='נ')
                                 str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 12) + 1) + ".jpg' /> </td>";
                             else str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 12) + 1) + ".jpg' /> </td>";
@@ -51,12 +70,10 @@
                             str += "<td>" + customers_list[i].BirthDay + "</td>";
                             str += "<td>" + customers_list[i].Email + "</td>";
                             str += "<td>" + customers_list[i].JoinDate + "</td>";
-                            //" + customers_list[i].Id + "
                             str += " <td> <button type='button' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
                             str += "<button type='button' id='" + customers_list[i].Id + "' onclick='editCustomer(" + customers_list[i].Id + ")' class='btn btn-primary btn-rounded btn-icon'><i class='ti-pencil'></i></button>"
                             str += "<button type='button' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-email' ></i></button>";
                             str += "<button type='button' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
-
                         }
                         document.getElementById("CustomerPH").innerHTML = str;
 
@@ -92,37 +109,25 @@
             alert("errordeleteCustomer");
         }
 
-            function showPopUp(id) {
+        function showPopUp(id) {
                 document.getElementById("loginPopup").style.display = "block";
                 document.getElementById("PHaddtrip").innerHTML = "הזן פרטי טיסה";
 
                 id_customer = id;
-            }
-            function closeForm() {
+        }
+
+        function closeForm() {
                 document.getElementById("loginPopup").style.display = "none";
-            }
-        $('#form_addtrip').submit(function () {
-            let destination = $('#destination').val();
-            let departure = $('#departure').val();
-            let returnDate = $('#return').val();
+        }
 
-            newTrip = {
-                "Destination": destination,
-                "DepartDate": departure,
-                "ReturnDate": returnDate,
-                "CustomerID": id_customer,
-            }
-            ajaxCall("POST", "../../api/Trip", JSON.stringify(newTrip), POSTsuccessNewTrip, POSTerrorNewTrip);
-            return false;
-        });
 
-            function clearFields() {
+          function clearFields() {
                 $('#destination').val("");
                 $('#departure').val("");
                 $('#return').val("");
             }
 
-            function POSTsuccessNewTrip(num) {
+          function POSTsuccessNewTrip(num) {
                 if (num == 1)
                     swal("בוצע בהצלחה", "נוסף טיול חדש", "success");
                 else
@@ -130,13 +135,13 @@
                 clearFields();
                 closeForm();
             }
+    
+        function POSTerrorNewTrip(err) {
+            console.log(err);
+            swal("error");
+        }
 
-            function POSTerrorNewTrip(err) {
-                console.log(err);
-                swal("error");
-            }
-
-            function Search_byName() {
+        function Search_byName() {
                 var input, filter, table, tr, td, i, txtValue;
                 input = document.getElementById("myInput");
                 filter = input.value.toUpperCase();
@@ -155,7 +160,28 @@
                 }
             }
         
+        function minDate() {
+            var today = new Date();
+            var tommorow = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1;
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            today = yyyy + '-' + mm + '-' + dd;
+            tommorow = yyyy + '-' + mm + '-' + String(parseInt(dd) + 1);
+            $('#departure').attr("min", today);
+            $('#return').attr("min", tommorow);
 
+        }
+        function ValiditionMin(departure) {
+            $('#return').attr("min", departure);
+
+        }
     </script>
 
 </head>
@@ -412,15 +438,15 @@
                                 <label for="destination">
                                     <strong>יעד טיסה</strong>
                                 </label>
-                                <input id="destination" class="form-control" required>
+                                <input id="destination" class="form-control" value="Berlin" required>
                                 <label for="departure">
                                     <strong>טיסה הלוך</strong>
                                 </label>
-                                <input type="date" class="form-control" id="departure" placeholder="dd/mm/yyyy" required />
+                                <input type="date" class="form-control" id="departure" value="20/04/2020" placeholder="dd/mm/yyyy" onchange="ValiditionMin(value)" required />
                                 <label for="return">
                                     <strong>טיסה חזור</strong>
                                 </label>
-                                <input type="date" class="form-control" id="return" placeholder="dd/mm/yyyy" required />
+                                <input type="date" class="form-control" id="return" placeholder="dd/mm/yyyy" value="25/04/2020" required />
                                 <button type="submit" class="btn" style="margin-top:10px">הוסף טיול</button>
                                 <button type="button" class="btn cancel" onclick="closeForm()">ביטול</button>
                             </form>

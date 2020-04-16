@@ -17,13 +17,14 @@ namespace final_project_WEB.Controllers
             return trip.Read_AllTrips(Agent_ID);
         }
 
-        
 
-        // POST api/<controller>
-        //public int Post([FromBody]Trip trip)
-        //{
-        //    return trip.insert_trip(trip);
-        //}
+
+        //POST api/<controller>
+        public int Post([FromBody]Trip trip)
+        {
+            return trip.insert_trip(trip);
+        }
+
         [HttpPost]
         [Route("api/Trip/Add_pdf_Flightticket")]
         public int Post(string id, string pdf)
