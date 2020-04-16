@@ -28,8 +28,8 @@
 
 
         $(document).ready(function () {
-            setInterval(Check_new_message, 10000);
-            Agent_ID = localStorage.getItem('AgentID');
+            setInterval(Check_new_message, 5000);
+            Agent_ID = localStorage.getItem('AgentID');            
 
             ajaxCall("GET", "../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
 
@@ -38,6 +38,8 @@
             ajaxCall("GET", "../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
 
             ajaxCall("GET", "../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
+
+            ajaxCall("GET", "../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTrip_list);
 
             $('#upload').click(function () {
                 var data = new FormData();
@@ -62,6 +64,7 @@
 
                 return false;
             })
+
 
         });
 
@@ -112,19 +115,8 @@
         }
 
         function successCustomer_list(customers_list) {
+            CutomerList = customers_list;
             document.getElementById("customers_numPH").innerHTML = customers_list.length;
-            try {
-                let str = "";
-                for (var i = 0; i < customers_list.length; i++) {
-                    str += "<tr><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td>";
-                    str += "<td>" + customers_list[i].PhoneNumber + "</td>";
-                    str += "<td><label class='badge badge-danger'>Pending</label></td></tr>";
-                }
-                document.getElementById("CustomerlistPH").innerHTML = str;
-            }
-            catch (err) {
-                alert(err);
-            }
         }
 
         function errorCustomer_list(err) {
@@ -132,10 +124,61 @@
 
         }
 
+        function successGETTrip_list(trip_list) {
+            if (trip_list.length == 0) {
+                alert("אין טיולים במערכת !");
+                return;
+            }
+            else {
+                let strCustomerOnTrip = "";
+                let countInTrip = 0;
+                for (var i = 0; i < trip_list.length; i++) {
+
+                    var dateFrom = trip_list[i].DepartDate;
+                    var dateTo = trip_list[i].ReturnDate;
+
+                    var d1 = dateFrom.split("-");
+                    var d2 = dateTo.split("-");
+                    var from = new Date(d1[0], parseInt(d1[1]) - 1, d1[2]); // -1 because months are from 0 to 11
+                    var to = new Date(d2[0], parseInt(d2[1]) - 1, d2[2]);
+
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    var today = new Date(yyyy, mm - 1, dd);
+
+                    if (today >= from && today <= to) {
+                        countInTrip++;
+                        for (var k = 0; k < CutomerList.length; k++) {
+                            if (CutomerList[k].Id == trip_list[i].CustomerID) {
+                                strCustomerOnTrip += "<tr><td>" + CutomerList[k].FirstName + " " + CutomerList[k].SureName + "</td>";
+                            }
+                        }
+                        strCustomerOnTrip += "<td>" + trip_list[i].Destination + "</td>";
+                        strCustomerOnTrip += "<td>" + trip_list[i].ReturnDate + "</td></tr>";
+                    }
+                }
+                document.getElementById("NumberOfCutomersOnTripPH").innerHTML = countInTrip;
+                document.getElementById("CustomerOnTripPH").innerHTML = strCustomerOnTrip;
+            }
+        }
+        function errorGETTrip_list(err) {
+            alert("errorGETTripr_list");
+        }
+
+
         function successShowALLRequest(Request_list) {
+            var countSuccess = 0;
             if (Request_list) {
                 Request_list_Save = Request_list;
-                ajaxCall("GET", "../api/Customer/ShowCustomerRequest/" + Agent_ID ,"", successCustomer_Request, errorCustomer_Request); 
+                ajaxCall("GET", "../api/Customer/ShowCustomerRequest/" + Agent_ID, "", successCustomer_Request, errorCustomer_Request);
+                for (var i = 0; i < Request_list.length; i++) {
+                    if (Request_list[i].Status == "success") {
+                        countSuccess++;
+                    }
+                }
+                document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
             }
         }
         function errorShowALLRequest(err) {
@@ -171,11 +214,11 @@
         }
 
         function successChange_status(num) {
-            alert("ok");
+            swal("הסטטוס שונה","","sucess");
             location.reload();
         }
         function errorChange_status(num) {
-            alert("error");
+            alert("errorChange_status");
         }
 
         function errorCustomer_Request(err) {
@@ -190,7 +233,7 @@
 <body dir="rtl">
     <div class="container-scroller">
         <!-- partial:partials/_navbar.html -->
-    
+
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <!--src="../images/logo_iAgent_png.png"-->
@@ -265,7 +308,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-                            <i class="ti-bell mx-0" ></i>
+                            <i class="ti-bell mx-0"></i>
                             <span class="count" id="newRequest" style="display: none;"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
@@ -318,7 +361,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                             <a class="dropdown-item" onclick="Moveto_login()">
-                                התנתקות                                
+                                התנתקות
                                 <i class="ti-power-off text-primary"></i>
                             </a>
                         </div>
@@ -381,9 +424,9 @@
                         <div class="col-md-3 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="card-title text-md-center text-xl-right">מכירות</p>
+                                    <p class="card-title text-md-center text-xl-right">כמות מכירות</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">4561</h3>
+                                        <h3 id="AmountOfSalesPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
                                         <i class="ti-money icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
                                     <p class="mb-0 mt-2 text-danger">0.12% <span class="text-black ml-1"><small>(30 days)</small></span></p>
@@ -393,7 +436,7 @@
                         <div class="col-md-3 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="card-title text-md-center text-xl-right">לקוחות</p>
+                                    <p class="card-title text-md-center text-xl-right">לקוחות במערכת</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                         <h3 id="customers_numPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
                                         <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
@@ -407,7 +450,7 @@
                                 <div class="card-body">
                                     <p class="card-title text-md-center text-xl-right">שוהים בחו"ל</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">40</h3>
+                                        <h3 id="NumberOfCutomersOnTripPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
                                         <i class="ti-world icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
                                     <p class="mb-0 mt-2 text-success">64.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>
@@ -438,12 +481,11 @@
                                                 <thead>
                                                     <tr>
                                                         <th>שם לקוח</th>
-                                                        <th>טלפון</th>
-                                                        <th>Status</th>
+                                                        <th>יעד</th>
+                                                        <th>תאריך חזרה</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody id="CustomerlistPH">
-                                                </tbody>
+                                                <tbody id="CustomerOnTripPH"></tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -462,17 +504,16 @@
                                                         <th>Status</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody id="requestPH">
-                                                </tbody>
+                                                <tbody id="requestPH"></tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                           
+
                         </div>
                     </div>
-                   
+
                     <!-- partial:partials/_footer.html -->
                     <footer class="footer">
                         <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -488,6 +529,8 @@
         </div>
         <!-- container-scroller -->
         <!-- plugins:js -->
+
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="../vendors/base/vendor.bundle.base.js"></script>
         <!-- endinject -->
         <!-- Plugin js for this page-->
@@ -503,7 +546,7 @@
         <!-- Custom js for this page-->
         <script src="../js/dashboard.js"></script>
         <!-- End custom js for this page-->
-      
+
     </div>
 </body>
 
