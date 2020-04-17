@@ -32,7 +32,7 @@
         $(document).ready(function () {
             Agent_ID = localStorage.getItem('AgentID');
             minDate();
-            ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
+            ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list) //Brings only the clients of the agent that connected to the system
 
 
             $('#form_addtrip').submit(function () {
@@ -46,7 +46,7 @@
                     "ReturnDate": returnDate,
                     "CustomerID": id_customer,
                 }
-                ajaxCall("POST", "../../api/Trip", JSON.stringify(newTrip), POSTsuccessNewTrip, POSTerrorNewTrip);
+                ajaxCall("POST", "../../api/Trip", JSON.stringify(newTrip), POSTsuccessNewTrip, POSTerrorNewTrip); //Add new trip to a spesific client
                 return false;
             });
 

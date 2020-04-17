@@ -27,7 +27,9 @@ Alter column birthday varchar(10)
 
 drop table Customer_igroup4
 
-select * from Agent_igroup4
+select * from Request_igroup4
 
 SELECT * FROM Request_igroup4 LEFT JOIN Trip_igroup4 ON Request_igroup4.TripID = Trip_igroup4._id LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where Agent_igroup4.AgentID=1;
 SELECT * FROM Request_igroup4 LEFT JOIN Trip_igroup4 ON Request_igroup4.TripID = Trip_igroup4._id LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where Agent_igroup4.AgentID=1
+
+select firstName,sureName,phoneNumber,_destination,_depart,_return from Trip_igroup4 inner join Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID

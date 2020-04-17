@@ -3,7 +3,9 @@ create table TripProfile_igroup4 (
 	_name varchar(255)not null,
 	primary key (_id)
 );
-select * from TripProfile_igroup4
+
+select * from Trip_igroup4
+
 
 
 create table Trip_igroup4 (
@@ -20,8 +22,6 @@ create table Trip_igroup4 (
 
 select * from Trip_igroup4
 SELECT COUNT(requestID) as count_ FROM Request_igroup4 where status_='new'
-
-drop table Trip_igroup4
 
 select * from countryCode_igroup4
 
