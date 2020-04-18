@@ -32,6 +32,7 @@
 
         function sendToAPI() {
             city = $('#city').val();
+            try {
                 let arr_city = city.split(' ');
                 let city_new = ""
                 for (var i = 0; i < arr_city.length; i++) {
@@ -40,7 +41,12 @@
                         city_new += "_";
                     }
                 }
-            city = city_new;
+                city = city_new;
+                console.log(city);
+            } catch (err) {
+                alert(err);
+            }
+
             MainCategory = $('#ancestor_lable').val();//קטגוריה של אב קדמון
             url = "https://www.triposo.com/api/20200405/tag.json?location_id=" + city + "&ancestor_label=" + MainCategory + "&order_by=-score&fields=name&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
             $.get(url).done(successCategory);

@@ -66,6 +66,7 @@
                 var data = new FormData();
                 var files = $("#chooseFile" + selectedTrip).get(0).files;
                 // Add the uploaded file to the form data collection
+
                 if (files.length > 0) {
                     for (f = 0; f < files.length; f++) {
                         data.append(`${selectedTrip}`, files[f]);

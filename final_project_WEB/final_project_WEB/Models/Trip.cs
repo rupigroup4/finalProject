@@ -57,5 +57,15 @@ namespace final_project_WEB.Models
             return dbs.Read_AllTrips(Agent_ID);
         }
 
+        //Mobile//
+
+        public List<Trip> getCustomerTrips(int id)
+        {
+            DBservicesMobile dbs = new DBservicesMobile();
+            return dbs.getCustomerTrips(id);
+        }
+
+        //Mobile//
+
     }
 }

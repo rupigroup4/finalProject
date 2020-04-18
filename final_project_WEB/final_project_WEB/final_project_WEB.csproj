@@ -168,8 +168,12 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AgentController.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\flagController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\imageController.cs" />
+    <Compile Include="Controllers\notificationController.cs" />
     <Compile Include="Controllers\pdfController.cs" />
     <Compile Include="Controllers\PromotionController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
@@ -179,8 +183,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Agent.cs" />
+    <Compile Include="Models\authentication.cs" />
+    <Compile Include="Models\country.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DAL\DBservices.cs" />
+    <Compile Include="Models\DAL\DBservicesMobile.cs" />
     <Compile Include="Models\Promotion.cs" />
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\Trip.cs" />
@@ -266,10 +273,10 @@
     <Content Include="js\todolist.js" />
     <Content Include="js\tooltips.js" />
     <Content Include="pages\Att_Cust\trips.html" />
+    <Content Include="pages\index.html" />
     <Content Include="pages\Reports\reports.html" />
     <Content Include="pages\Add_customer\add_customer.html" />
     <Content Include="pages\icons\icons.html" />
-    <Content Include="pages\index.html" />
     <Content Include="pages\Login\lock-screen.html" />
     <Content Include="pages\Login\login-2.html" />
     <Content Include="pages\Login\register-2.html" />
@@ -345,6 +352,7 @@
     <Content Include="package.json" />
     <Content Include="partials\.DS_Store" />
     <Content Include="README.md" />
+    <None Include="Properties\PublishProfiles\iAgent.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\city.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -415,6 +423,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="pdfFiles\" />
+    <Folder Include="uploadImages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

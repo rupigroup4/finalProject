@@ -18,7 +18,7 @@ namespace final_project_WEB.Models
 
         public Agent() { }
 
-        public Agent( int agentID, string firstName, string sureName, string password, string phoneNumber, string email, string agencyName)
+        public Agent(int agentID, string firstName, string sureName, string password, string phoneNumber, string email, string agencyName)
         {
             AgentID = agentID;
             FirstName = firstName;
@@ -29,13 +29,13 @@ namespace final_project_WEB.Models
             AgencyName = agencyName;
         }
 
-        public int AgentID { get => agentID; set => agentID = value; }
-        public string FirstName { get => firstName; set => firstName = value; }
-        public string SureName { get => sureName; set => sureName = value; }
-        public string Email { get => email; set => email = value; }
-        public string Password { get => password; set => password = value; }
-        public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
-        public string AgencyName { get => agencyName; set => agencyName = value; }
+        public int AgentID { get { return agentID; } set { agentID = value; } }
+        public string FirstName { get { return firstName; } set { firstName = value; } }
+        public string SureName { get { return sureName; } set { sureName = value; } }
+        public string Email { get { return email; } set { email = value; } }
+        public string Password { get { return password; } set { password = value; } }
+        public string PhoneNumber { get { return phoneNumber; } set { phoneNumber = value; } }
+        public string AgencyName { get { return agencyName; } set { agencyName = value; } }
 
         public List<Agent> Read_agent()
         {

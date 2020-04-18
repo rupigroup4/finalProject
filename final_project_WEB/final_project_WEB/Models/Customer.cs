@@ -18,7 +18,9 @@ namespace final_project_WEB.Models
         private string email;
         private string img;
         private string joinDate;
+        private string pnToken;
         private int agentID;
+        
 
         public int Id { get {return id; }  set{ id = value; }}
         public string FirstName { get { return firstName; } set { firstName = value; } }
@@ -29,6 +31,7 @@ namespace final_project_WEB.Models
         public string Email { get { return email; } set { email = value; } }
         public string Img { get { return img; } set { img = value; } }
         public string JoinDate { get { return joinDate; } set { joinDate = value; } }
+        public string PnToken { get { return pnToken; } set { pnToken = value; } }
         public int AgentID { get { return agentID; } set { agentID = value; } }
 
 
@@ -86,5 +89,15 @@ namespace final_project_WEB.Models
             DBservices dbs = new DBservices();
             return dbs.getShowALLCustomerRequest(Agent_ID); ;
         }
+
+
+        //Mobile//
+        public int postCustomerImage(string url, string token)
+        {
+            DBservicesMobile dbs = new DBservicesMobile();
+            return dbs.postCustomerImage(url, token);
+        }
+
+        //Mobile//
     }
 }
