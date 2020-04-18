@@ -16,11 +16,6 @@ namespace final_project_WEB.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
         [HttpGet]
         [Route("api/notification/specificNotification/{requestId}")]
         public Request GetLastNotification (int requestId)
@@ -36,12 +31,6 @@ namespace final_project_WEB.Controllers
             Request n = new Request();
             return n.getTripNotification(customerId);
         }
-
-        //// POST api/<controller>
-        //public void Post([FromBody]string value)
-        //{
-
-        //}
 
         [HttpPost]
         [Route("api/notification/insertNewNotification")]
