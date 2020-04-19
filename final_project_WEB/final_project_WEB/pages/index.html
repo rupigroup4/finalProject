@@ -27,12 +27,14 @@
 
         
 
-        if (localStorage.AgentID == "" || localStorage.getItem("Email") == null || localStorage.getItem("oneTime") == null) {
-            window.location.href = "Login/login-2.html";
+        if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
+            if (localStorage.getItem("once") == null) {
+                window.location.href = "Login/login-2.html";
+            }
         }
 
-        if (localStorage.getItem("oneTime") != null) {
-            localStorage.removeItem("oneTime");
+        if (localStorage.getItem("once") != null) {
+            localStorage.removeItem("once");
         }
 
 

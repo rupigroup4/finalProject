@@ -32,7 +32,6 @@
             let inputEmail = $('#InputEmail').val();
             let inputPassword = $('#InputPassword').val();
             let save_details = $('#checkbox_saveD').is(":checked");
-            console.log(save_details)
             try {
                 for (var i = 0; i < Agent_list.length; i++) {
                     if (inputEmail == Agent_list[i].Email && inputPassword == Agent_list[i].Password) {
@@ -40,7 +39,9 @@
                         if (save_details == true) {
                             localStorage.setItem('Email', inputEmail);
                         }
-                        localStorage.setItem('oneTime', inputEmail)
+                        else {
+                            localStorage.setItem('once', inputEmail)
+                        }
                         window.location.href = "../index.html";
                         return;
                     }
