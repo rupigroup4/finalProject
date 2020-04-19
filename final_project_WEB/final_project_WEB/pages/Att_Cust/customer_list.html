@@ -64,12 +64,10 @@
                     else {
                         let str = "";
                         for (var i = 0; i < customers_list.length; i++) {
-                            console.log(customers_list[i]);
                             if (customers_list[i].Img != "") {
                                 str += "<tr> <td><img src='" + customers_list[i].Img + "' /> </td>";
                             }
                             else if (customers_list[i].Gender == "נ") {
-                                console.log(Math.floor(Math.random() * 6) + 1);
                                 str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 1) + ".jpg' /> </td>";
                             }
                                 else str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 7) + ".jpg' /> </td>";

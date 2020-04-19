@@ -94,7 +94,7 @@
             function SavePdfSuccess(dataPath) {
                 let arr = dataPath[0].split('!');
                 /*encodeURIComponent(arr[1]);*/ //check if needed
-                ajaxCall("POST", "/api/Trip/Add_pdf_Flightticket?id=" + arr[0] + "&pdf=" + arr[1], {}, POSTsuccessAddPDF, POSTerrorAddPDF);
+                ajaxCall("POST", "../../api/Trip/Add_pdf_Flightticket?id=" + arr[0] + "&pdf=" + arr[1], {}, POSTsuccessAddPDF, POSTerrorAddPDF);
 
 
             }
