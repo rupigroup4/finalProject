@@ -38,6 +38,7 @@ namespace final_project_WEB.Controllers
         }
 
         [HttpGet]
+        //api/flag/city/amsterdam
         [Route("api/flag/city/{city}")]
         public string get (string city)
         {

@@ -179,7 +179,7 @@ public class DBservicesMobile
 
     public int postCustomerImage(string url, string token)
     {
-        string fullUrl = "http://proj.ruppin.ac.il/igroup4/mobile/servertest/" + url;
+        string fullUrl = "http://proj.ruppin.ac.il/igroup4/prod/" + url;
         SqlConnection con;
         SqlCommand cmd;
         try
@@ -306,7 +306,6 @@ public class DBservicesMobile
 
     /////////////////////////////country////////////////////////////////////////////////////////
 
-
     /////////////////////////////notification////////////////////////////////////////////////////////
 
     public List<Request> getTripNotification(int customerId)
@@ -401,7 +400,7 @@ public class DBservicesMobile
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "select * from Request_igroup4 left join Trip_igroup4 on Request_igroup4.TripID = Trip_igroup4._id where requestID ='" + requestId + "'";
+            String selectSTR = "select * from Request_igroup4 where requestID ='" + requestId + "'";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader

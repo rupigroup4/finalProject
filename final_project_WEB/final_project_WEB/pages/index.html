@@ -101,6 +101,7 @@
 
         function successAgent_name(name) {
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
+            localStorage.setItem('AgentName', name);
 
         }
 
@@ -111,11 +112,12 @@
         function Moveto_login() {
             localStorage.setItem('Email', "");
             localStorage.setItem('AgentID', "");
+            localStorage.setItem('AgentName', "");
             window.location.href = "Login/login-2.html";
         }
 
         function successCustomer_list(customers_list) {
-            CutomerList = customers_list;
+            CustomerList = customers_list;
             document.getElementById("customers_numPH").innerHTML = customers_list.length;
         }
 
@@ -150,9 +152,9 @@
 
                     if (today >= from && today <= to) {
                         countInTrip++;
-                        for (var k = 0; k < CutomerList.length; k++) {
-                            if (CutomerList[k].Id == trip_list[i].CustomerID) {
-                                strCustomerOnTrip += "<tr><td>" + CutomerList[k].FirstName + " " + CutomerList[k].SureName + "</td>";
+                        for (var k = 0; k < CustomerList.length; k++) {
+                            if (CustomerList[k].Id == trip_list[i].CustomerID) {
+                                strCustomerOnTrip += "<tr><td>" + CustomerList[k].FirstName + " " + CustomerList[k].SureName + "</td>";
                             }
                         }
                         strCustomerOnTrip += "<td>" + trip_list[i].Destination + "</td>";
