@@ -11110,11 +11110,14 @@ fieldset:disabled a.btn {
   color: #248afd;
   border-color: #248afd;
 }
+.min-btn-index{
+    min-width: 104px;
+}
 
 .btn-outline-primary:hover {
-  color: #fff;
-  background-color: #248afd;
-  border-color: #248afd;
+    color: #fff;
+    background-color: #248afd;
+    border-color: #248afd;
 }
 
 .btn-outline-primary:focus, .btn-outline-primary.focus {
@@ -11240,7 +11243,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-warning:hover {
-  color: #212529;
+  color: #fff;
   background-color: #f5a623;
   border-color: #f5a623;
 }
@@ -20995,8 +20998,9 @@ Button {
 .navbar .navbar-brand-wrapper .brand-logo-mini img {
   /*width: calc(70px - 30px);*/
   max-width: 100%;
-  margin: auto;
-  height: 30px;
+  margin: 10px;
+  height: 40px;
+  margin-right:40px;
 }
 
 .navbar .navbar-menu-wrapper {
@@ -21124,6 +21128,7 @@ Button {
   width: 40px;
   height: 40px;
   border-radius: 100%;
+  margin-top:10px;
 }
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item.nav-profile.dropdown .dropdown-toggle:after {
@@ -21299,7 +21304,7 @@ Button {
     display: inline-block;
   }
   .sidebar-icon-only .navbar .navbar-menu-wrapper {
-    width: calc(100% - 70px);
+    width: calc(100% - 80px);
   }
   .sidebar-icon-only .sidebar {
     width: 70px;

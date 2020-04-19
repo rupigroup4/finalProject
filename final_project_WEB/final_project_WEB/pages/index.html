@@ -193,13 +193,13 @@
                 strRequest += "<td>" + Request_list_Save[i].AttractionName + "</td>";
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_list_Save[i].Status) {
-                    case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
+                    case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
                 break;
-                    case "in process": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-warning dropdown-toggle" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
+                    case "in process": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-warning dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
                         break;
-                    case "success": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-success dropdown-toggle" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
+                    case "success": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-success dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
                         break;
-                    default: strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-danger dropdown-toggle" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
+                    default: strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-danger dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
                 }
                 strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
                 strRequest += `<a class="dropdown-item " onclick="Change_status('new',${Request_list_Save[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_list_Save[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_list_Save[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_list_Save[i].Id})">failed</a></div></div></td>`;
@@ -424,10 +424,10 @@
                         <div class="col-md-3 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="card-title text-md-center text-xl-right">כמות מכירות</p>
+                                    <p class="card-title text-md-center text-xl-right">עסקאות שהושלמו</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                         <h3 id="AmountOfSalesPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
-                                        <i class="ti-money icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                        <i class="ti-ticket icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
                                     <p class="mb-0 mt-2 text-danger">0.12% <span class="text-black ml-1"><small>(30 days)</small></span></p>
                                 </div>
@@ -436,7 +436,7 @@
                         <div class="col-md-3 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="card-title text-md-center text-xl-right">לקוחות במערכת</p>
+                                    <p class="card-title text-md-center text-xl-right">לקוחות רשומים</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                         <h3 id="customers_numPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
                                         <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
