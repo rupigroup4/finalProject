@@ -30,7 +30,6 @@
 
             setInterval(Check_new_message, 5000);
             Agent_ID = localStorage.getItem('AgentID'); 
-
             ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
 
 
