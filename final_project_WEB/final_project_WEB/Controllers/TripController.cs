@@ -16,7 +16,8 @@ namespace final_project_WEB.Controllers
             Trip trip = new Trip();
             return trip.Read_AllTrips(Agent_ID);
         }
-
+        
+        //Mobile//
         [HttpGet]
         [Route("api/Trip/customertrips/{id}")]
         public List<Trip> getCustomerTrips(int id)
@@ -24,6 +25,7 @@ namespace final_project_WEB.Controllers
             Trip t = new Trip();
             return t.getCustomerTrips(id);
         }
+        //Mobile//
 
         //POST api/<controller>
         public int Post([FromBody]Trip trip)
