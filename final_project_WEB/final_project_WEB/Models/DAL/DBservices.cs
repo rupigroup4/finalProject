@@ -612,6 +612,7 @@ public class DBservices
                 c.SureName = (string)dr["sureName"];
                 c.PhoneNumber = (string)dr["phoneNumber"];
                 c.BirthDay = (string)dr["birthDay"];
+                c.Gender = (string)dr["gender"];
                 c.Img = (string)dr["img"];
                 c.Email = (string)dr["email"];
                 c.JoinDate = (string)dr["joinDate"];

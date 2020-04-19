@@ -59,18 +59,20 @@
         });
 
         function successCustomer_list(customers_list) {
-                try {
                     if (customers_list.length == 0)
                         swal("אין לקוחות במערכת !");
                     else {
                         let str = "";
                         for (var i = 0; i < customers_list.length; i++) {
-                           
-                            if (customers_list[i].Img!=" ")
-                              str += "<tr> <td><img src='" + customers_list[i].Img + "' /> </td>";
-                            else if (customers_list[i].Gender=='נ')
-                                str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 12) + 1) + ".jpg' /> </td>";
-                            else str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 12) + 1) + ".jpg' /> </td>";
+                            console.log(customers_list[i]);
+                            if (customers_list[i].Img != "") {
+                                str += "<tr> <td><img src='" + customers_list[i].Img + "' /> </td>";
+                            }
+                            else if (customers_list[i].Gender == "נ") {
+                                console.log(Math.floor(Math.random() * 6) + 1);
+                                str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 1) + ".jpg' /> </td>";
+                            }
+                                else str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 7) + ".jpg' /> </td>";
                             str += "<td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td>";
                             str += "<td>" + customers_list[i].PhoneNumber + "</td>";
                             str += "<td>" + customers_list[i].BirthDay + "</td>";
@@ -84,11 +86,6 @@
                         document.getElementById("CustomerPH").innerHTML = str;
 
                     }
-                }
-                catch (err) {
-                    alert(err);
-                }
-
             }
 
         function errorCustomer_list(err) {
@@ -360,7 +357,7 @@
                     </li>
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img class="center" src="../../images/PeoplePic/11.jpg" alt="profile" />
+                            <img class="center" src="../../images/PeoplePic/3.jpg" alt="profile" />
                             <p id="PH_name_agent"></p>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
