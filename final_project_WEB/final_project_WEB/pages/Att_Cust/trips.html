@@ -29,7 +29,7 @@
             Agent_ID = localStorage.getItem('AgentID');
             ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
 
-            ajaxCall("GET", "../../api/Trip?Agent_ID=" + AgentID, "", successGETTrip_list, errorGETTripr_list);
+            ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTripr_list);
 
             function successGETTrip_list(trip_list) {
                 try {
