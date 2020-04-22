@@ -444,6 +444,42 @@ public class DBservicesMobile
         return command;
     }
 
+    public string GetpnToken(int requestId)
+    {
+        string pnToken = "";
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "select pnToken from Request_igroup4 left join Customer_igroup4 on Request_igroup4.customerId = Customer_igroup4.CustomerID where requestID='"+requestId+"'";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                pnToken = (string)dr["pnToken"];
+            }
+            return pnToken;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
     /////////////////////////////notification////////////////////////////////////////////////////////
 
 

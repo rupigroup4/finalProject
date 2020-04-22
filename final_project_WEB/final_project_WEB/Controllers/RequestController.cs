@@ -51,8 +51,12 @@ namespace final_project_WEB.Controllers
         public int Put(string status,int RequestID)//Update_status
         { 
             Request reques = new Request();
-            return reques.Update_status(status, RequestID);
-
+            int numEffected = reques.Update_status(status, RequestID);
+            if (numEffected > 0)
+            {
+                return RequestID;
+            }
+            else return numEffected;
         }
 
         // DELETE api/<controller>/5

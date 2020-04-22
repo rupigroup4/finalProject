@@ -25,7 +25,7 @@
     
     <script>
 
-        
+        var RequestID = null;
 
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
             if (localStorage.getItem("once") == null) {
@@ -220,22 +220,63 @@
             document.getElementById("requestPH").innerHTML = strRequest;
         }
 
+        function errorCustomer_Request(err) {
+            alert("errorCustomerRequest_list");
+        }
+
 
         function Change_status(status, RequestID) {
             ajaxCall("PUT", "../api/Request?status=" + status + "&RequestID=" + RequestID, "", successChange_status, errorChange_status)
-
         }
 
-        function successChange_status(num) {
-            swal("הסטטוס שונה","","sucess");
-            location.reload();
+        function successChange_status(RequestId) { //שלב ראשון לאחר השינוי בדאטה בייס הוא להביא את הקוד אליו נשלח את ההתראה
+            //swal("הסטטוס שונה", "", "sucess");
+            RequestID = RequestId;
+            ajaxCall('GET',`../api/notification/getpntoken/${RequestID}`,"",getPnTokenSucess,getPnTokenError);
         }
-        function errorChange_status(num) {
+
+        function errorChange_status() {
             alert("errorChange_status");
         }
 
-        function errorCustomer_Request(err) {
-            alert("errorCustomerRequest_list");
+        function getPnTokenSucess(pnToken) { // אחרי שקיבלנו את קוד אליו נשלח את ההתראה נבצע את השליחה
+            //Push realTime notification
+            const message = {
+                to: pnToken,
+                sound: 'default',
+                title: 'התקבלה התראה חדשה',
+                body: 'היי, יש לי חדשות עבורך',
+                data: { RequestId: RequestID },
+                _displayInForeground: true,
+            }; //בניית ההתראה
+
+            $.ajax({
+                type: "POST",
+                url: "https://cors-anywhere.herokuapp.com/https://exp.host/--/api/v2/push/send",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data: JSON.stringify(message),
+                success: successfullySentMessage,
+                error: sendingMessageFailed
+            });
+
+            //Push realTime notification
+        }
+
+        function getPnTokenError(err) {
+            //להוסיף פה הודעת שגיאה על שלא התקבל PnToken 
+            console.log(err)
+        }
+
+        function successfullySentMessage(data) {
+            console.log('success data= ', data);
+            location.reload();
+
+        }
+        function sendingMessageFailed(err) {
+            console.log('err= ', err);
         }
 
         

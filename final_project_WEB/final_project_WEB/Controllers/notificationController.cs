@@ -25,6 +25,14 @@ namespace final_project_WEB.Controllers
         }
 
         [HttpGet]
+        [Route("api/notification/getpnToken/{requestId}")]
+        public string GetpnToken(int requestId)
+        {
+            Request n = new Request();
+            return n.GetpnToken(requestId);
+        }
+
+        [HttpGet]
         [Route("api/notification/{customerId}")]
         public List<Request> Get(int customerId)
         {

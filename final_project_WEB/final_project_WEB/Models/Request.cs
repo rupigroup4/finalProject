@@ -44,8 +44,7 @@ namespace final_project_WEB.Models
         public int Update_status(string stat, int RequestID)
         {
             DBservices dbs = new DBservices();
-            int numEffected = dbs.Update_status(stat, RequestID);
-            return numEffected;
+            return dbs.Update_status(stat, RequestID);
         }
 
         public int getCountNEWRequest(int Agent_ID)
@@ -84,6 +83,12 @@ namespace final_project_WEB.Models
         {
             DBservicesMobile dbs = new DBservicesMobile();
             return dbs.GetLastNotification(requestId);
+        }
+
+        public string GetpnToken(int requestId)
+        {
+            DBservicesMobile dbs = new DBservicesMobile();
+            return dbs.GetpnToken(requestId);
         }
 
         //Mobile//
