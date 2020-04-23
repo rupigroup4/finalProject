@@ -332,6 +332,8 @@ public class DBservicesMobile
                     n.PdfFile = (string)dr["pdfFile"];
                 }
                 n.Status = (string)dr["status_"];
+                n.TripID = Convert.ToInt16(dr["TripID"]);
+                n.AttractionName = (string)dr["attractionName"];
                 notifications.Add(n);
             }
             return notifications;
