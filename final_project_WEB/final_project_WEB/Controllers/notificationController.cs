@@ -37,14 +37,14 @@ namespace final_project_WEB.Controllers
         public List<Request> Get(int customerId)
         {
             Request n = new Request();
-            return n.getTripNotification(customerId);
+            return n.getCustomerNotification(customerId);
         }
 
         [HttpPost]
-        [Route("api/notification/insertNewNotification")]
-        public int insertNewNotification([FromBody] Request notification)
+        [Route("api/notification/insertNewNotification/{customerId}")]
+        public int insertNewNotification([FromBody] Request notification,int customerId)
         {
-            return notification.insertNewNotification(notification);
+            return notification.insertNewNotification(notification, customerId);
         }
 
         [HttpPost]

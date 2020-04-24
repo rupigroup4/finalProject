@@ -308,7 +308,7 @@ public class DBservicesMobile
 
     /////////////////////////////notification////////////////////////////////////////////////////////
 
-    public List<Request> getTripNotification(int customerId)
+    public List<Request> getCustomerNotification(int customerId)
     {
         List<Request> notifications = new List<Request>();
         SqlConnection con = null;
@@ -327,6 +327,7 @@ public class DBservicesMobile
             {
                 Request n = new Request();
                 n.Id = Convert.ToInt16(dr["requestID"]);
+                n.Order_date = (string)dr["date_time"];
                 if ((string)dr["pdfFile"] != "")
                 {
                     n.PdfFile = (string)dr["pdfFile"];
@@ -353,7 +354,7 @@ public class DBservicesMobile
         }
     }
 
-    public int insertNewNotification(Request notification)
+    public int insertNewNotification(Request notification, int customerId)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -367,7 +368,7 @@ public class DBservicesMobile
             throw (ex);
         }
 
-        String cStr = BuildInsertCommand(notification);
+        String cStr = BuildInsertCommand(notification, customerId);
 
         cmd = CreateCommand(cStr, con);   // create the command
 
@@ -433,14 +434,14 @@ public class DBservicesMobile
         }
     }
 
-    private string BuildInsertCommand(Request notification)
+    private string BuildInsertCommand(Request notification, int customerId)
     {
         String command;
         string newStatus = "new";
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}',{1},'{2}','{3}',{4},'{5}')", notification.Order_date, notification.NumTickets, newStatus, "", notification.Id, notification.AttractionID);
-        String prefix = "INSERT INTO Request_igroup4 " + "(date_time , numTickets , status_,pdfFile,TripID,attractionId) ";
+        sb.AppendFormat("Values('{0}',{1},'{2}','{3}',{4},'{5}','{6}',{7})", notification.Order_date, notification.NumTickets, newStatus, "", notification.TripID, notification.AttractionID, notification.AttractionName, customerId);
+        String prefix = "INSERT INTO Request_igroup4 " + "(date_time , numTickets , status_,pdfFile,TripID,attractionId,attractionName,customerId) ";
         command = prefix + sb.ToString();
 
         return command;
@@ -455,7 +456,7 @@ public class DBservicesMobile
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "select pnToken from Request_igroup4 left join Customer_igroup4 on Request_igroup4.customerId = Customer_igroup4.CustomerID where requestID='"+requestId+"'";
+            String selectSTR = "select pnToken from Request_igroup4 left join Customer_igroup4 on Request_igroup4.customerId = Customer_igroup4.CustomerID where requestID='" + requestId + "'";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader

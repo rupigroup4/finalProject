@@ -67,16 +67,16 @@ namespace final_project_WEB.Models
 
         //Mobile//
 
-        public List<Request> getTripNotification(int customerId)
+        public List<Request> getCustomerNotification(int customerId)
         {
             DBservicesMobile dbs = new DBservicesMobile();
-            return dbs.getTripNotification(customerId);
+            return dbs.getCustomerNotification(customerId);
         }
 
-        public int insertNewNotification(Request notification)
+        public int insertNewNotification(Request notification,int customerId)
         {
             DBservicesMobile dbs = new DBservicesMobile();
-            return dbs.insertNewNotification(notification);
+            return dbs.insertNewNotification(notification, customerId);
         }
 
         public Request GetLastNotification(int requestId)
