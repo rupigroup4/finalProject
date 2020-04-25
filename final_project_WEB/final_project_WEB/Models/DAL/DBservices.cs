@@ -683,6 +683,44 @@ public class DBservices
         }
     }
 
+    public DBservices readTable()
+    {
+        SqlConnection con = null;
+        try
+        {
+            con = connect("DBConnectionString");
+            da = new SqlDataAdapter("select * from Customer_igroup4", con);
+            SqlCommandBuilder builder = new SqlCommandBuilder(da);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            dt = ds.Tables[0];
+        }
+
+        catch (Exception ex)
+        {
+            // write errors to log file
+            // try to handle the error
+            throw ex;
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+
+        return this;
+
+    }
+
+    public void update()
+    {
+        da.Update(dt);
+    }
+
     public string Get_Agentname(string id_agent)
     {
         var name_agent="";

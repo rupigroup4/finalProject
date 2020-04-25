@@ -90,6 +90,30 @@ namespace final_project_WEB.Models
             return dbs.getShowALLCustomerRequest(Agent_ID); ;
         }
 
+        public Customer Update_customer(Customer customer)
+        {
+            DBservices dbs = new DBservices();
+            dbs = dbs.readTable();
+            dbs.dt = change(customer, dbs.dt);
+            dbs.update();
+            return customer;
+        }
+
+        private DataTable change(Customer customer, DataTable dt)
+        {
+            foreach (DataRow dr in dt.Rows)
+            {
+                if (customer.Id == Convert.ToInt32(dr["CustomerID"]))
+                {
+                    dr["firstName"] = customer.FirstName;
+                    dr["sureName"] = customer.SureName;
+                    dr["phoneNumber"] = customer.PhoneNumber;
+                    dr["birthDay"] = customer.BirthDay;
+                }
+            }
+            return dt;
+        }
+
 
         //Mobile//
         public int postCustomerImage(string url, string token)

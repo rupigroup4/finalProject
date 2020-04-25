@@ -207,7 +207,7 @@
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_list_Save[i].Status) {
                     case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
-                break;
+                        break;
                     case "in process": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-warning dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
                         break;
                     case "success": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-success dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
@@ -267,7 +267,7 @@
 
         function getPnTokenError(err) {
             //להוסיף פה הודעת שגיאה על שלא התקבל PnToken 
-            console.log(err)
+            console.log("getPnTokenError");
         }
 
         function successfullySentMessage(data) {

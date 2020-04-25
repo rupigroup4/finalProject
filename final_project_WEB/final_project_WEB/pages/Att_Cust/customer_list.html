@@ -56,9 +56,15 @@
                 return false;
             });
 
+            //$(document).on("click", ".saveBtn", function () {
+            //    console.log('clicked')
+            //    saveBtn();
+            //});
+
         });
 
-        function successCustomer_list(customers_list) {
+        function successCustomer_list(customers_list1) {
+            customers_list = customers_list1;
                     if (customers_list.length == 0)
                         swal("אין לקוחות במערכת !");
                     else {
@@ -75,11 +81,10 @@
                             str += "<td>" + customers_list[i].PhoneNumber + "</td>";
                             str += "<td>" + customers_list[i].BirthDay + "</td>";
                             str += "<td>" + customers_list[i].Email + "</td>";
-                            str += "<td>" + customers_list[i].JoinDate + "</td>";
-                            str += " <td> <button type='button' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
-                            str += "<button type='button' id='" + customers_list[i].Id + "' onclick='editCustomer(" + customers_list[i].Id + ")' class='btn btn-primary btn-rounded btn-icon'><i class='ti-pencil'></i></button>"
-                            str += "<button type='button' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-email' ></i></button>";
-                            str += "<button type='button' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
+                            str += "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' onclick='editCustomer(" + customers_list[i].Id + "," + i + ")' class='btn btn-primary btn-rounded btn-icon'><i class='ti-pencil'></i></button>"
+                            str += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
+                            str += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comments' ></i></button>";
+                            str += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
                         }
                         document.getElementById("CustomerPH").innerHTML = str;
 
@@ -91,6 +96,53 @@
 
         }
 
+        function editCustomer(id, i) {
+            let table = document.getElementById("myTable");
+            str_save = '<button type="button" onclick="save_change(' + i + ','+id+')" class="btn btn-primary btn-sm"><i>שמור שינוים</i ></button >';
+            str_save += '<button type="button" onclick="delete_change(' + i + ',' + id + ')" class="btn btn-danger btn-sm"><i>בטל שינוים</i ></button >';
+            table.rows[i + 1].cells.item(5).innerHTML = str_save;
+            var change_Name = '<input type="text" class="form-control td-change " id="new_Name" value="' + customers_list[i].FirstName +' '+ customers_list[i].SureName + '">';
+            table.rows[i + 1].cells.item(1).innerHTML = change_Name;
+            var change_Phone = '<input type="text" class="form-control td-change " id="new_phoneNumber" placeholder="" required value="' + customers_list[i].PhoneNumber + '">';
+            table.rows[i + 1].cells.item(2).innerHTML = change_Phone;
+            var change_Bday = ' <input type="date" class="form-control td-change " id="new_birthDay" value="' + customers_list[i].BirthDay+'" required />';
+            table.rows[i + 1].cells.item(3).innerHTML = change_Bday;
+        }
+        function delete_change(i, id) {
+
+        }
+        function save_change(i, id) {
+            numINlistcustomer = i;
+            str_btn = "<button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' onclick='editCustomer(" + customers_list[i].Id + "," + i + ")' class='btn btn-primary btn-rounded btn-icon'><i class='ti-pencil'></i></button>"
+            str_btn += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
+            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comments' ></i></button>";
+            str_btn += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td>";
+            document.getElementById("myTable").rows[i + 1].cells.item(5).innerHTML = str_btn;
+
+            new_Name = $('#new_Name').val().split(' ');
+            let firstName = new_Name[0];
+            let sureName = new_Name[1];
+            let phoneNumber = $('#new_phoneNumber').val();
+            let birthDay = $('#new_birthDay').val();
+            editCustomer = {
+                "Id": id,
+                "FirstName": firstName,
+                "SureName": sureName,
+                "PhoneNumber": phoneNumber,
+                "BirthDay": birthDay,
+            }
+           ajaxCall("POST", "../../api/Customer/Change_details", JSON.stringify(editCustomer), successEditCustomer, errorEditCustomer)
+        }
+
+        function successEditCustomer(customer) {
+            document.getElementById("myTable").rows[numINlistcustomer + 1].cells.item(1).innerHTML = customer.FirstName + " " + customer.SureName;
+            document.getElementById("myTable").rows[numINlistcustomer + 1].cells.item(2).innerHTML = customer.PhoneNumber;
+            document.getElementById("myTable").rows[numINlistcustomer + 1].cells.item(3).innerHTML = customer.BirthDay;
+        }
+
+        function errorEditCustomer(err) {
+            alert("errorEditCustomer");
+        }
         function deleteC(id) {
             ajaxCall("DELETE", "../../api/Customer?customerID=" + id, "", successdeleteCustomer, errordeleteCustomer)
         }
@@ -457,9 +509,9 @@
                                                     <th>
                                                         מייל
                                                     </th>
-                                                    <th>
+                                                    <!--<th>
                                                         תאריך הצטרפות
-                                                    </th>
+                                                    </th>-->
                                                     <th>
 
                                                     </th>
