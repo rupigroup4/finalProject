@@ -411,10 +411,13 @@ public class DBservicesMobile
 
             while (dr.Read())
             {
+                n.Order_date = (string)dr["date_time"];
                 if ((string)dr["pdfFile"] != "")
                 {
                     n.PdfFile = (string)dr["pdfFile"];
                 }
+                n.TripID = Convert.ToInt16(dr["TripID"]);
+                n.AttractionName = (string)dr["attractionName"];
                 n.Status = (string)dr["status_"];
             }
             return n;
