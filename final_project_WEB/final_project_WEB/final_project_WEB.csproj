@@ -272,7 +272,9 @@
     <Content Include="js\template.js" />
     <Content Include="js\todolist.js" />
     <Content Include="js\tooltips.js" />
+    <None Include="packages.config" />
     <Content Include="pages\Att_Cust\trips.html" />
+    <Content Include="pages\Chat\chat.html" />
     <Content Include="pages\index.html" />
     <Content Include="pages\Reports\reports.html" />
     <Content Include="pages\Add_customer\add_customer.html" />
@@ -352,6 +354,7 @@
     <Content Include="package.json" />
     <Content Include="partials\.DS_Store" />
     <Content Include="README.md" />
+    <None Include="Web.config" />
     <None Include="Properties\PublishProfiles\iAgent.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\city.js" />
@@ -365,13 +368,6 @@
     <Content Include="vendors\chart.js\Chart.min.js" />
     <Content Include="vendors\ti-icons\css\themify-icons.css" />
     <Content Include="vendors\ti-icons\fonts\themify.svg" />
-    <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config" />
@@ -419,6 +415,12 @@
     <Content Include="vendors\ti-icons\fonts\themify.eot" />
     <Content Include="vendors\ti-icons\fonts\themify.ttf" />
     <Content Include="vendors\ti-icons\fonts\themify.woff" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -450,7 +452,6 @@
     <Content Include="Content\bootstrap-theme.css.map" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>

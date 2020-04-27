@@ -55,10 +55,16 @@
             $.get(url).done(successCategory);
             $.get(url).fail(errorCategory);
 
+            if (MainCategory == 'tours') {
+                urlResults = "https://www.triposo.com/api/20200405/tour.json?location_ids=" + city + "&tag_labels=walkingtours&fields=id,name,score,intro,images&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+                $.get(urlResults).done(successAttractions);
+                $.get(urlResults).fail(errorAttractions);
+            }
+            else {
             urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + MainCategory + "&fields=id,name,score,intro,images&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
             $.get(urlResults).done(successAttractions);
             $.get(urlResults).fail(errorAttractions);
-
+            }
         }
 
         function successCategory(data) {
@@ -178,6 +184,7 @@
 <body dir="rtl">
     <div class="container-scroller">
         <!-- partial:../partials/_navbar.html -->
+        <!--roni-->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <!--src="../images/logo_iAgent_png.png"-->
