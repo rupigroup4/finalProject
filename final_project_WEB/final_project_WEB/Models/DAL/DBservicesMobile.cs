@@ -411,6 +411,7 @@ public class DBservicesMobile
 
             while (dr.Read())
             {
+                n.Id = Convert.ToInt16(dr["requestID"]);
                 n.Order_date = (string)dr["date_time"];
                 if ((string)dr["pdfFile"] != "")
                 {
