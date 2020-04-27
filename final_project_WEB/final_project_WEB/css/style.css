@@ -8976,7 +8976,8 @@ h1, .h1 {
 }
 
 h2, .h2 {
-  font-size: 2rem;
+    font-size: 2rem;
+    color: #5f5a5a;
 }
 
 h3, .h3 {
@@ -9088,6 +9089,7 @@ mark,
 
 .img_att {
     width: 100%;
+    max-height: 300px;
 }
 
 .img-thumbnail {
@@ -19685,10 +19687,12 @@ code {
   -ms-box-shadow: 4px 8px 9px -2px #c7c5d8;
 }
 
-.card .card-body {
-  padding: 1.25rem 1.437rem;
-  width: 100%;
-}
+    .card .card-body {
+        padding: 1.25rem 1.437rem;
+        width: 100%;
+        max-height: 600px;
+        overflow:auto;
+    }
 
 .card .card-body + .card-body {
   padding-top: 1rem;
@@ -21519,7 +21523,7 @@ body {
     top: 5%;
     transform: translate(-45%,5%);
     border: 2px solid #666;
-    border-radius: 12px;
+    /*border-radius: 12px;*/
     z-index: 9;
     background-color: white;
     margin-top: 70px;
@@ -21529,7 +21533,7 @@ body {
     max-width: 300px;
     padding: 20px;
     background-color: #fff;
-    border-radius: 12px;
+    /*border-radius: 12px;*/
 }
     /* Full-width for input fields */
     .form-container input[type=text], .form-container input[type=password] {

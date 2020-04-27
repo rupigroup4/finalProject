@@ -31,20 +31,16 @@
         function successAgent_list(Agent_list) {
             let inputEmail = $('#InputEmail').val();
             let inputPassword = $('#InputPassword').val();
-            let save_details = $('#checkbox_saveD').is(":checked");
+            //let save_details = $('#checkbox_saveD').is(":checked");
             try {
                 for (var i = 0; i < Agent_list.length; i++) {
                     if (inputEmail == Agent_list[i].Email && inputPassword == Agent_list[i].Password) {
                         localStorage.setItem('AgentID', Agent_list[i].AgentID);
-                        if (save_details == true) {
-                            localStorage.setItem('Email', inputEmail);
-                        }
-                        else {
-                            localStorage.setItem('once', inputEmail)
-                        }
-                        window.location.href = "../index.html";
-                        return;
+                        localStorage.setItem('Email', Agent_list[i].Email);
+                        localStorage.setItem('AgentName', Agent_list[i].FirstName);
                     }
+                    window.location.href = "../index.html";
+                    return;
                 }
                 swal({
                     title: "משתמש אינו קיים במערכת, האם לעבור לעמוד הרשמה?",
@@ -107,7 +103,7 @@
                                     <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">התחברות</button>
                                     <p id="PH"></p>
                                 </div>
-                                <div class="my-2 d-flex justify-content-between align-items-center">
+                                <!--<div class="my-2 d-flex justify-content-between align-items-center">
                                     <div class="form-check">
                                         <label class="form-check-label text-muted">
                                             הישאר מחובר
@@ -115,7 +111,7 @@
                                         </label>
                                     </div>
                                     <a href="#" class="auth-link text-black">שכחתי סיסמה?</a>
-                                </div>
+                                </div>-->
 
                                 <div class="mb-2 d-flex">
 

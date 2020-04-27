@@ -33,9 +33,8 @@
 
             setInterval(Check_new_message, 5000);
             Agent_ID = localStorage.getItem('AgentID');
-            ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
-
-
+            Agent_Name = localStorage.getItem('AgentName');
+            document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
            
             minDate();
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
@@ -62,7 +61,7 @@
                 let num_row = 1 + parseInt(i);
                 let table = document.getElementById("myTable");
                 str_save = '<button type="button" onclick="save_change(' + i + ',' + id + ')" class="btn btn-primary btn-sm"><i>שמור שינוים</i ></button >';
-                str_save += '<button type="button" onclick="delete_change(' + i + ',' + id + ')" class="btn btn-danger btn-sm"><i>בטל שינוים</i ></button >';
+                str_save += '<button type="button" onclick="cancel_change(' + i + ')" class="btn btn-danger btn-sm"><i>בטל שינוים</i ></button >';
                 table.rows[num_row].cells.item(5).innerHTML = str_save;
                 var change_Name = '<input type="text" class="form-control td-change " id="new_Name" value="' + customers_list[i].FirstName + ' ' + customers_list[i].SureName + '">';
                 table.rows[num_row].cells.item(1).innerHTML = change_Name;
@@ -109,7 +108,17 @@
         }
 
 
-        function delete_change(i, id) {
+        function cancel_change(index) {
+            let i =parseInt(index);
+            let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
+            str_btn = "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
+            str_btn += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
+            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comments' ></i></button>";
+            str_btn += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td>";
+            document.getElementById("myTable").rows[i + 1].cells.item(5).innerHTML = str_btn;
+            document.getElementById("myTable").rows[i + 1].cells.item(1).innerHTML = customers_list[i].FirstName + " " + customers_list[i].SureName;
+            document.getElementById("myTable").rows[i + 1].cells.item(2).innerHTML = customers_list[i].PhoneNumber;
+            document.getElementById("myTable").rows[i + 1].cells.item(3).innerHTML = customers_list[i].BirthDay;
 
         }
         function save_change(i, id) {
@@ -239,15 +248,15 @@
 
         }
 
-        function successAgent_name(name) {
-            console.log(name);
-            document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
+        //function successAgent_name(name) {
+        //    console.log(name);
+        //    document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
 
-        }
+        //}
 
-        function errorAgent_name(err) {
-            alert("errorAgent_name");
-        }
+        //function errorAgent_name(err) {
+        //    alert("errorAgent_name");
+        //}
 
 
         function Check_new_message() {
@@ -268,6 +277,7 @@
 
         function Moveto_login() {
             localStorage.setItem('Email', "");
+            localStorage.setItem('AgentName', "");
             localStorage.setItem('AgentID', "");
             window.location.href = "../Login/login-2.html";
         }

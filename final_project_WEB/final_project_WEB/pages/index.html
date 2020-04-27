@@ -28,27 +28,21 @@
         var RequestID = null;
 
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
-            if (localStorage.getItem("once") == null) {
-                window.location.href = "Login/login-2.html";
-            }
-        }
-
-        if (localStorage.getItem("once") != null) {
-            localStorage.removeItem("once");
+            window.location.href = "Login/login-2.html";
         }
 
 
         $(document).ready(function () {
             setInterval(Check_new_message, 5000);
-            Agent_ID = localStorage.getItem('AgentID');            
+            Agent_ID = localStorage.getItem('AgentID');  
+            Agent_Name = localStorage.getItem('AgentName');    
+            document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
 
             ajaxCall("GET", "../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
 
             ajaxCall("GET", "../api/Request/CountALLRequest?Agent_ID=" + Agent_ID, "", successCountALLRequest, errorCountALLRequest);
 
             ajaxCall("GET", "../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
-
-            ajaxCall("GET", "../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
 
             ajaxCall("GET", "../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTrip_list);
 
@@ -110,15 +104,15 @@
             alert("errorCountNEWRequest");
         }
 
-        function successAgent_name(name) {
-            document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
-            localStorage.setItem('AgentName', name);
+        //function successAgent_name(name) {
+        //    document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
+        //    localStorage.setItem('AgentName', name);
 
-        }
+        //}
 
-        function errorAgent_name(err) {
-            alert("errorAgent_name");
-        }
+        //function errorAgent_name(err) {
+        //    alert("errorAgent_name");
+        //}
 
         function Moveto_login() {
             localStorage.setItem('Email', "");
@@ -474,7 +468,7 @@
             <!-- partial -->
             <div class="main-panel">
                 <div class="content-wrapper">
-                    <div class="row">
+                    <div class="row" >
                         <div class="col-md-3 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
@@ -525,7 +519,7 @@
                         </div>
                     </div>
                     <div class="content-wrapper" style="padding-left:0;padding-right:0">
-                        <div class="row">
+                        <div class="row" dir="rtl">
                             <div class="col-lg-6 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
@@ -550,7 +544,7 @@
                                     <div class="card-body">
                                         <h4 class="card-title">בקשות</h4>
                                         <div class="table-responsive">
-                                            <table class="table table-hover">
+                                            <table class="table table-hover overflow1">
                                                 <thead>
                                                     <tr>
                                                         <th>שם הלקוח</th>

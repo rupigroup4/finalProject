@@ -29,7 +29,8 @@
 
             setInterval(Check_new_message, 5000);
             Agent_ID = localStorage.getItem('AgentID');
-            ajaxCall("GET", "../../api/Agent?id=" + Agent_ID, "", successAgent_name, errorAgent_name)
+            Agent_Name = localStorage.getItem('AgentName');
+            document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
 
         });
 
@@ -134,7 +135,6 @@
         }
 
         function successAgent_name(name) {
-            console.log(name);
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
 
         }
@@ -162,19 +162,11 @@
 
         function Moveto_login() {
             localStorage.setItem('Email', "");
+            localStorage.setItem('AgentName', "");
             localStorage.setItem('AgentID', "");
             window.location.href = "../Login/login-2.html";
         }
 
-        function successAgent_name(name) {
-            console.log(name);
-            document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
-
-        }
-
-        function errorAgent_name(err) {
-            alert("errorAgent_name");
-        }
 
     </script>
 
