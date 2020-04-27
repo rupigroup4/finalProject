@@ -4,6 +4,7 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>IAgent</title>
     <script src="../../Scripts/ajaxCalls.js"></script>
@@ -22,7 +23,14 @@
     <!--style for customer list data table-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <style>
+        .well {
+            margin-top: 35px;
+        }
+    </style>
 
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
@@ -35,7 +43,8 @@
             Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
-           
+
+
             minDate();
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
 
@@ -56,12 +65,12 @@
             });
 
             $(document).on("click", ".saveBtn", function () {
-               let id=this.getAttribute('data-id');
+                let id = this.getAttribute('data-id');
                 let i = this.getAttribute('data-index');
                 let num_row = 1 + parseInt(i);
                 let table = document.getElementById("myTable");
                 str_save = '<button type="button" onclick="save_change(' + i + ',' + id + ')" class="btn btn-primary btn-sm"><i>שמור שינוים</i ></button >';
-                str_save += '<button type="button" onclick="cancel_change(' + i + ')" class="btn btn-danger btn-sm"><i>בטל שינוים</i ></button >';
+                str_save += '<button type="button" onclick="delete_change(' + i + ',' + id + ')" class="btn btn-danger btn-sm"><i>בטל שינוים</i ></button >';
                 table.rows[num_row].cells.item(5).innerHTML = str_save;
                 var change_Name = '<input type="text" class="form-control td-change " id="new_Name" value="' + customers_list[i].FirstName + ' ' + customers_list[i].SureName + '">';
                 table.rows[num_row].cells.item(1).innerHTML = change_Name;
@@ -75,32 +84,32 @@
 
         function successCustomer_list(customers_list1) {
             customers_list = customers_list1;
-                    if (customers_list.length == 0)
-                        swal("אין לקוחות במערכת !");
-                    else {
-                        let str = "";
-                        for (var i = 0; i < customers_list.length; i++) {
-                            if (customers_list[i].Img != "") {
-                                str += "<tr> <td><img src='" + customers_list[i].Img + "' /> </td>";
-                            }
-                            else if (customers_list[i].Gender == "נ") {
-                                str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 1) + ".jpg' /> </td>";
-                            }
-                                else str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 7) + ".jpg' /> </td>";
-                            str += "<td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td>";
-                            str += "<td>" + customers_list[i].PhoneNumber + "</td>";
-                            str += "<td>" + customers_list[i].BirthDay + "</td>";
-                            str += "<td>" + customers_list[i].Email + "</td>";
-                            let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id +"'";
-                            str += "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn +" class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
-                            str += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
-                            str += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
-                            str += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
-                        }
-                        document.getElementById("CustomerPH").innerHTML = str;
-
+            if (customers_list.length == 0)
+                swal("אין לקוחות במערכת !");
+            else {
+                let str = "";
+                for (var i = 0; i < customers_list.length; i++) {
+                    if (customers_list[i].Img != "") {
+                        str += "<tr> <td><img src='" + customers_list[i].Img + "' /> </td>";
                     }
+                    else if (customers_list[i].Gender == "נ") {
+                        str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 1) + ".jpg' /> </td>";
+                    }
+                    else str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 7) + ".jpg' /> </td>";
+                    str += "<td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td>";
+                    str += "<td>" + customers_list[i].PhoneNumber + "</td>";
+                    str += "<td>" + customers_list[i].BirthDay + "</td>";
+                    str += "<td>" + customers_list[i].Email + "</td>";
+                    let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
+                    str += "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
+                    str += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
+                    str += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comments' ></i></button>";
+                    str += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
+                }
+                document.getElementById("CustomerPH").innerHTML = str;
+
             }
+        }
 
         function errorCustomer_list(err) {
             alert("errorCustomer_list");
@@ -108,17 +117,7 @@
         }
 
 
-        function cancel_change(index) {
-            let i =parseInt(index);
-            let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
-            str_btn = "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
-            str_btn += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
-            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
-            str_btn += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td>";
-            document.getElementById("myTable").rows[i + 1].cells.item(5).innerHTML = str_btn;
-            document.getElementById("myTable").rows[i + 1].cells.item(1).innerHTML = customers_list[i].FirstName + " " + customers_list[i].SureName;
-            document.getElementById("myTable").rows[i + 1].cells.item(2).innerHTML = customers_list[i].PhoneNumber;
-            document.getElementById("myTable").rows[i + 1].cells.item(3).innerHTML = customers_list[i].BirthDay;
+        function delete_change(i, id) {
 
         }
         function save_change(i, id) {
@@ -126,7 +125,7 @@
             let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
             str_btn = "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
             str_btn += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
-            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
+            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comments' ></i></button>";
             str_btn += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td>";
             document.getElementById("myTable").rows[i + 1].cells.item(5).innerHTML = str_btn;
 
@@ -165,7 +164,7 @@
                 ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
             }
             else {
-                swal("הלקוח לא נמחק", "ללקוח זה קיים טיול זמין במערכת", "error");// בהמשך לבדוק האם הטיל עבר 
+                swal("הלקוח לא נמחק", "ללקוח זה קיים טיול זמין במערכת", "error");// בהמשך לבדוק האם הטיל עבר
             }
             clearFields();
         }
@@ -175,56 +174,56 @@
         }
 
         function showPopUp(id) {
-                document.getElementById("loginPopup").style.display = "block";
-                document.getElementById("PHaddtrip").innerHTML = "הזן פרטי טיסה";
+            document.getElementById("loginPopup").style.display = "block";
+            document.getElementById("PHaddtrip").innerHTML = "הזן פרטי טיסה";
 
-                id_customer = id;
+            id_customer = id;
         }
 
         function closeForm() {
-                document.getElementById("loginPopup").style.display = "none";
+            document.getElementById("loginPopup").style.display = "none";
         }
 
 
-          function clearFields() {
-                $('#destination').val("");
-                $('#departure').val("");
-                $('#return').val("");
-            }
+        function clearFields() {
+            $('#destination').val("");
+            $('#departure').val("");
+            $('#return').val("");
+        }
 
-          function POSTsuccessNewTrip(num) {
-                if (num == 1)
-                    swal("בוצע בהצלחה", "נוסף טיול חדש", "success");
-                else
-                    swal("שגיאה", "טיול לא נוסף", "error");
-                clearFields();
-                closeForm();
-            }
-    
+        function POSTsuccessNewTrip(num) {
+            if (num == 1)
+                swal("בוצע בהצלחה", "נוסף טיול חדש", "success");
+            else
+                swal("שגיאה", "טיול לא נוסף", "error");
+            clearFields();
+            closeForm();
+        }
+
         function POSTerrorNewTrip(err) {
             console.log(err);
             swal("error");
         }
 
         function Search_byName() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("myInput");
-                filter = input.value.toUpperCase();
-                table = document.getElementById("myTable");
-                tr = table.getElementsByTagName("tr");
-                for (i = 0; i < tr.length; i++) {
-                    td = tr[i].getElementsByTagName("td")[1];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                        } else {
-                            tr[i].style.display = "none";
-                        }
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
                     }
                 }
             }
-        
+        }
+
         function minDate() {
             var today = new Date();
             var tommorow = new Date();
@@ -248,15 +247,15 @@
 
         }
 
-        //function successAgent_name(name) {
-        //    console.log(name);
-        //    document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
+        function successAgent_name(name) {
+            console.log(name);
+            document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
 
-        //}
+        }
 
-        //function errorAgent_name(err) {
-        //    alert("errorAgent_name");
-        //}
+        function errorAgent_name(err) {
+            alert("errorAgent_name");
+        }
 
 
         function Check_new_message() {
@@ -298,6 +297,7 @@
 <body dir="rtl">
     <div class="container-scroller">
         <!-- partial:../partials/_navbar.html -->
+        <!--roni-->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <!--src="../images/logo_iAgent_png.png"-->
@@ -476,12 +476,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Chat/chat.html">
-                            <i class="ti-comment menu-icon"></i>
-                            <span class="menu-title">צ'אט</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../Reports/reports.html">
                             <i class="ti-bar-chart-alt menu-icon"></i>
                             <span class="menu-title">דוחות</span>
@@ -497,47 +491,42 @@
                         <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    <h4 class="card-title">רשימת לקוחות</h4>
-                                                </th>
-                                                <th>
-                                                    <input type="text" id="myInput" onkeyup="Search_byName()" placeholder="חיפוש לפי שם" >
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                    <div class="table-responsive">
-                                        <table class="table table-striped" id="myTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        תמונה
-                                                    </th>
-                                                    <th>
-                                                        שם
-                                                    </th>
-                                                    <th>
-                                                        טלפון
-                                                    </th>
-                                                    <th>
-                                                        תאריך לידה
-                                                    </th>
-                                                    <th>
-                                                        מייל
-                                                    </th>
-                                                    <!--<th>
-                                                        תאריך הצטרפות
-                                                    </th>-->
-                                                    <th>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-6 col-md-offset-3 well">
+                                                <!-- <a href="/index.html">Change Settings</a> -->
+                                                <a class="btn btn-info " href="/index.html">
+                                                    <i class="fa fa-cog"></i>
+                                                    Settings
+                                                </a>
+                                                <h1 class="room-title text-center"></h1>
 
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="CustomerPH"></tbody>
-                                        </table>
+                                                <ul class="messages list-group">
+                                                    <!-- messages would be shown here -->
+                                                </ul>
+
+                                                <form id="messageForm">
+                                                    <div class="form-group">
+                                                        <i class="" id="icon-type"></i>
+                                                        <p class="help-block typing"></p>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="glyphicon glyphicon-comment"></i>
+                                                            </span>
+                                                            <input autofocus class="form-control" id="messagebox" name="message" type="text" value="" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <input class="btn btn-default btn-block" type="submit" />
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -598,6 +587,13 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+    <script src="/js/QueryParams.js"></script>
+    <script src="/js/app.js"></script>
+
     <script>
         $(function () {
             $("#destination").autocomplete({
