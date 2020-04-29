@@ -27,7 +27,7 @@
             window.location.href = "../Login/login-2.html";
         }
         $(document).ready(function () {
-            console.log()
+
             if (sessionStorage.getItem('id_chat')) {
                 document.getElementById("chatNamePH").innerHTML = "שלח הודעה ל" + sessionStorage.getItem('name_chat');
                 //bring Conversation from real-timeDB by id_chat
@@ -42,6 +42,9 @@
         });
 
         $(document).on("click", ".StartChat", function () {
+            $('.StartChat').css("background-color", "white")
+            $(this).css("background-color", "grey")
+            
             let strConversation = "";
             let customerName = this.getAttribute('data-name');
             let customerID = this.getAttribute('data-id');
@@ -65,8 +68,8 @@
             customers_list = customers_list1;
             let str = "";
             for (var i = 0; i < customers_list.length; i++) {
-                let data_btn = "data-name='" + customers_list[i].FirstName + " " + customers_list[i].SureName + "'" + " data-id='" + customers_list[i].Id + "'";
-                str += "<tr class='StartChat'" +data_btn+"><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName +"</td><td>";
+                let data_btn = "data-name='" + customers_list[i].FirstName + " " + customers_list[i].SureName + "'" + " data-id='" + customers_list[i].Id + "'" ;
+                str += "<tr style='cursor:pointer;' onMouseOver=this.style.color='#3399ff' onMouseOut=this.style.color='black' class='StartChat'" + data_btn + "><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td><td>";
                 if (customers_list[i].Img != "")
                     str += "<img src='" + customers_list[i].Img + "' />";
                 else if (customers_list[i].Gender == "נ") 
