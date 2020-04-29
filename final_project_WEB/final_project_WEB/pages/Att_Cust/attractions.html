@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>RoyalUI Admin</title>
+    <title>IAgent</title>
     <script src="../../Scripts/ajaxCalls.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
@@ -92,7 +92,6 @@
             for (var i = 0; i < arr_data.length; i++) {
                 str_buildAtt += '<div class="col-md-12 grid-margin"> <div class="card"> <div class="card-body">';
                 str_buildAtt += '<h4 class="card-title">' + arr_data[i].name + '</h4>';
-                //'+arr_data[i].id+'
                 str_buildAtt += `<p class='card-description'><button onclick='promotionAtt("${arr_data[i].id}")' type='button' class='btn btn-success btn-sm'>קדם</button>`;
                 str_buildAtt += `<button type="button" onclick="remove_promotionAtt('${arr_data[i].id }')" class="btn btn-danger btn-sm">הסר קידום</button></p>`;
                 str_buildAtt += '<p class="card-description">ציון: ' + (arr_data[i].score).toFixed(2) + '</p>';
