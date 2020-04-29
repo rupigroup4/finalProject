@@ -4,11 +4,14 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>RoyalUI Admin</title>
+    <title>IAgent</title>
     <script src="../../Scripts/ajaxCalls.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
             crossorigin="anonymous"></script>
+    <!-->data table-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">
     <!-- plugins:css -->
     <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="../../vendors/base/vendor.bundle.base.css">
@@ -29,117 +32,155 @@
             Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
+            ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
+        });
+        function successGETTrip_list(trip_list) {
+            try {
+                if (trip_list.length == 0)
+                    alert("אין טיולים במערכת !");
+                else {
+                    let str = "";
+                    for (var i = 0; i < trip_list.length; i++) {
+                        for (var k = 0; k < CustomerList.length; k++) {
+                            if (trip_list[i].CustomerID == CustomerList[k].Id) {
+                                str += "<tr> <td>" + CustomerList[k].FirstName + " " + CustomerList[k].SureName + "</td>";
+                            }
+                        }
 
-            ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTripr_list);
+                        str += "<td>" + trip_list[i].Destination + "</td>";
 
-            function successGETTrip_list(trip_list) {
-                try {
-                    if (trip_list.length == 0)
-                        alert("אין טיולים במערכת !");
-                    else {
-                        let str = "";
-                        for (var i = 0; i < trip_list.length; i++) {
-                            str += "<tr> <td>" + trip_list[i].TripID + "</td>";
-                            str += "<td>" + trip_list[i].CustomerID + "</td>";
-                            str += "<td>" + trip_list[i].Destination + "</td>";
+
+                        var dateFrom = trip_list[i].DepartDate;
+                        var dateTo = trip_list[i].ReturnDate;
+
+                        var d1 = dateFrom.split("/");
+                        var d2 = dateTo.split("/");
+                        var from = new Date(d1[2], parseInt(d1[1]) - 1, d1[0]); // -1 because months are from 0 to 11
+                        var to = new Date(d2[2], parseInt(d2[1]) - 1, d2[0]);
+
+                        var today = new Date();
+                        var dd = today.getDate();
+                        var mm = today.getMonth() + 1;
+                        var yyyy = today.getFullYear();
+                        var today = new Date(yyyy, mm - 1, dd);
+
+                        if (today >= from && today <= to) {
                             str += "<td>" + trip_list[i].DepartDate + "</td>";
                             str += "<td>" + trip_list[i].ReturnDate + "</td>";
-                            //str += '<td> <div class="progress"><div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div> </div> </td>';
-                            if (trip_list[i].Pdf_Flightticket == "") {
-                                let dataTrip = "data-tripId='" + trip_list[i].TripID + "'";
-                                str += '<td><input id = "chooseFile' + trip_list[i].TripID + '" type = "file" /><button id="upload" class="savePdf" ' + dataTrip + '>שמור קובץ</button> </td >';
-                            }
-
-                            //str += "<td>" + trip_list[i].TripProfileID + "</td>";
-                            str += "</tr>";
+                        } else {
+                            str += "<td>" + trip_list[i].DepartDate + "</td>";
+                            str += "<td>" + trip_list[i].ReturnDate + "</td>";
                         }
-                        document.getElementById("TripPH").innerHTML = str;
 
+                        //str += '<td> <div class="progress"><div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div> </div> </td>';
+                        if (trip_list[i].Pdf_Flightticket == "") {
+                            let dataTrip = "data-tripId='" + trip_list[i].TripID + "'";
+                            str += '<td><input id = "chooseFile' + trip_list[i].TripID + '" type = "file" /><button id="upload" class="savePdf" ' + dataTrip + '>שמור קובץ</button> </td >';
+                        }
+
+                        //str += "<td>" + trip_list[i].TripProfileID + "</td>";
+                        str += "</tr>";
                     }
+                    document.getElementById("TripPH").innerHTML = str;
+                    $('#trip_table').DataTable({
+                        "language": {
+                            "search": "חיפוש",
+                            "lengthMenu": "כמות שורות להצגה _MENU_",
+                            "zeroRecords": "אין טיולים במערכת",
+                            "info": "הצג עמוד _PAGE_ מתוך _PAGES_",
+                            "infoEmpty": "",
+                            "loadingRecords": "טוען...",
+                            "paginate": {
+                                "first": "ראשון",
+                                "last": "אחרון",
+                                "next": "לעמוד הבא",
+                                "previous": "לעמוד הקודם"
+                            },
+                        }
+                    });
                 }
-                catch (err) {
-                    alert(err);
+            }
+            catch (err) {
+                alert(err);
+            }
+        }
+
+        function errorGETTripr_list(err) {
+            alert("errorGETTripr_list");
+        }
+
+        $(document).on("click", ".savePdf", function () {
+            selectedTrip = this.getAttribute('data-tripId'); //זה מחזיק את ה TRIPiD
+            var data = new FormData();
+            var files = $("#chooseFile" + selectedTrip).get(0).files;
+            // Add the uploaded file to the form data collection
+
+            if (files.length > 0) {
+                for (f = 0; f < files.length; f++) {
+                    data.append(`${selectedTrip}`, files[f]);
                 }
             }
 
-            function errorGETTripr_list(err) {
-                alert("errorGETTripr_list");
+            // Ajax upload
+            $.ajax({
+                type: "POST",
+                url: "../../Api/pdf/uploadpdf",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: SavePdfSuccess,
+                error: SavedPdfError
+            });
+
+            return false;
+        })
+
+        function SavePdfSuccess(dataPath) {
+            let arr = dataPath[0].split('!');
+            /*encodeURIComponent(arr[1]);*/ //check if needed
+            ajaxCall("POST", "../../api/Trip/Add_pdf_Flightticket?id=" + arr[0] + "&pdf=" + arr[1], {}, POSTsuccessAddPDF, POSTerrorAddPDF);
+
+
+        }
+
+        function SavedPdfError(err) {
+            alert("SavedPdfError")
+        }
+        function POSTsuccessAddPDF(numEF) {
+            if (numEF == 1) { alert("נוסף בהצלחה") }
+            else
+                alert("error");
+        }
+        function POSTerrorAddPDF(err) {
+            alert("POSTerrorAddPDF");
+        }
+
+        function Check_new_message() {
+            ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
+        }
+
+        function successCountNEWRequest(count) {
+            if (count) {
+                document.getElementById("newRequest").style.display = "block";
+                return;
             }
+            document.getElementById("newRequest").style.display = "none";
+        }
 
-            $(document).on("click", ".savePdf", function () {
-                selectedTrip = this.getAttribute('data-tripId'); //זה מחזיק את ה TRIPiD
-                var data = new FormData();
-                var files = $("#chooseFile" + selectedTrip).get(0).files;
-                // Add the uploaded file to the form data collection
+        function errorCountNEWRequest(err) {
+            alert("errorCountNEWRequest");
+        }
 
-                if (files.length > 0) {
-                    for (f = 0; f < files.length; f++) {
-                        data.append(`${selectedTrip}`, files[f]);
-                    }
-                }
+        function successCustomer_list(customers_list) {
+            CustomerList = customers_list;
+            ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTripr_list);
+        }
 
-                // Ajax upload
-                $.ajax({
-                    type: "POST",
-                    url: "../../Api/pdf/uploadpdf",
-                    contentType: false,
-                    processData: false,
-                    data: data,
-                    success: SavePdfSuccess,
-                    error: SavedPdfError
-                });
+        function errorCustomer_list(err) {
+            alert("errorCustomer_list");
 
-                return false;
-            })
+        }
 
-            function SavePdfSuccess(dataPath) {
-                let arr = dataPath[0].split('!');
-                /*encodeURIComponent(arr[1]);*/ //check if needed
-                ajaxCall("POST", "../../api/Trip/Add_pdf_Flightticket?id=" + arr[0] + "&pdf=" + arr[1], {}, POSTsuccessAddPDF, POSTerrorAddPDF);
-
-
-            }
-
-            function SavedPdfError(err) {
-                alert("SavedPdfError")
-            }
-            function POSTsuccessAddPDF(numEF) {
-                if (numEF == 1) { alert("נוסף בהצלחה") }
-                else
-                    alert("error");
-            }
-            function POSTerrorAddPDF(err) {
-                alert("POSTerrorAddPDF");
-            }
-
-            function successAgent_name(name) {
-                console.log(name);
-                document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
-
-            }
-
-            function errorAgent_name(err) {
-                alert("errorAgent_name");
-            }
-
-
-            function Check_new_message() {
-                ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
-            }
-
-            function successCountNEWRequest(count) {
-                if (count) {
-                    document.getElementById("newRequest").style.display = "block";
-                    return;
-                }
-                document.getElementById("newRequest").style.display = "none";
-            }
-
-            function errorCountNEWRequest(err) {
-                alert("errorCountNEWRequest");
-            }
-
-        });
         function Moveto_login() {
             localStorage.setItem('Email', "");
             localStorage.setItem('AgentName', "");
@@ -353,17 +394,14 @@
                                 <div class="card-body">
                                     <h4 class="card-title">רשימת טיולים</h4>
                                     <!--<p class="card-description">
-                                    Add class <code>.table-bordered</code>
-                                </p>-->
+                                        Add class <code>.table-bordered</code>
+                                    </p>-->
                                     <div class="table-responsive pt-3">
-                                        <table class="table table-bordered">
+                                        <table id="trip_table" class="mdl-data-table" style="width:100%">
                                             <thead>
                                                 <tr>
                                                     <th>
-                                                        ID טיול
-                                                    </th>
-                                                    <th>
-                                                        ID לקוח
+                                                        שם לקוח
                                                     </th>
                                                     <th>
                                                         יעד טיסה
@@ -374,17 +412,9 @@
                                                     <th>
                                                         תאריך חזרה
                                                     </th>
-                                                    <!--<th>
-                                                    זמנים
-                                                </th>-->
                                                     <th>
                                                         כרטיסי טיסה
                                                     </th>
-                                                    <!--<th>
-                                                    פרופיל טיול
-                                                </th>-->
-
-
                                                 </tr>
                                             </thead>
                                             <tbody id="TripPH"></tbody>
@@ -421,7 +451,10 @@
     <script src="../../js/hoverable-collapse.js"></script>
     <script src="../../js/template.js"></script>
     <script src="../../js/todolist.js"></script>
-
+    <!-->data table-->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
     <!-- End custom js for this page-->

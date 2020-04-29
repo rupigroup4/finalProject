@@ -52,15 +52,18 @@
                     return;
                 }
             }
-
+            let src_img = "http://proj.ruppin.ac.il/igroup4/prod/images/PeoplePic/";
             let firstName = $('#firstName').val();
             let sureName = $('#sureName').val();
             let phoneNumber = $('#phoneNumber').val();
             let gender = $('#SelectGender').val();
             if (gender == 'נקבה') {
                 gender = 'נ';
-            } else {
+                src_img += (Math.floor(Math.random() * 6) + 1) + ".jpg";
+            }
+            else {
                 gender = 'ז';
+                src_img += (Math.floor(Math.random() * 6) + 7) + ".jpg";
             }
             let birthDay = $('#birthDay').val();
             let dateObj = new Date();
@@ -69,7 +72,7 @@
             let year = dateObj.getUTCFullYear();
             let joinDate = year + "-" + month + "-" + day;
             let agentID = localStorage.getItem('AgentID');
-
+        
             newCustomer = {
                 "FirstName": firstName,
                 "SureName": sureName,
@@ -77,6 +80,7 @@
                 "Gender": gender,
                 "BirthDay": birthDay,
                 "Email": email,
+                "Img": src_img,
                 "JoinDate": joinDate,
                 "AgentID": agentID
             }

@@ -80,13 +80,7 @@
                     else {
                         let str = "";
                         for (var i = 0; i < customers_list.length; i++) {
-                            if (customers_list[i].Img != "") {
-                                str += "<tr> <td><img src='" + customers_list[i].Img + "' /> </td>";
-                            }
-                            else if (customers_list[i].Gender == "נ") {
-                                str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 1) + ".jpg' /> </td>";
-                            }
-                                else str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 7) + ".jpg' /> </td>";
+                            str += "<tr> <td><img src='" + customers_list[i].Img + "' /> </td>";
                             str += "<td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td>";
                             str += "<td>" + customers_list[i].PhoneNumber + "</td>";
                             str += "<td>" + customers_list[i].BirthDay + "</td>";
@@ -520,7 +514,6 @@
                                             <thead>
                                                 <tr>
                                                     <th>
-                                                        תמונה
                                                     </th>
                                                     <th>
                                                         שם

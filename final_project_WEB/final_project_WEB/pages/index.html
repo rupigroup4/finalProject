@@ -144,10 +144,10 @@
                     var dateFrom = trip_list[i].DepartDate;
                     var dateTo = trip_list[i].ReturnDate;
 
-                    var d1 = dateFrom.split("-");
-                    var d2 = dateTo.split("-");
-                    var from = new Date(d1[0], parseInt(d1[1]) - 1, d1[2]); // -1 because months are from 0 to 11
-                    var to = new Date(d2[0], parseInt(d2[1]) - 1, d2[2]);
+                    var d1 = dateFrom.split("/");
+                    var d2 = dateTo.split("/");
+                    var from = new Date(d1[2], parseInt(d1[1]) - 1, d1[0]); // -1 because months are from 0 to 11
+                    var to = new Date(d2[2], parseInt(d2[1]) - 1, d2[0]);
 
                     var today = new Date();
                     var dd = today.getDate();
@@ -159,7 +159,8 @@
                         countInTrip++;
                         for (var k = 0; k < CustomerList.length; k++) {
                             if (CustomerList[k].Id == trip_list[i].CustomerID) {
-                                strCustomerOnTrip += "<tr><td>" + CustomerList[k].FirstName + " " + CustomerList[k].SureName + "</td>";
+                                strCustomerOnTrip += "<tr><td><img src='" + CustomerList[k].Img + "' /> </td>";
+                                strCustomerOnTrip += "<td>" + CustomerList[k].FirstName + " " + CustomerList[k].SureName + "</td>";
                             }
                         }
                         strCustomerOnTrip += "<td>" + trip_list[i].Destination + "</td>";
@@ -534,6 +535,7 @@
                                             <table class="table">
                                                 <thead>
                                                     <tr>
+                                                        <th></th>
                                                         <th>שם לקוח</th>
                                                         <th>יעד</th>
                                                         <th>תאריך חזרה</th>

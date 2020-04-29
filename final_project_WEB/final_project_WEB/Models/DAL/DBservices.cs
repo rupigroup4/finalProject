@@ -76,7 +76,7 @@ public class DBservices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}', '{7}','{8}')", customer.FirstName, customer.SureName, customer.PhoneNumber, customer.Gender.ToString(), customer.BirthDay.ToString(), customer.Email, "" ,customer.JoinDate, customer.AgentID);
+        sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}', '{4}', '{5}', '{6}', '{7}','{8}')", customer.FirstName, customer.SureName, customer.PhoneNumber, customer.Gender.ToString(), customer.BirthDay.ToString(), customer.Email, customer.Img ,customer.JoinDate, customer.AgentID);
         String prefix = "INSERT INTO Customer_igroup4 " + "(firstName,sureName,phoneNumber,gender,birthday,email,img,joinDate,AgentID)";
         command = prefix + sb.ToString();
 
@@ -612,6 +612,8 @@ public class DBservices
                 c.SureName = (string)dr["sureName"];
                 c.PhoneNumber = (string)dr["phoneNumber"];
                 c.BirthDay = (string)dr["birthDay"];
+                string[] bday = c.BirthDay.Split('-');
+                c.BirthDay = bday[2] + "/" + bday[1] + "/" + bday[0];
                 c.Gender = (string)dr["gender"];
                 c.Img = (string)dr["img"];
                 c.Email = (string)dr["email"];
@@ -660,7 +662,11 @@ public class DBservices
                 t.CustomerID = Convert.ToInt32(dr["_id_customer"]);
                 t.Destination = (string)dr["_destination"];
                 t.DepartDate = (string)dr["_depart"];
+                string[] DepartDate_arr = t.DepartDate.Split('-');
+                t.DepartDate = DepartDate_arr[2] + "/" + DepartDate_arr[1] + "/" + DepartDate_arr[0];
                 t.ReturnDate = (string)dr["_return"];
+                string[] ReturnDate_arr = t.ReturnDate.Split('-');
+                t.ReturnDate = ReturnDate_arr[2] + "/" + ReturnDate_arr[1] + "/" + ReturnDate_arr[0];
                 t.TripProfileID = 1;//Convert.ToInt32(dr["_id_TripProfile"]);
                 t.Pdf_Flightticket = "";//(string)dr["pdf_Flightticket"];
                 trip_list.Add(t);
