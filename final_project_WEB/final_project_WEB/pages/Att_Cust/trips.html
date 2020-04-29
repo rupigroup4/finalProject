@@ -83,10 +83,14 @@
                     }
                     document.getElementById("TripPH").innerHTML = str;
                     $('#trip_table').DataTable({
+                        columnDefs: [
+                            { type: 'date-dd/mm/yyyy', targets: 2 }
+                        ],
                         "language": {
                             "search": "חיפוש",
-                            "lengthMenu": "כמות שורות להצגה _MENU_",
+                            "lengthMenu": "שורות להצגה _MENU_",
                             "zeroRecords": "אין טיולים במערכת",
+                            "infoFiltered": "",
                             "info": "הצג עמוד _PAGE_ מתוך _PAGES_",
                             "infoEmpty": "",
                             "loadingRecords": "טוען...",
@@ -97,6 +101,7 @@
                                 "previous": "לעמוד הקודם"
                             },
                         }
+
                     });
                 }
             }
@@ -187,6 +192,7 @@
             localStorage.setItem('AgentID', "");
             window.location.href = "../Login/login-2.html";
         }
+
 
 
     </script>
@@ -397,7 +403,7 @@
                                         Add class <code>.table-bordered</code>
                                     </p>-->
                                     <div class="table-responsive pt-3">
-                                        <table id="trip_table" class="mdl-data-table" style="width:100%">
+                                        <table id="trip_table" class="mdl-data-table " style="width:100%">
                                             <thead>
                                                 <tr>
                                                     <th>
