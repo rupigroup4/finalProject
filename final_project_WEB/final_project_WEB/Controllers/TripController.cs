@@ -25,6 +25,16 @@ namespace final_project_WEB.Controllers
             Trip t = new Trip();
             return t.getCustomerTrips(id);
         }
+
+        //[HttpGet]
+        //[Route("api/Trip/customertripsprofile/{id}")]
+        //public List<Trip> getCustomerTripsProfile(int id)
+        //{
+        //    Trip t = new Trip();
+        //    return t.getCustomerTripsProfile(id);
+        //}
+
+
         //Mobile//
 
         //POST api/<controller>
