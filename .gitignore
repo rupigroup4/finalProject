@@ -353,6 +353,6 @@ MigrationBackup/
 .ionide/
 
 #all config files
-.config
+*.config
 
 
