@@ -9,3 +9,5 @@ create table PromotedAttraction_igroup4 (
 );
 	select * from PromotedAttraction_igroup4 
 	select tripProfile from PromotedAttraction_igroup4 where attracionID='ggg'
+
+UPDATE PromotedAttraction_igroup4 SET tripProfile = '1,2' WHERE attracionID = 'Kalverstraat'
