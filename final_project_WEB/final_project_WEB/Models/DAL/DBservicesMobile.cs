@@ -244,7 +244,10 @@ public class DBservicesMobile
                 t.Destination = (string)dr["_destination"];
                 t.DepartDate = (string)dr["_depart"];
                 t.ReturnDate = (string)dr["_return"];
-                t.Pdf_Flightticket = (string)dr["pdf_Flightticket"];
+                if ((string)dr["pdf_Flightticket"]!="")
+                {
+                    t.Pdf_Flightticket = (string)dr["pdf_Flightticket"];
+                }
                 trips.Add(t);
             }
             return trips;

@@ -356,8 +356,10 @@
     <Content Include="partials\.DS_Store" />
     <Content Include="README.md" />
     <Content Include="pages\Chat\.DS_Store" />
-    <None Include="Web.config" />
-    <None Include="Properties\PublishProfiles\iAgent.pubxml" />
+    <None Include="Properties\PublishProfiles\iAgentPublish.pubxml" />
+    <None Include="Web.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\city.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
