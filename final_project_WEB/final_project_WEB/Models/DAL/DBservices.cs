@@ -275,6 +275,49 @@ public class DBservices
 
     }
 
+    public int updateTripProfile(string attracionID, string new_tripProfile)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String rStr = "UPDATE PromotedAttraction_igroup4 SET tripProfile = '" + new_tripProfile + "' WHERE attracionID = '" + attracionID + "'";
+
+        cmd = CreateCommand(rStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
     public int Update_status(string stat, int RequestID)
     {
 
@@ -319,7 +362,7 @@ public class DBservices
 
     }
 
-    public int insert_Attraction_promotion(string AttracionID)
+    public int insert_Attraction_promotion(string attracionID, string cityName)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -333,7 +376,7 @@ public class DBservices
             throw (ex);
         }
 
-        String cStr = BuildInsertATT_PROCommand(AttracionID);      // helper method to build the insert string
+        String cStr = BuildInsertATT_PROCommand(attracionID, cityName);      // helper method to build the insert string
 
         cmd = CreateCommand(cStr, con);             // create the command
 
@@ -360,18 +403,74 @@ public class DBservices
 
     }
 
-    private String BuildInsertATT_PROCommand(string AttracionID)
+    private String BuildInsertATT_PROCommand(string attracionID, string cityName)
     {
         String command;
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}','{1}')", AttracionID,true);
-        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(attracionID,promoted)";
+        sb.AppendFormat("Values('{0}','{1}','{2}')", attracionID,true, cityName);
+        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(attracionID,promoted,cityName)";
         command = prefix + sb.ToString();
 
         return command;
     }
+
+
+    public int insert_TripProfile(string attracionID, string tripProfile, string cityName)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildInsertTripProfile(attracionID, tripProfile, cityName);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildInsertTripProfile(string attracionID, string tripProfile, string cityName)
+    {
+        String command;
+
+        StringBuilder sb = new StringBuilder();
+        // use a string builder to create the dynamic string
+        sb.AppendFormat("Values('{0}','{1}','{2}','{3}')", attracionID, false, tripProfile, cityName);
+        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(attracionID,promoted,tripProfile,cityName)";
+        command = prefix + sb.ToString();
+
+        return command;
+    }
+
 
 
     public int getCountNEWRequest(int Agent_ID)
@@ -383,7 +482,7 @@ public class DBservices
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "SELECT  COUNT(requestID) as count_ FROM Request_igroup4 LEFT JOIN Trip_igroup4 ON Request_igroup4.TripID = Trip_igroup4._id LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where status_='new' AND Customer_igroup4.AgentID=" + Agent_ID;
+            String selectSTR = "SELECT COUNT(requestID) as count_ FROM Request_igroup4 LEFT JOIN Trip_igroup4 ON Request_igroup4.TripID = Trip_igroup4._id LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where status_='new' AND Customer_igroup4.AgentID=" + Agent_ID;
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -958,6 +1057,42 @@ public class DBservices
                 checkAttracionID = Convert.ToInt32(dr["count_"]);
             }
             return checkAttracionID;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+    public string getTripProfile(string AttracionID)
+    {
+        string TripProfile = "";
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "select tripProfile from PromotedAttraction_igroup4 where attracionID='" + AttracionID + "'";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                TripProfile = (string)dr["tripProfile"];
+            }
+            return TripProfile;
         }
         catch (Exception ex)
         {

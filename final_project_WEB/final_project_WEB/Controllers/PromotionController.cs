@@ -22,10 +22,18 @@ namespace final_project_WEB.Controllers
         //    return "value";
         //}
         
-        public int GET_AttracionID(string AttracionID)
+        public int GET_AttracionID(string AttracionID, string cityName)
         {
             Promotion promotion = new Promotion();
-            return promotion.CheckAttracionID(AttracionID);
+            return promotion.CheckAttracionID(AttracionID, cityName);
+        }
+
+        [HttpGet]
+        [Route("api/Promotion/Add_TripProfile")] // Add Trip Profile
+        public int GET_AttracionID(string AttracionID, string TripProfile, string cityName)
+        {
+            Promotion promotion = new Promotion();
+            return promotion.CheckAttractionTripProfile(AttracionID, TripProfile, cityName);
         }
 
         // POST api/<controller>

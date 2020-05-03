@@ -21,19 +21,18 @@
     <link rel="stylesheet" href="../../css/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="../../images/favicon.png" />
-
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
             window.location.href = "../Login/login-2.html";
         }
-        $(document).ready(function () {
+        var chatObject = {};
+        $(document).ready(function () {           
 
             if (sessionStorage.getItem('id_chat')) {
                 document.getElementById("chatNamePH").innerHTML = "שלח הודעה ל" + sessionStorage.getItem('name_chat');
                 //bring Conversation from real-timeDB by id_chat
                 sessionStorage.clear();
             }
-            setInterval(Check_new_message, 5000);
             Agent_ID = localStorage.getItem('AgentID'); 
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
@@ -41,17 +40,29 @@
 
         });
 
-        $(document).on("click", ".StartChat", function () {
+        $(document).on("click", ".StartChat", function  () {
+
             $('.StartChat').css("background-color", "white")
             $(this).css("background-color", "grey")
-            
             let strConversation = "";
             let customerName = this.getAttribute('data-name');
             let customerID = this.getAttribute('data-id');
+            chatObject[customerID] = [];
+            firebase.database().ref(`/chat/${customerID}`).on('child_added', function (snapshot) {
+                chatObject[customerID].push((snapshot.val()));
+            })
+            
+                       
+            for (var i = 0; i < chatObject[customerID].length; i++) {
+                strConversation += `<p>${chatObject[customerID][i].message}</p>`
+
+            }
+            console.log(strConversation)
             //bring Conversation from real-timeDB by customerID
             document.getElementById("ConversationWithCustomerPH").innerHTML = strConversation;
 
-            document.getElementById("chatNamePH").innerHTML = "שלח הודעה ל" + customerName ;
+            document.getElementById("chatNamePH").innerHTML = "שלח הודעה ל" + customerName;
+
         });
 
         $('#form_SendMassage').submit(function () {
@@ -68,19 +79,23 @@
             customers_list = customers_list1;
             let str = "";
             for (var i = 0; i < customers_list.length; i++) {
-                let data_btn = "data-name='" + customers_list[i].FirstName + " " + customers_list[i].SureName + "'" + " data-id='" + customers_list[i].Id + "'" ;
+                chatObject[`${customers_list[i].Id}`] = []
+                let data_btn = "data-name='" + customers_list[i].FirstName + " " + customers_list[i].SureName + "'" + " data-id='" + customers_list[i].Id + "'";
                 str += "<tr style='cursor:pointer;' onMouseOver=this.style.color='#3399ff' onMouseOut=this.style.color='black' class='StartChat'" + data_btn + "><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td><td>";
                 if (customers_list[i].Img != "")
                     str += "<img src='" + customers_list[i].Img + "' />";
-                else if (customers_list[i].Gender == "נ") 
+                else if (customers_list[i].Gender == "נ")
                     str += "<img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 1) + ".jpg' />";
                 else str += "<img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 7) + ".jpg' />";
                 str += "</td></tr>";
             }
             document.getElementById("CustomerPH").innerHTML += str;
 
-
+            setInterval(Check_new_message(customers_list1), 5000);
         }
+
+        
+
         function Search_byName() {
             var input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("myInput");
@@ -112,8 +127,14 @@
             window.location.href = "../Login/login-2.html";
         }
 
-        function Check_new_message() {
-            ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
+        function Check_new_message(customers_list1) {
+            for (var i = 0; i < customers_list1.length; i++) {
+                let id = customers_list[i].Id;
+                firebase.database().ref(`/chat/${id}`).on('child_added', function (snapshot) {
+                    chatObject[id].push((snapshot.val()));
+                    console.log(chatObject[id])
+                })
+            }
         }
 
         function successCountNEWRequest(count) {
@@ -356,7 +377,7 @@
                                         <div class="card-body">
                                             <input type="text" id="myInput" onkeyup="Search_byName()" placeholder="חיפוש לפי שם">
                                             <div class="table-responsive">
-                                                <table class="table table-hover" id="Table_customer_chat">
+                                                <table class="table table" id="Table_customer_chat">
                                                     <thead>
                                                     </thead>
                                                     <tbody id="CustomerPH">
@@ -400,6 +421,33 @@
     <!-- Custom js for this page-->
     <script src="../../js/file-upload.js"></script>
     <!-- End custom js for this page-->
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-database.js"></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAId8Srmj8cJP0EZKGeQAQXkzS_k0KDHJY",
+            authDomain: "iagent-2c5fc.firebaseapp.com",
+            databaseURL: "https://iagent-2c5fc.firebaseio.com",
+            projectId: "iagent-2c5fc",
+            storageBucket: "iagent-2c5fc.appspot.com",
+            messagingSenderId: "46905251276",
+            appId: "1:46905251276:web:cb9d229b59320dc13b7969",
+            measurementId: "G-G8YDY5CXCH"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+
 </body>
 
 </html>
