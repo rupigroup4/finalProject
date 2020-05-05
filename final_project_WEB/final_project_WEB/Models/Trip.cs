@@ -65,11 +65,18 @@ namespace final_project_WEB.Models
             DBservicesMobile dbs = new DBservicesMobile();
             return dbs.getCustomerTrips(id);
         }
-        //public List<Trip> getCustomerTripsProfile(int id)
-        //{
-        //    DBservicesMobile dbs = new DBservicesMobile();
-        //    return dbs.getCustomerTripsProfile(id);
-        //}
+
+        public List<string> getTripProfile()
+        {
+            DBservicesMobile dbs = new DBservicesMobile();
+            return dbs.getTripProfile();
+        }
+
+        public int updateTripProfile(int tripId, int tripProfile)
+        {
+            DBservicesMobile dbs = new DBservicesMobile();
+            return dbs.updateTripProfile(tripId, tripProfile);
+        }
 
         //Mobile//
 

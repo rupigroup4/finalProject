@@ -244,6 +244,7 @@ public class DBservicesMobile
                 t.Destination = (string)dr["_destination"];
                 t.DepartDate = (string)dr["_depart"];
                 t.ReturnDate = (string)dr["_return"];
+                t.TripProfileID = Convert.ToInt16(dr["_id_TripProfile"]);
                 if ((string)dr["pdf_Flightticket"]!="")
                 {
                     t.Pdf_Flightticket = (string)dr["pdf_Flightticket"];
@@ -268,46 +269,84 @@ public class DBservicesMobile
     }
 
 
-    //public List<Trip> getCustomerTripsProfile(int id)
-    //{
-    //    List<Trip> trips = new List<Trip>();
-    //    SqlConnection con = null;
+    public List<string> getTripProfile()
+    {
+        List<string> tripProfile = new List<string>();
+        SqlConnection con = null;
 
-    //    try
-    //    {
-    //        con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-    //        String selectSTR = "SELECT * FROM Trip_igroup4 where _id_customer='" + id + "'";
-    //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+            String selectSTR = "SELECT _name FROM TripProfile_igroup4 ";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-    //        // get a reader
-    //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
 
-    //        while (dr.Read())
-    //        {
-    //            Trip t = new Trip();
-    //            t.TripID = Convert.ToInt16(dr["_id"]);
-    //            t.Destination = (string)dr["_destination"];
-    //            t.DepartDate = (string)dr["_depart"];
-    //            t.ReturnDate = (string)dr["_return"];
-    //            trips.Add(t);
-    //        }
-    //        return trips;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            con.Close();
-    //        }
+            while (dr.Read())
+            {
 
-    //    }
-    //}
+                tripProfile.Add((string)dr["_name"]);
+            }
+            return tripProfile;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+    public int updateTripProfile(int tripId , int tripProfile)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = "update Trip_igroup4 set _id_TripProfile='"+tripProfile+"' where _id='"+tripId+"'";
+
+        cmd = CreateCommand(cStr, con);   // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
+
 
 
     /////////////////////////////trip////////////////////////////////////////////////////////

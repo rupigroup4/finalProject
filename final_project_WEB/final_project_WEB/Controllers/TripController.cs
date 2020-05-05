@@ -26,13 +26,21 @@ namespace final_project_WEB.Controllers
             return t.getCustomerTrips(id);
         }
 
-        //[HttpGet]
-        //[Route("api/Trip/customertripsprofile/{id}")]
-        //public List<Trip> getCustomerTripsProfile(int id)
-        //{
-        //    Trip t = new Trip();
-        //    return t.getCustomerTripsProfile(id);
-        //}
+        [HttpGet]
+        [Route("api/Trip/tripProfile")]
+        public List<string> getTripProfile()
+        {
+            Trip t = new Trip();
+            return t.getTripProfile();
+        }
+
+        [HttpPut]
+        [Route("api/Trip/updatetripprofile/{tripId}/{tripProfile}")]
+        public int updateTripProfile(int tripId, int tripProfile)
+        {
+            Trip t = new Trip();
+            return t.updateTripProfile(tripId, tripProfile);
+        }
 
 
         //Mobile//
