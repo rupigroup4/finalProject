@@ -570,6 +570,7 @@ public class DBservices
                 r.Status = (string)dr["status_"];
                 r.AttractionID = (string)dr["attractionID"];
                 r.AttractionName = (string)dr["attractionName"];
+                r.CustomerID = Convert.ToInt32(dr["CustomerId"]);
                 Request_list.Add(r);
 
             }
@@ -611,6 +612,7 @@ public class DBservices
             while (dr.Read())
             {
                 Customer c = new Customer();
+                c.Id = Convert.ToInt32(dr["CustomerID"]);
                 c.FirstName = (string)dr["firstName"];
                 c.SureName = (string)dr["sureName"];
                 CustomersRequest_list.Add(c);

@@ -19,43 +19,7 @@
     <link rel="stylesheet" href="../../css/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="../../images/favicon.png" />
-    <style>
 
-        .multiselect {
-            width: 200px;
-        }
-
-        .selectBox {
-            position: relative;
-        }
-
-            .selectBox select {
-                width: 100%;
-                font-weight: bold;
-            }
-
-        .overSelect {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-
-        #checkboxes {
-            display: none;
-            border: 1px #dadada solid;
-        }
-
-            #checkboxes label {
-                display: block;
-            }
-                #checkboxes label:hover {
-                    background-color: #1e90ff;
-                }
-
-
-    </style>
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
             window.location.href = "../Login/login-2.html";
@@ -85,28 +49,25 @@
             city = city_new;
             Category_first = $('#ancestor_lable').val(); 
             url = "https://www.triposo.com/api/20200405/tag.json?location_id=" + city + "&ancestor_label=" + Category_first + "&order_by=-score&fields=label,name&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
-            console.log(url);
             $.get(url).done(successCategory);
             $.get(url).fail(errorCategory);
         }
 
         function sendToAPI() {
             Category_second = $('#category_sec_select').val();
-            console.log(Category_second);
             if (Category_first == 'tours') {
                 if (Category_second == 'All') {
-                    urlResults = "https://www.triposo.com/api/20200405/tour.json?location_ids=" + city + "&fields=id,name,score,intro,images,location_id&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+                    urlResults = "https://www.triposo.com/api/20200405/tour.json?location_ids=" + city + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
                 } else {
-                    urlResults = "https://www.triposo.com/api/20200405/tour.json?location_ids=" + city + "&tag_labels=" + Category_second + "&fields=id,name,score,intro,images,location_id&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+                    urlResults = "https://www.triposo.com/api/20200405/tour.json?location_ids=" + city + "&tag_labels=" + Category_second + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
                     $.get(urlResults).done(successAttractions);
                     $.get(urlResults).fail(errorAttractions);
                 }
             }
             else if (Category_second == 'All') {
-                urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_first + "&fields=id,name,score,intro,images,location_id&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+                urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_first + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
             }
-            else urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_second + "&fields=id,name,score,intro,images,location_id&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
-
+            else urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_second + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
             console.log(urlResults);
             $.get(urlResults).done(successAttractions);
             $.get(urlResults).fail(errorAttractions);     
@@ -123,6 +84,7 @@
             document.getElementById('attractionPH').innerHTML = str;
         }
 
+
         function errorCategory(err) {
             console.log(err);
         }
@@ -134,15 +96,15 @@
             str_buildAtt = "";
             arr_data = data.results;
             text = "";
-            console.log(city);
             for (var i = 0; i < arr_data.length; i++) {
                 str_buildAtt += '<div class="col-md-12 grid-margin"> <div class="card"> <div class="card-body">';
                 str_buildAtt += '<h4 class="card-title">' + arr_data[i].name + '</h4>';
-                str_buildAtt += `<p class='card-description'><button onclick='promotionAtt("${arr_data[i].id}","${city}")' type='button' class='btn btn-success btn-sm'>קדם</button>`;
-                str_buildAtt += `<button type="button" onclick="remove_promotionAtt('${arr_data[i].id}')" class="btn btn-danger btn-sm">הסר קידום</button></p>`;
+                str_buildAtt += `<p class='card-description'> <input onclick ='promotionAtt("${arr_data[i].id}","${city}")' type="range" min="1" max="5" value="1" class="slider1" name="Range_promotionAtt"></p>`;
+                str_buildAtt += `<p class='card-description'><button onclick='promotionAtt("${arr_data[i].id}","${city}")' type='button' class='btn btn-success btn-sm'>עדכן קידום</button>`;
+                //str_buildAtt += `<button type="button" onclick="remove_promotionAtt('${arr_data[i].id}')" class="btn btn-danger btn-sm">הסר קידום</button></p>`;
                 str_buildAtt +=
-                    `<div class="multiselect">
-                        <div class="selectBox" onclick="showCheckboxes('${arr_data[i].id}')">
+                    `<div class="multiselect" dir="rtl">
+                        <div dir="rtl" class="selectBox" onclick="showCheckboxes('${arr_data[i].id}')">
                             <select class="form-control">
                                 <option>בחר פרופיל טיול</option>
                             </select>
@@ -177,9 +139,14 @@
             console.log(err);
         }
 
+        $(document).on('change', '.slider1' ,function () {
+            console.log("בפנים");
+        })
+
         function promotionAtt(id_att, cityName)
         {
-            ajaxCall("GET", "../../api/Promotion?AttracionID=" + id_att + "&cityName=" + cityName, "", successGetAttrationID, errorGetAttrationID);
+            console.log("in");
+            //ajaxCall("GET", "../../api/Promotion?AttracionID=" + id_att + "&cityName=" + cityName, "", successGetAttrationID, errorGetAttrationID);
         }
 
         function successGetAttrationID(check) {
@@ -254,7 +221,6 @@
         var expanded = false;
 
         function showCheckboxes(id) {
-            console.log("checkboxes" + id);
             var checkboxes = document.getElementById("checkboxes"+id);
             if (!expanded) {
                 checkboxes.style.display = "block";
@@ -475,7 +441,7 @@
                                             <label for="city">
                                                 <strong>בחר עיר</strong>
                                             </label>
-                                            <input value="Amsterdam" id="city" class="form-control" required>
+                                            <input value="Amsterdam" id="city" class="form-control " required>
                                         </div>
                                         <div class="col-lg-4 grid-margin stretch-card">
                                             <label for="ancestor_lable">

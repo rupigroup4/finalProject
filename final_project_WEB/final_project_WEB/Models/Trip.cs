@@ -47,8 +47,9 @@ namespace final_project_WEB.Models
 
         public int Add_pdf_Flightticket(string id, string pdf)
         {
+           string  pdf1 = "http://proj.ruppin.ac.il/igroup4/prod/"+pdf;
             DBservices dbs = new DBservices();
-            return dbs.Add_pdf_Flightticket( id, pdf);
+            return dbs.Add_pdf_Flightticket( id, pdf1);
         }
 
         public List<Trip> Read_AllTrips(int Agent_ID)

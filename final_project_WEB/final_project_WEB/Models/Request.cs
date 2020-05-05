@@ -15,11 +15,13 @@ namespace final_project_WEB.Models
         private string pdfFile;
         private string attractionID;
         private string attractionName;
+        private int customerID;
+
 
 
         public Request() { }
 
-        public Request(int id, int tripID, string order_date, int numTickets, string status, string pdfFile, string attractionID, string attractionName)
+        public Request(int id, int tripID, string order_date, int numTickets, string status, string pdfFile, string attractionID, string attractionName, int customerID)
         {
             Id = id;
             TripID = tripID;
@@ -29,6 +31,7 @@ namespace final_project_WEB.Models
             PdfFile = pdfFile;
             AttractionID = attractionID;
             AttractionName = attractionName;
+            CustomerID = customerID;
         }
 
         public int Id { get { return id; } set { id = value; } }
@@ -39,6 +42,7 @@ namespace final_project_WEB.Models
         public int TripID { get { return tripID; } set { tripID = value; } }
         public string AttractionID { get { return attractionID; } set { attractionID = value; } }
         public string AttractionName { get { return attractionName; } set { attractionName = value; } }
+        public int CustomerID { get { return customerID; } set { customerID = value; } }
 
 
         public int Update_status(string stat, int RequestID)

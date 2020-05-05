@@ -27,268 +27,200 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 
     <style>
-        .well {
-            margin-top: 35px;
+        @import "lesshat";
+
+        @steps: 6;
+
+        // Set max value here
+        @padding: unit(100 / @steps, %); // Scaling the slider
+        @container-width: unit((@steps / 100) * 500, %); // Container width
+
+        // Colors
+
+        @gray: #d2d2d2;
+        @light-gray: #f1f1f1;
+        @orange: #ffb72f;
+        @pink: #fce0d6;
+        @blue: #bad6ef;
+        @yellow: #ffe12f;
+        @black: #383838;
+        @red: #fd6b6b;
+
+        // Style
+        html {
+            min-height: 100%;
         }
+
+        body {
+            background: url(https://i.imgur.com/t17127v.jpg) no-repeat;
+            background-size: 100% auto;
+            background-position: center center;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .input-range {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: @container-width;
+            .translate(-50%,-50%);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            #range-slider
+
+        {
+            width: calc(100% - @padding);
+            order: 10;
+            margin: 0;
+            border: none;
+            background-color: @light-gray;
+            margin-top: 2vw;
+            border-radius: 2vw;
+            height: 0.8vw;
+
+            @media screen and (max-width: 768px) {
+                margin-top: 4vw;
+            }
+
+            .ui-slider-range
+
+        {
+            background-color: @blue;
+            border-radius: 2vw;
+            .transition(all ease 250ms);
+            cursor: pointer;
+            height: 0.8vw;
+        }
+
+        .ui-slider-handle {
+            background-color: @blue;
+            border: none;
+            width: 1.5vw;
+            height: 1.5vw;
+            border-radius: 20px;
+            transform: translateY(-50%);
+            top: 50%;
+            margin-left: -0.75vw;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            outline: none;
+            .transition(all ease 250ms);
+            cursor: pointer;
+        }
+
+        each(range(@steps){     
+      &[data-value="@{value}"] {
+        .ui-slider-range,
+        .ui-slider-handle {
+          background-color: if((@value > @steps / 3), if((@value > @steps / 1.5), @red, @orange), @blue);
+        }
+      }
+    });
+        }
+
+        .labels {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            .fas
+
+        {
+            width: calc(100% / @steps);
+            text-align: center;
+            cursor: pointer;
+            &:before
+
+        {
+            font-size: 4vw;
+        }
+
+        &:hover {
+            .scale(1.1);
+        }
+
+        color: @light-gray;
+        .transition(all ease 250ms);
+        }
+
+        each(range(@steps){     
+      &[data-value="@{value}"] .fas:nth-child(-n + @{value}){
+        color: if((@value > @steps / 3), if((@value > @steps / 1.5), @red, @orange), @blue);
+        text-shadow:0 0 10px rgba(0, 0, 0, 0.2);
+      }
+    });
+        }
+        }
+
     </style>
 
     <script>
-        if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
-            window.location.href = "../Login/login-2.html";
-        }
-
         $(document).ready(function () {
-
-            setInterval(Check_new_message, 5000);
-            Agent_ID = localStorage.getItem('AgentID');
-            Agent_Name = localStorage.getItem('AgentName');
-            document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
-
-
-            minDate();
-            ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
-
-
-            $('#form_addtrip').submit(function () {
-                let destination = $('#destination').val();
-                let departure = $('#departure').val();
-                let returnDate = $('#return').val();
-
-                newTrip = {
-                    "Destination": destination,
-                    "DepartDate": departure,
-                    "ReturnDate": returnDate,
-                    "CustomerID": id_customer,
-                }
-                ajaxCall("POST", "../../api/Trip", JSON.stringify(newTrip), POSTsuccessNewTrip, POSTerrorNewTrip);
-                return false;
-            });
-
-            $(document).on("click", ".saveBtn", function () {
-                let id = this.getAttribute('data-id');
-                let i = this.getAttribute('data-index');
-                let num_row = 1 + parseInt(i);
-                let table = document.getElementById("myTable");
-                str_save = '<button type="button" onclick="save_change(' + i + ',' + id + ')" class="btn btn-primary btn-sm"><i>שמור שינוים</i ></button >';
-                str_save += '<button type="button" onclick="delete_change(' + i + ',' + id + ')" class="btn btn-danger btn-sm"><i>בטל שינוים</i ></button >';
-                table.rows[num_row].cells.item(5).innerHTML = str_save;
-                var change_Name = '<input type="text" class="form-control td-change " id="new_Name" value="' + customers_list[i].FirstName + ' ' + customers_list[i].SureName + '">';
-                table.rows[num_row].cells.item(1).innerHTML = change_Name;
-                var change_Phone = '<input type="text" class="form-control td-change " id="new_phoneNumber" placeholder="" required value="' + customers_list[i].PhoneNumber + '">';
-                table.rows[num_row].cells.item(2).innerHTML = change_Phone;
-                var change_Bday = ' <input type="date" class="form-control td-change " id="new_birthDay" value="' + customers_list[i].BirthDay + '" required />';
-                table.rows[num_row].cells.item(3).innerHTML = change_Bday;
-            });
+            document.getElementById('roni').innerHTML = `<div class="rating">
+  <input type="radio" name="star"/><span class="star"> </span>
+  <input type="radio" name="star"/><span class="star"> </span>
+  <input type="radio" name="star"/><span class="star"> </span>
+  <input type="radio" name="star"/><span class="star"> </span>
+  <input type="radio" name="star"/><span class="star"> </span><span class="emo"> </span>
+</div>`;
 
         });
 
-        function successCustomer_list(customers_list1) {
-            customers_list = customers_list1;
-            if (customers_list.length == 0)
-                swal("אין לקוחות במערכת !");
-            else {
-                let str = "";
-                for (var i = 0; i < customers_list.length; i++) {
-                    if (customers_list[i].Img != "") {
-                        str += "<tr> <td><img src='" + customers_list[i].Img + "' /> </td>";
-                    }
-                    else if (customers_list[i].Gender == "נ") {
-                        str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 1) + ".jpg' /> </td>";
-                    }
-                    else str += "<tr> <td><img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 7) + ".jpg' /> </td>";
-                    str += "<td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td>";
-                    str += "<td>" + customers_list[i].PhoneNumber + "</td>";
-                    str += "<td>" + customers_list[i].BirthDay + "</td>";
-                    str += "<td>" + customers_list[i].Email + "</td>";
-                    let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
-                    str += "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
-                    str += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
-                    str += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comments' ></i></button>";
-                    str += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
-                }
-                document.getElementById("CustomerPH").innerHTML = str;
+        var max = 6, // Set max value
+            initvalue = 4, // Set the initial value
+            icon = "fa-fire", // Set the icon (https://fontawesome.com/icons)
+            target = document.querySelectorAll('[data-value]'),
+            listIcon = document.getElementById("labels-list");
 
+        // Function to update du value
+
+        function updateValue(target, value) {
+            target.forEach(function (currentIndex) {
+                currentIndex.dataset.value = value;
+            });
+        }
+
+        // Init the number of item with the initial value settings
+
+        for (i = 0; i < max; i++) {
+            var picto = "<i class='fas " + icon + "'></i>";
+            $(".labels").append(picto);
+        }
+
+        updateValue(target, initvalue);
+
+        // Update the slider on click
+
+        $('.fas').on("click", function () {
+            var index = $(this).index() + 1;
+            $("#range-slider").slider("value", index);
+            updateValue(target, index);
+        });
+
+
+        // Init the slider
+
+        $("#range-slider").slider({
+            range: "min",
+            value: initvalue,
+            min: 1,
+            max: max,
+
+            slide: function (event, ui) {
+                updateValue(target, ui.value);
             }
-        }
-
-        function errorCustomer_list(err) {
-            alert("errorCustomer_list");
-
-        }
+        });
 
 
-        function delete_change(i, id) {
-
-        }
-        function save_change(i, id) {
-            numINlistcustomer = i;
-            let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
-            str_btn = "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
-            str_btn += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
-            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comments' ></i></button>";
-            str_btn += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td>";
-            document.getElementById("myTable").rows[i + 1].cells.item(5).innerHTML = str_btn;
-
-            new_Name = $('#new_Name').val().split(' ');
-            let firstName = new_Name[0];
-            let sureName = new_Name[1];
-            let phoneNumber = $('#new_phoneNumber').val();
-            let birthDay = $('#new_birthDay').val();
-            editCustomer = {
-                "Id": id,
-                "FirstName": firstName,
-                "SureName": sureName,
-                "PhoneNumber": phoneNumber,
-                "BirthDay": birthDay,
-            }
-            ajaxCall("POST", "../../api/Customer/Change_details", JSON.stringify(editCustomer), successEditCustomer, errorEditCustomer)
-        }
-
-        function successEditCustomer(customer) {
-            ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
-            document.getElementById("myTable").rows[numINlistcustomer + 1].cells.item(1).innerHTML = customer.FirstName + " " + customer.SureName;
-            document.getElementById("myTable").rows[numINlistcustomer + 1].cells.item(2).innerHTML = customer.PhoneNumber;
-            document.getElementById("myTable").rows[numINlistcustomer + 1].cells.item(3).innerHTML = customer.BirthDay;
-        }
-
-        function errorEditCustomer(err) {
-            alert("errorEditCustomer");
-        }
-        function deleteC(id) {
-            ajaxCall("DELETE", "../../api/Customer?customerID=" + id, "", successdeleteCustomer, errordeleteCustomer)
-        }
-
-        function successdeleteCustomer(num) {
-            if (num == 1) {
-                swal("נמחק בהצלחה", "הלקוח נמחק מהמערכת", "success");
-                ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
-            }
-            else {
-                swal("הלקוח לא נמחק", "ללקוח זה קיים טיול זמין במערכת", "error");// בהמשך לבדוק האם הטיל עבר
-            }
-            clearFields();
-        }
-
-        function errordeleteCustomer(err) {
-            alert("errordeleteCustomer");
-        }
-
-        function showPopUp(id) {
-            document.getElementById("loginPopup").style.display = "block";
-            document.getElementById("PHaddtrip").innerHTML = "הזן פרטי טיסה";
-
-            id_customer = id;
-        }
-
-        function closeForm() {
-            document.getElementById("loginPopup").style.display = "none";
-        }
 
 
-        function clearFields() {
-            $('#destination').val("");
-            $('#departure').val("");
-            $('#return').val("");
-        }
-
-        function POSTsuccessNewTrip(num) {
-            if (num == 1)
-                swal("בוצע בהצלחה", "נוסף טיול חדש", "success");
-            else
-                swal("שגיאה", "טיול לא נוסף", "error");
-            clearFields();
-            closeForm();
-        }
-
-        function POSTerrorNewTrip(err) {
-            console.log(err);
-            swal("error");
-        }
-
-        function Search_byName() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[1];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-
-        function minDate() {
-            var today = new Date();
-            var tommorow = new Date();
-            var dd = today.getDate();
-            var mm = today.getMonth() + 1;
-            var yyyy = today.getFullYear();
-            if (dd < 10) {
-                dd = '0' + dd;
-            }
-            if (mm < 10) {
-                mm = '0' + mm;
-            }
-            today = yyyy + '-' + mm + '-' + dd;
-            tommorow = yyyy + '-' + mm + '-' + String(parseInt(dd) + 1);
-            $('#departure').attr("min", today);
-            $('#return').attr("min", tommorow);
-
-        }
-        function ValiditionMin(departure) {
-            $('#return').attr("min", departure);
-
-        }
-
-        function successAgent_name(name) {
-            console.log(name);
-            document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
-
-        }
-
-        function errorAgent_name(err) {
-            alert("errorAgent_name");
-        }
 
 
-        function Check_new_message() {
-            ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
-        }
 
-        function successCountNEWRequest(count) {
-            if (count) {
-                document.getElementById("newRequest").style.display = "block";
-                return;
-            }
-            document.getElementById("newRequest").style.display = "none";
-        }
 
-        function errorCountNEWRequest(err) {
-            alert("errorCountNEWRequest");
-        }
-
-        function Moveto_login() {
-            localStorage.setItem('Email', "");
-            localStorage.setItem('AgentName', "");
-            localStorage.setItem('AgentID', "");
-            window.location.href = "../Login/login-2.html";
-        }
-
-        function successAgent_name(name) {
-            document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
-
-        }
-
-        function errorAgent_name(err) {
-            alert("errorAgent_name");
-        }
 
     </script>
 
@@ -493,35 +425,9 @@
                                 <div class="card-body">
                                     <div class="container-fluid">
                                         <div class="row">
-                                            <div class="col-md-6 col-md-offset-3 well">
-                                                <!-- <a href="/index.html">Change Settings</a> -->
-                                                <a class="btn btn-info " href="/index.html">
-                                                    <i class="fa fa-cog"></i>
-                                                    Settings
-                                                </a>
-                                                <h1 class="room-title text-center"></h1>
+                                            <div class="col-md-6 col-md-offset-3 well" id="roni">
+                                          
 
-                                                <ul class="messages list-group">
-                                                    <!-- messages would be shown here -->
-                                                </ul>
-
-                                                <form id="messageForm">
-                                                    <div class="form-group">
-                                                        <i class="" id="icon-type"></i>
-                                                        <p class="help-block typing"></p>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="glyphicon glyphicon-comment"></i>
-                                                            </span>
-                                                            <input autofocus class="form-control" id="messagebox" name="message" type="text" value="" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <input class="btn btn-default btn-block" type="submit" />
-                                                    </div>
-
-                                                </form>
 
                                             </div>
 
@@ -591,17 +497,9 @@
     <script src="https://cdn.jsdelivr.net/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
-    <script src="/js/QueryParams.js"></script>
-    <script src="/js/app.js"></script>
 
-    <script>
-        $(function () {
-            $("#destination").autocomplete({
-                source: cityNames
-            });
-        });
 
-    </script>
+
     <script src="../../Scripts/city.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->

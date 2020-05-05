@@ -104,16 +104,6 @@
             alert("errorCountNEWRequest");
         }
 
-        //function successAgent_name(name) {
-        //    document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
-        //    localStorage.setItem('AgentName', name);
-
-        //}
-
-        //function errorAgent_name(err) {
-        //    alert("errorAgent_name");
-        //}
-
         function Moveto_login() {
             localStorage.setItem('Email', "");
             localStorage.setItem('AgentID', "");
@@ -177,6 +167,7 @@
 
 
         function successShowALLRequest(Request_list) {
+            console.log(Request_list);
             var countSuccess = 0;
             if (Request_list) {
                 Request_list_Save = Request_list;
@@ -195,6 +186,7 @@
         }
 
         function successCustomer_Request(CustomerWithRequest) {
+            console.log(CustomerWithRequest);
             strRequest = "";
             for (var i = 0; i < CustomerWithRequest.length; i++) {
                 strRequest += "<tr><td>" + CustomerWithRequest[i].FirstName + " " + CustomerWithRequest[i].SureName + "</td>";
