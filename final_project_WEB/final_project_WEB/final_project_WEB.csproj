@@ -278,7 +278,6 @@
     <None Include="packages.config" />
     <Content Include="pages\Chat\chat.html" />
     <Content Include="pages\Att_Cust\trips.html" />
-    <Content Include="pages\Chat_dina\chat_dina.html" />
     <Content Include="pages\index.html" />
     <Content Include="pages\Reports\reports.html" />
     <Content Include="pages\Add_customer\add_customer.html" />
