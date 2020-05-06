@@ -20,48 +20,6 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="../../images/favicon.png" />
 
-    <style>
-        .imgRate {
-            transition: transform .2s;
-            margin: 0 auto;
-        }
-
-        #first {
-            float: right;
-            height: 25px;
-            width: 20px;
-            margin-right:3px;
-        }
-
-        #second {
-            float: right;
-            height: 27px;
-            width: 22px;
-        }
-
-        #third {
-            float: right;
-            height: 29px;
-            width: 24px;
-        }
-        #fourth {
-            float: right;
-            height: 31px;
-            width: 26px;
-        }
-        #fifth {
-            float: right;
-            height: 33px;
-            width: 28px;
-        }
-
-        .imgRate:hover {
-            -ms-transform: scale(1.5); /* IE 9 */
-            -webkit-transform: scale(1.5); /* Safari 3-8 */
-            transform: scale(1.5);
-        }
-
-    </style>
 
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
@@ -139,23 +97,12 @@
             arr_data = data.results;
             text = "";
             for (var i = 0; i < arr_data.length; i++) {
-                str_buildAtt += '<div class="col-md-12 grid-margin"> <div class="card"> <div class="card-body">';
+                str_buildAtt += '<div class="row"><div class="col-md-12 grid-margin"> <div class="card"> <div class="card-body">';
                 str_buildAtt += '<h4 class="card-title">' + arr_data[i].name + '</h4>';
-                str_buildAtt += `<div> <img id='fifth' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",5,"${city}")' src="../../images/flame-fire.png" /><img id='fourth'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",4,"${city}")' src="../../images/flame-fire.png" /><img id='third'class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",3,"${city}")' src="../../images/flame-fire.png" /><img id='second' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",2,"${city}")' src="../../images/flame-fire.png" /><img id='first'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",1,"${city}")' src="../../images/flame-fire.png" /></div>`;
-                //str_buildAtt += `<span class='card-description';> <p onclick ='promotionAtt("${arr_data[i].id}","${city}")'; style='font-size:20px';>&#128566; &#128577; &#128528; &#128522; &#129321; &#129297 </p></span>`;
-                //str_buildAtt += `<p class='card-description'> <input onclick ='promotionAtt("${arr_data[i].id}","${city}")' type="range" min="1" max="5" value="1" class="slider1" name="Range_promotionAtt"></p>`;
-                //str_buildAtt += `<p class='card-description'><button onclick='promotionAtt("${arr_data[i].id}","${city}")' type='button' class='btn btn-success btn-sm'>עדכן קידום</button>`;
-                //str_buildAtt += `<button type="button" onclick="remove_promotionAtt('${arr_data[i].id}')" class="btn btn-danger btn-sm">הסר קידום</button></p>`;
-                str_buildAtt +=
-                    `<div class="multiselect" dir="rtl">
-                        <div dir="rtl" class="selectBox" onclick="showCheckboxes('${arr_data[i].id}')">
-                            <select class="form-control">
-                                <option>בחר פרופיל טיול</option>
-                            </select>
-                            <div class="overSelect"></div>
-                        </div>
-                        <div id="checkboxes${arr_data[i].id}" style="display:none">
-                            <label for="one">
+                str_buildAtt += '<div class="card-description">ציון: ' + (arr_data[i].score).toFixed(2) + '</div>';
+                str_buildAtt += `<div id="img_fire" class="col-md-12 grid-margin"> <img id='fifth' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",5,"${city}")' src="../../images/flame-fire.png" /><img id='fourth'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",4,"${city}")' src="../../images/flame-fire.png" /><img id='third'class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",3,"${city}")' src="../../images/flame-fire.png" /><img id='second' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",2,"${city}")' src="../../images/flame-fire.png" /><img id='first'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",1,"${city}")' src="../../images/flame-fire.png" /></div>`;
+
+                str_buildAtt += `<div id="checkbox_Tp" class="col-md-12 grid-margin"><label for="one">
                                 <input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" />טיול משפחתי</label> 
                             <label for="two">
                                 <input onclick='addTripProfile("${arr_data[i].id}",2,"${city}")' type="checkbox" id="TripProfile_2" />מסיבת רווקים/רווקות</label>
@@ -164,16 +111,35 @@
                             <label for="four">
                                 <input onclick='addTripProfile("${arr_data[i].id}",4,"${city}")' type="checkbox" id="TripProfile_4" />נסיעת עסקים</label>
                             <label for="five">
-                                <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" />טיול זוגי/ירח דבש</label>
-                        </div>
-                    </div>`;
-                str_buildAtt += '<div class="card-description">ציון: ' + (arr_data[i].score).toFixed(2) + '</div>';
+                                <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" />טיול זוגי/ירח דבש</label></div>`;
+                //str_buildAtt += 
+                //    `<div class="multiselect" dir="rtl">
+                //        <div dir="rtl" class="selectBox" onclick="showCheckboxes('${arr_data[i].id}')">
+                //            <select class="form-control">
+                //                <option>בחר פרופיל טיול</option>
+                //            </select>
+                //            <div class="overSelect"></div>
+                //        </div>
+                //        <div id="checkboxes${arr_data[i].id}" style="display:none">
+                //            <label for="one">
+                //                <input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" />טיול משפחתי</label> 
+                //            <label for="two">
+                //                <input onclick='addTripProfile("${arr_data[i].id}",2,"${city}")' type="checkbox" id="TripProfile_2" />מסיבת רווקים/רווקות</label>
+                //            <label for="three">
+                //                <input onclick='addTripProfile("${arr_data[i].id}",3,"${city}")' type="checkbox" id="TripProfile_3" />טיול פנסיונרים</label>
+                //            <label for="four">
+                //                <input onclick='addTripProfile("${arr_data[i].id}",4,"${city}")' type="checkbox" id="TripProfile_4" />נסיעת עסקים</label>
+                //            <label for="five">
+                //                <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" />טיול זוגי/ירח דבש</label>
+                //        </div>
+                //    </div>`;
+               
                 str_buildAtt += '<div class="row"><div dir="rtl" class="col-md-6 overflow1" ><p style="text-align: left;">' + arr_data[i].intro + '</p><br/></div>';
                 if (arr_data[i].images[0] == null || arr_data[i].images[0].sizes == null || arr_data[i].images[0].sizes.medium == null || arr_data[i].images[0].sizes.medium.url == null) {
                     str_buildAtt += '<div class="col-md-6"> <img class="img_att" src="../../images/NoImg.png" /> </div></div> </div></div></div>';
                 }
                 else {
-                    str_buildAtt += '<div class="col-md-6"><img  class="img_att" src="' + arr_data[i].images[0].sizes.medium.url + '" /></div></div> </div></div></div>';
+                    str_buildAtt += '<div class="col-md-6"><img  class="img_att" src="' + arr_data[i].images[0].sizes.medium.url + '" /></div></div> </div></div></div></div>';
                 }             
 
             }
