@@ -232,7 +232,7 @@ public class DBservices
         }
 
     }
-    public int changePromotion(string attracionID,int x)
+    public int changePromotion(string attracionID,int rate)
     {
 
         SqlConnection con;
@@ -248,7 +248,7 @@ public class DBservices
             throw (ex);
         }
 
-        String rStr = "UPDATE PromotedAttraction_igroup4 SET promoted = "+x+" WHERE attracionID = '"+ attracionID + "'";
+        String rStr = "UPDATE PromotedAttraction_igroup4 SET rate = "+rate+" WHERE attracionID = '"+ attracionID + "'";
 
         cmd = CreateCommand(rStr, con);             // create the command
 
@@ -275,7 +275,7 @@ public class DBservices
 
     }
 
-    public int updateTripProfile(string attracionID, string new_tripProfile)
+    public int AddTripProfile(string attracionID, int new_tripProfile,int AgentID)
     {
 
         SqlConnection con;
@@ -291,7 +291,50 @@ public class DBservices
             throw (ex);
         }
 
-        String rStr = "UPDATE PromotedAttraction_igroup4 SET tripProfile = '" + new_tripProfile + "' WHERE attracionID = '" + attracionID + "'";
+        String rStr = "UPDATE PromotedAttraction_igroup4 SET _"+ new_tripProfile + "= 1 WHERE agent_ID=" + AgentID + "AND attracionID = '" + attracionID + "'";
+
+        cmd = CreateCommand(rStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    public int RemoveTripProfile(string attracionID, int new_tripProfile, int AgentID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String rStr = "UPDATE PromotedAttraction_igroup4 SET _" + new_tripProfile + "= 0 WHERE agent_ID=" + AgentID + "AND attracionID = '" + attracionID + "'";
 
         cmd = CreateCommand(rStr, con);             // create the command
 
@@ -362,7 +405,7 @@ public class DBservices
 
     }
 
-    public int insert_Attraction_promotion(string attracionID, string cityName)
+    public int insert_Attraction_promotion(string attracionID,int rate, string cityName, int AgentID)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -376,7 +419,7 @@ public class DBservices
             throw (ex);
         }
 
-        String cStr = BuildInsertATT_PROCommand(attracionID, cityName);      // helper method to build the insert string
+        String cStr = BuildInsertATT_PROCommand(attracionID,rate, cityName, AgentID);      // helper method to build the insert string
 
         cmd = CreateCommand(cStr, con);             // create the command
 
@@ -403,21 +446,21 @@ public class DBservices
 
     }
 
-    private String BuildInsertATT_PROCommand(string attracionID, string cityName)
+    private String BuildInsertATT_PROCommand(string attracionID, int rate, string cityName, int AgentID)
     {
         String command;
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}','{1}','{2}')", attracionID,true, cityName);
-        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(attracionID,promoted,cityName)";
+        sb.AppendFormat("Values('{0}','{1}','{2}','{3}')", attracionID,rate, cityName, AgentID);
+        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(attracionID,rate,cityName,agent_ID)";
         command = prefix + sb.ToString();
 
         return command;
     }
 
 
-    public int insert_TripProfile(string attracionID, string tripProfile, string cityName)
+    public int insert_TripProfile(string attracionID, int tripProfile, string cityName, int AgentID)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -431,7 +474,7 @@ public class DBservices
             throw (ex);
         }
 
-        String cStr = BuildInsertTripProfile(attracionID, tripProfile, cityName);      // helper method to build the insert string
+        String cStr = BuildInsertTripProfile(attracionID, tripProfile, cityName, AgentID);      // helper method to build the insert string
 
         cmd = CreateCommand(cStr, con);             // create the command
 
@@ -458,14 +501,14 @@ public class DBservices
 
     }
 
-    private String BuildInsertTripProfile(string attracionID, string tripProfile, string cityName)
+    private String BuildInsertTripProfile(string attracionID, int tripProfile, string cityName, int AgentID)
     {
         String command;
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}','{1}','{2}','{3}')", attracionID, false, tripProfile, cityName);
-        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(attracionID,promoted,tripProfile,cityName)";
+        sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}')", AgentID, attracionID, 0, cityName ,1);
+        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(agent_ID,attracionID,rate,cityName,_" + tripProfile+ ")";
         command = prefix + sb.ToString();
 
         return command;
@@ -792,11 +835,12 @@ public class DBservices
 
     public DBservices readTable()
     {
+        int AgentID = 1;// לשלוח את המספר סוכן לפונקציה  
         SqlConnection con = null;
         try
         {
             con = connect("DBConnectionString");
-            da = new SqlDataAdapter("select * from Customer_igroup4", con);
+            da = new SqlDataAdapter("select * from Customer_igroup4 where agent_ID=" + AgentID, con);
             SqlCommandBuilder builder = new SqlCommandBuilder(da);
             DataSet ds = new DataSet();
             da.Fill(ds);
@@ -1039,16 +1083,52 @@ public class DBservices
         return cmd;
     }
 
-    public int check_AttracionID(string AttracionID)
+    //public int check_AttracionID(string AttracionID)
+    //{
+    //    int checkAttracionID=0;
+    //    SqlConnection con = null;
+
+    //    try
+    //    {
+    //        con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+    //        String selectSTR = "select COUNT(attracionID) as count_ from PromotedAttraction_igroup4 where attracionID='" + AttracionID+"'";
+    //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+    //        // get a reader
+    //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+    //        while (dr.Read())
+    //        {
+    //            checkAttracionID = Convert.ToInt32(dr["count_"]);
+    //        }
+    //        return checkAttracionID;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            con.Close();
+    //        }
+
+    //    }
+    //}
+
+    public int ExistsAttraction(string AttracionID, int AgentID)
     {
-        int checkAttracionID=0;
+        int count = 0;
         SqlConnection con = null;
 
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "select COUNT(attracionID) as count_ from PromotedAttraction_igroup4 where attracionID='" + AttracionID+"'";
+            String selectSTR = "select COUNT(*) as count from PromotedAttraction_igroup4 where agent_ID=" + AgentID + " AND attracionID='" + AttracionID + "'";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -1056,45 +1136,9 @@ public class DBservices
 
             while (dr.Read())
             {
-                checkAttracionID = Convert.ToInt32(dr["count_"]);
+                count = Convert.ToInt32(dr["count"]);
             }
-            return checkAttracionID;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-        finally
-        {
-            if (con != null)
-            {
-                con.Close();
-            }
-
-        }
-    }
-
-    public string getTripProfile(string AttracionID)
-    {
-        string TripProfile = "";
-        SqlConnection con = null;
-
-        try
-        {
-            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-
-            String selectSTR = "select tripProfile from PromotedAttraction_igroup4 where attracionID='" + AttracionID + "'";
-            SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-            // get a reader
-            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-
-            while (dr.Read())
-            {
-                TripProfile = (string)dr["tripProfile"];
-            }
-            return TripProfile;
+            return count;
         }
         catch (Exception ex)
         {

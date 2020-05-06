@@ -7,79 +7,91 @@ namespace final_project_WEB.Models
 {
     public class Promotion
     {
+        private int agentID;
         private string attracionID;
         private int ordersQuantity;
-        private bool Promoted;
-        private string TripProfile;
-        private string CityName;
+        private int rate;
+        private string cityName;
+        private int tripProfile_1;
+        private int tripProfile_2;
+        private int tripProfile_3;
+        private int tripProfile_4;
+        private int tripProfile_5;
+        
 
-        public Promotion(string attracionID, int ordersQuantity, bool promoted, string tripProfile, string cityName)
+        public Promotion(int agentID, string attracionID, int ordersQuantity, int rate, string cityName, int tripProfile_1, int tripProfile_2, int tripProfile_3, int tripProfile_4, int tripProfile_5)
         {
+            AgentID = agentID;
             AttracionID = attracionID;
             OrdersQuantity = ordersQuantity;
-            Promoted1 = promoted;
-            TripProfile1 = tripProfile;
-            CityName1 = cityName;
+            Rate = rate;
+            CityName = cityName;
+            TripProfile_1 = tripProfile_1;
+            TripProfile_2 = tripProfile_2;
+            TripProfile_3 = tripProfile_3;
+            TripProfile_4 = tripProfile_4;
+            TripProfile_5 = tripProfile_5;
+
         }
 
         public Promotion(){}
-            
+        
+        public int AgentID { get { return agentID; } set { agentID = value; } }
         public string AttracionID { get { return attracionID; } set { attracionID = value; } }
         public int OrdersQuantity { get { return ordersQuantity; } set { ordersQuantity = value; } }
-        public bool Promoted1 { get { return Promoted; } set { Promoted = value; } }
-        public string TripProfile1 { get { return TripProfile; } set { TripProfile = value; } }
-        public string CityName1 { get { return CityName; } set { CityName = value; } }
+        public int Rate { get { return rate; } set { rate = value; } }
+        public string CityName { get { return cityName; } set { cityName = value; } }
+        public int TripProfile_1 { get { return tripProfile_1; } set { tripProfile_1 = value; } }
+        public int TripProfile_2 { get { return tripProfile_2; } set { tripProfile_2 = value; } }
+        public int TripProfile_3 { get { return tripProfile_3; } set { tripProfile_3 = value; } }
+        public int TripProfile_4 { get { return tripProfile_4; } set { tripProfile_4 = value; } }
+        public int TripProfile_5 { get { return tripProfile_5; } set { tripProfile_5 = value; } }
 
-        public int CheckAttracionID(string attracionID, string cityName)
+
+        public int CheckAttracionID(string attracionID,int rate, string cityName, int AgentID)
         {
             DBservices dbs = new DBservices();
-             int ans =dbs.check_AttracionID(attracionID);
+             int ans =dbs.ExistsAttraction(attracionID, AgentID);
             if (ans == 0)
             {
-                int numaffected = dbs.insert_Attraction_promotion(attracionID, cityName);
+                int numaffected = dbs.insert_Attraction_promotion(attracionID,rate, cityName, AgentID);
                 return numaffected;
             }
             else
-                return dbs.changePromotion(attracionID, 1);
+                return dbs.changePromotion(attracionID, rate);
 
         }
 
-        public int RemovePromotion (string attracionID)
+        public int RemovePromotion (string attracionID, int AgentID)
         {
             DBservices dbs = new DBservices();
-            int ans = dbs.check_AttracionID(attracionID);
+            int ans = dbs.ExistsAttraction(attracionID, AgentID);
             if (ans==1)
                 return dbs.changePromotion(attracionID,0);
             return 0;
         }
 
-        public int CheckAttractionTripProfile(string attracionID, string tripProfile, string cityName)
+        public int AddTripProfile(string attracionID, int tripProfile, string cityName, int AgentID)
         {
-            string[] arr_TP;
             DBservices dbs = new DBservices();
-            string ans = dbs.getTripProfile(attracionID);
-            if (ans == "") //attraction doesn't exist - Add atraction with Promotion 0 and trip profile
+            int ans = dbs.ExistsAttraction(attracionID, AgentID);
+            if (ans == 0) //attraction doesn't exist - Add atraction with Promotion 0 and trip profile
             {
-
-                int numaffected = dbs.insert_TripProfile(attracionID, tripProfile, cityName);
+                int numaffected = dbs.insert_TripProfile(attracionID, tripProfile, cityName, AgentID);
                 return numaffected;
             }
             else
             {
-                arr_TP = ans.Split(',');
-                for (int i = 0; i < arr_TP.Length; i++)
-                {
-                    if (arr_TP[i]== tripProfile)
-                    {
-                        return -1;
-                    }
-                }
-                ans += "," + tripProfile;
-                return dbs.updateTripProfile(attracionID, ans);
-
+                return dbs.AddTripProfile(attracionID, tripProfile, AgentID);
             }
-
         }
+
+        public int RemoveTripProfile(string attracionID, int tripProfile, int AgentID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.RemoveTripProfile(attracionID, tripProfile, AgentID);
+        }
+
 
     }
 }

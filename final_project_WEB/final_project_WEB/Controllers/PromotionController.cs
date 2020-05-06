@@ -10,44 +10,46 @@ namespace final_project_WEB.Controllers
 {
     public class PromotionController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<controller>/5
-        //public string Get(int id)
+        //// GET api/<controller>
+        //public List<Promotion> Get(int Agent_ID)
         //{
-        //    return "value";
+        //    Customer customer = new Customer();
+        //    return customer.Read_customers(Agent_ID);
         //}
-        
-        public int GET_AttracionID(string AttracionID, string cityName)
+
+
+        [HttpPut]
+        [Route("api/Promotion/Add_Rate")]
+        public int AddRate(string AttracionID,int rate, string cityName, int AgentID)
         {
             Promotion promotion = new Promotion();
-            return promotion.CheckAttracionID(AttracionID, cityName);
+            return promotion.CheckAttracionID(AttracionID, rate, cityName, AgentID);
         }
 
-        [HttpGet]
+        [HttpPut]
         [Route("api/Promotion/Add_TripProfile")] // Add Trip Profile
-        public int GET_AttracionID(string AttracionID, string TripProfile, string cityName)
+        public int AddTripProfile(string AttracionID, int TripProfile, string cityName, int AgentID)
         {
             Promotion promotion = new Promotion();
-            return promotion.CheckAttractionTripProfile(AttracionID, TripProfile, cityName);
+            return promotion.AddTripProfile(AttracionID, TripProfile, cityName, AgentID);
         }
 
-        // POST api/<controller>
-        //public void Post([FromBody]string value)
-        //{
-        //}
+        [HttpPut]
+        [Route("api/Promotion/Remove_TripProfile")] // Add Trip Profile
+        public int RemoveTripProfile(string AttracionID, int TripProfile, int AgentID)
+        {
+            Promotion promotion = new Promotion();
+            return promotion.RemoveTripProfile(AttracionID, TripProfile, AgentID);
+        }
+
 
         [HttpPut]
         [Route("api/Promotion/removePromotion")]
         // PUT api/<controller>/5
-        public int PUT_removePromotion(string attracionID)
+        public int PUT_removePromotion(string attracionID, int AgentID)
         {
             Promotion promotion = new Promotion();
-            return promotion.RemovePromotion(attracionID);
+            return promotion.RemovePromotion(attracionID, AgentID);
         }
 
         // DELETE api/<controller>/5

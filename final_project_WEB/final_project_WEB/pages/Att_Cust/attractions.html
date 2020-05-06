@@ -20,6 +20,49 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="../../images/favicon.png" />
 
+    <style>
+        .imgRate {
+            transition: transform .2s;
+            margin: 0 auto;
+        }
+
+        #first {
+            float: right;
+            height: 25px;
+            width: 20px;
+            margin-right:3px;
+        }
+
+        #second {
+            float: right;
+            height: 27px;
+            width: 22px;
+        }
+
+        #third {
+            float: right;
+            height: 29px;
+            width: 24px;
+        }
+        #fourth {
+            float: right;
+            height: 31px;
+            width: 26px;
+        }
+        #fifth {
+            float: right;
+            height: 33px;
+            width: 28px;
+        }
+
+        .imgRate:hover {
+            -ms-transform: scale(1.5); /* IE 9 */
+            -webkit-transform: scale(1.5); /* Safari 3-8 */
+            transform: scale(1.5);
+        }
+
+    </style>
+
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
             window.location.href = "../Login/login-2.html";
@@ -31,8 +74,7 @@
             Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
-
-
+            //ajaxCall("GET", "../../api/Promotion/, "", successGetAttrationID, errorGetAttrationID);
 
         });
 
@@ -91,7 +133,7 @@
 
 
         //ResultsURL
-
+        
         function successAttractions(data) {
             str_buildAtt = "";
             arr_data = data.results;
@@ -99,8 +141,10 @@
             for (var i = 0; i < arr_data.length; i++) {
                 str_buildAtt += '<div class="col-md-12 grid-margin"> <div class="card"> <div class="card-body">';
                 str_buildAtt += '<h4 class="card-title">' + arr_data[i].name + '</h4>';
-                str_buildAtt += `<p class='card-description'> <input onclick ='promotionAtt("${arr_data[i].id}","${city}")' type="range" min="1" max="5" value="1" class="slider1" name="Range_promotionAtt"></p>`;
-                str_buildAtt += `<p class='card-description'><button onclick='promotionAtt("${arr_data[i].id}","${city}")' type='button' class='btn btn-success btn-sm'>עדכן קידום</button>`;
+                str_buildAtt += `<div> <img id='fifth' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",5,"${city}")' src="../../images/flame-fire.png" /><img id='fourth'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",4,"${city}")' src="../../images/flame-fire.png" /><img id='third'class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",3,"${city}")' src="../../images/flame-fire.png" /><img id='second' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",2,"${city}")' src="../../images/flame-fire.png" /><img id='first'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",1,"${city}")' src="../../images/flame-fire.png" /></div>`;
+                //str_buildAtt += `<span class='card-description';> <p onclick ='promotionAtt("${arr_data[i].id}","${city}")'; style='font-size:20px';>&#128566; &#128577; &#128528; &#128522; &#129321; &#129297 </p></span>`;
+                //str_buildAtt += `<p class='card-description'> <input onclick ='promotionAtt("${arr_data[i].id}","${city}")' type="range" min="1" max="5" value="1" class="slider1" name="Range_promotionAtt"></p>`;
+                //str_buildAtt += `<p class='card-description'><button onclick='promotionAtt("${arr_data[i].id}","${city}")' type='button' class='btn btn-success btn-sm'>עדכן קידום</button>`;
                 //str_buildAtt += `<button type="button" onclick="remove_promotionAtt('${arr_data[i].id}')" class="btn btn-danger btn-sm">הסר קידום</button></p>`;
                 str_buildAtt +=
                     `<div class="multiselect" dir="rtl">
@@ -123,7 +167,7 @@
                                 <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" />טיול זוגי/ירח דבש</label>
                         </div>
                     </div>`;
-                str_buildAtt += '<p class="card-description">ציון: ' + (arr_data[i].score).toFixed(2) + '</p>';
+                str_buildAtt += '<div class="card-description">ציון: ' + (arr_data[i].score).toFixed(2) + '</div>';
                 str_buildAtt += '<div class="row"><div dir="rtl" class="col-md-6 overflow1" ><p style="text-align: left;">' + arr_data[i].intro + '</p><br/></div>';
                 if (arr_data[i].images[0] == null || arr_data[i].images[0].sizes == null || arr_data[i].images[0].sizes.medium == null || arr_data[i].images[0].sizes.medium.url == null) {
                     str_buildAtt += '<div class="col-md-6"> <img class="img_att" src="../../images/NoImg.png" /> </div></div> </div></div></div>';
@@ -143,10 +187,9 @@
             console.log("בפנים");
         })
 
-        function promotionAtt(id_att, cityName)
+        function promotionAtt(id_att,rate, cityName)
         {
-            console.log("in");
-            //ajaxCall("GET", "../../api/Promotion?AttracionID=" + id_att + "&cityName=" + cityName, "", successGetAttrationID, errorGetAttrationID);
+            ajaxCall("PUT", "../../api/Promotion/Add_Rate?AttracionID=" + id_att + "&rate=" + rate + "&cityName=" + cityName + "&AgentID=" + Agent_ID, "", successGetAttrationID, errorGetAttrationID);
         }
 
         function successGetAttrationID(check) {
@@ -157,18 +200,17 @@
         function errorGetAttrationID(err) {
             swal("משהו קרה!", "", "warning");        
         }
-        function remove_promotionAtt(id_att) {
-            ajaxCall("PUT", "../../api/Promotion/removePromotion?AttracionID=" + id_att, "", successRemovePromotion, errorRemovePromotion);
+        //function remove_promotionAtt(id_att) {
+        //    ajaxCall("PUT", "../../api/Promotion/removePromotion?AttracionID=" + id_att, "", successRemovePromotion, errorRemovePromotion);
 
-        }
+        //}
 
         function addTripProfile(id_att, tripProfile, cityName) { //Add trip Profile to Attraction
-            console.log(id_att, tripProfile, cityName);
             let id = "TripProfile_" + tripProfile;
             if (document.getElementById(id).checked == true) {
-                ajaxCall("GET", "../../api/Promotion/Add_TripProfile?AttracionID=" + id_att + "&TripProfile=" + tripProfile + "&cityName=" + cityName, "", successGetTripProfile, errorGetTripProfile);
+                ajaxCall("PUT", "../../api/Promotion/Add_TripProfile?AttracionID=" + id_att + "&TripProfile=" + tripProfile + "&cityName=" + cityName + "&AgentID=" + Agent_ID , "", successGetTripProfile, errorGetTripProfile);
             } else {
-                //deleteTripProfile
+                ajaxCall("PUT", "../../api/Promotion/Remove_TripProfile?AttracionID=" + id_att + "&TripProfile=" + tripProfile + "&AgentID=" + Agent_ID, "", successRemoveTripProfile, errorRemoveTripProfile);
             }
         }
         function successGetTripProfile(check) {
@@ -178,9 +220,18 @@
         function errorGetTripProfile(err) {
             swal("משהו קרה!", "", "warning");
         }
+
+        function successRemoveTripProfile(check) {
+            swal("הפרופיל הוסר", "", "success");
+        }
+
+        function errorRemoveTripProfile(err) {
+            swal("משהו קרה!", "", "warning");
+        }
         
         function successRemovePromotion() {
-            swal("הקידום נמחק", "", "success");        }
+            swal("הקידום נמחק", "", "success");
+        }
         function errorRemovePromotion() {
             alert(errorRemovePromotion);
         }

@@ -241,6 +241,9 @@
     <Content Include="images\faces\face8.jpg" />
     <Content Include="images\faces\face9.jpg" />
     <Content Include="images\favicon.png" />
+    <Content Include="images\flame-fire-logo.jpg" />
+    <Content Include="images\flame-fire.png" />
+    <Content Include="images\flame.png" />
     <Content Include="images\img_new\מצגת סמסטר א אנסטסיה %282%29.jpg" />
     <Content Include="images\logo-mini.svg" />
     <Content Include="images\logo.svg" />
