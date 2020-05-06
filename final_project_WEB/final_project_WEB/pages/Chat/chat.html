@@ -21,46 +21,112 @@
     <link rel="stylesheet" href="../../css/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="../../images/favicon.png" />
+    <style>
+        #ConversationWithCustomerPH {
+            height: 90%;
+            border: 1px solid #ced4da;
+        }
+        body_chat {
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .container_chat {
+            border: 2px solid #dedede;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .darker_chat {
+            border-color: #ccc;
+            background-color: #ddd;
+        }
+
+        .container_chat::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .container_chat img {
+            height: 60px;
+            float: left;
+            max-width: 60px;
+            width: 100%;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+
+            .container_chat img.right {
+                float: right;
+                margin-left: 20px;
+                margin-right: 0;
+            }
+
+        .time-right {
+            float: right;
+            color: #aaa;
+        }
+
+        .time-left {
+            float: left;
+            color: #999;
+        }
+    </style>
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
             window.location.href = "../Login/login-2.html";
         }
         var chatObject = {};
-        $(document).ready(function () {           
+        $(document).ready(function () {
 
             if (sessionStorage.getItem('id_chat')) {
                 document.getElementById("chatNamePH").innerHTML = "שלח הודעה ל" + sessionStorage.getItem('name_chat');
                 //bring Conversation from real-timeDB by id_chat
                 sessionStorage.clear();
             }
-            Agent_ID = localStorage.getItem('AgentID'); 
+            Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
 
         });
 
-        $(document).on("click", ".StartChat", function  () {
-
+        $(document).on("click", ".StartChat", function () {
             $('.StartChat').css("background-color", "white")
-            $(this).css("background-color", "grey")
+            $(this).css("background-color", "#dedede")
             let strConversation = "";
             let customerName = this.getAttribute('data-name');
             let customerID = this.getAttribute('data-id');
+            let indexCustomer = this.getAttribute('data-indexC');
+            console.log(chatObject[customerID])
+
             chatObject[customerID] = [];
             firebase.database().ref(`/chat/${customerID}`).on('child_added', function (snapshot) {
                 chatObject[customerID].push((snapshot.val()));
             })
-            
-                       
-            for (var i = 0; i < chatObject[customerID].length; i++) {
-                strConversation += `<p>${chatObject[customerID][i].message}</p>`
 
+
+            for (var i = 0; i < chatObject[customerID].length; i++) {
+                if (chatObject[customerID][i].userId == Agent_ID) {
+                    strConversation += `<div class="container_chat darker_chat">
+                            <img src="../../images/PeoplePic/3.jpg" alt="Avatar" class="right" style="width:100%;">
+                            <p>${chatObject[customerID][i].message}</p>
+                            <span class="time-left">${chatObject[customerID][i].time}</span>
+                            </div>`;
+                } else {
+                    strConversation += `<div class="container_chat">
+                            <img src="${customers_list[indexCustomer].Img}" alt="Avatar" style="width:100%;">
+                            <p>${chatObject[customerID][i].message}</p>
+                            <span class="time-right">${chatObject[customerID][i].time}</span>
+                            </div>`;
+                }
             }
-            console.log(strConversation)
             //bring Conversation from real-timeDB by customerID
             document.getElementById("ConversationWithCustomerPH").innerHTML = strConversation;
-
             document.getElementById("chatNamePH").innerHTML = "שלח הודעה ל" + customerName;
 
         });
@@ -80,13 +146,9 @@
             let str = "";
             for (var i = 0; i < customers_list.length; i++) {
                 chatObject[`${customers_list[i].Id}`] = []
-                let data_btn = "data-name='" + customers_list[i].FirstName + " " + customers_list[i].SureName + "'" + " data-id='" + customers_list[i].Id + "'";
+                let data_btn = "data-name='" + customers_list[i].FirstName + " " + customers_list[i].SureName + "'" + " data-id='" + customers_list[i].Id + "'" + " data-indexC='" + i + "'";
                 str += "<tr style='cursor:pointer;' onMouseOver=this.style.color='#3399ff' onMouseOut=this.style.color='black' class='StartChat'" + data_btn + "><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td><td>";
-                if (customers_list[i].Img != "")
-                    str += "<img src='" + customers_list[i].Img + "' />";
-                else if (customers_list[i].Gender == "נ")
-                    str += "<img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 1) + ".jpg' />";
-                else str += "<img src='../../images/PeoplePic/" + (Math.floor(Math.random() * 6) + 7) + ".jpg' />";
+                str += "<img src='" + customers_list[i].Img + "' />";
                 str += "</td></tr>";
             }
             document.getElementById("CustomerPH").innerHTML += str;
@@ -94,7 +156,7 @@
             setInterval(Check_new_message(customers_list1), 5000);
         }
 
-        
+
 
         function Search_byName() {
             var input, filter, table, tr, td, i, txtValue;
@@ -119,7 +181,7 @@
             alert("errorCustomer_list");
 
         }
-        
+
         function Moveto_login() {
             localStorage.setItem('Email', "");
             localStorage.setItem('AgentName', "");
@@ -132,8 +194,9 @@
                 let id = customers_list[i].Id;
                 firebase.database().ref(`/chat/${id}`).on('child_added', function (snapshot) {
                     chatObject[id].push((snapshot.val()));
-                    console.log(chatObject[id])
+                    //console.log(chatObject[id])
                 })
+
             }
         }
 
@@ -354,9 +417,9 @@
                     <div class="row chat_height" >
                         <div class="col-md-8 grid-margin stretch-card chat-style">
                             <div class="card">
-                                <div class="card-body" style="height:80%">
+                                <div class="card-body" style="height: 80%" >
                                     <h4 id="chatNamePH" class="card-title">בחר לקוח מהרשימה</h4>
-                                    <div id="ConversationWithCustomerPH" class="card-body" style="height:85%; border: 1px solid #ced4da">
+                                    <div id="ConversationWithCustomerPH" class="card-body">
                                         <!--here will appear the Conversation with the custumer-->
                                     </div>
                                 </div>

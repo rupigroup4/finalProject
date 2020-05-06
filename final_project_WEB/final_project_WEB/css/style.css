@@ -21649,7 +21649,7 @@ input:checked + .slider:before {
     /*chat*/
 
 .chat_height {
-    height: 450px;
+    height: 100%;
 }
 #Table_customer_chat td {
     padding: 0.3rem 0.3rem;
