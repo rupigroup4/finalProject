@@ -47,7 +47,7 @@
                 }
             }
             city = city_new;
-            Category_first = $('#ancestor_lable').val(); 
+            Category_first = $('#ancestor_lable').val();
             url = "https://www.triposo.com/api/20200405/tag.json?location_id=" + city + "&ancestor_label=" + Category_first + "&order_by=-score&fields=label,name&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
             $.get(url).done(successCategory);
             $.get(url).fail(errorCategory);
@@ -70,7 +70,7 @@
             else urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_second + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
             console.log(urlResults);
             $.get(urlResults).done(successAttractions);
-            $.get(urlResults).fail(errorAttractions);     
+            $.get(urlResults).fail(errorAttractions);
         }
 
         function successCategory(data) {
@@ -91,7 +91,7 @@
 
 
         //ResultsURL
-        
+
         function successAttractions(data) {
             str_buildAtt = "";
             arr_data = data.results;
@@ -103,7 +103,7 @@
                 str_buildAtt += `<div id="img_fire" class="col-md-12 grid-margin"> <img id='fifth' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",5,"${city}")' src="../../images/flame-fire.png" /><img id='fourth'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",4,"${city}")' src="../../images/flame-fire.png" /><img id='third'class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",3,"${city}")' src="../../images/flame-fire.png" /><img id='second' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",2,"${city}")' src="../../images/flame-fire.png" /><img id='first'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",1,"${city}")' src="../../images/flame-fire.png" /></div>`;
 
                 str_buildAtt += `<div id="checkbox_Tp" class="col-md-12 grid-margin"><label for="one">
-                                <input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" />טיול משפחתי</label> 
+                                <input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" />טיול משפחתי</label>
                             <label for="two">
                                 <input onclick='addTripProfile("${arr_data[i].id}",2,"${city}")' type="checkbox" id="TripProfile_2" />מסיבת רווקים/רווקות</label>
                             <label for="three">
@@ -112,7 +112,7 @@
                                 <input onclick='addTripProfile("${arr_data[i].id}",4,"${city}")' type="checkbox" id="TripProfile_4" />נסיעת עסקים</label>
                             <label for="five">
                                 <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" />טיול זוגי/ירח דבש</label></div>`;
-                //str_buildAtt += 
+                //str_buildAtt +=
                 //    `<div class="multiselect" dir="rtl">
                 //        <div dir="rtl" class="selectBox" onclick="showCheckboxes('${arr_data[i].id}')">
                 //            <select class="form-control">
@@ -122,7 +122,7 @@
                 //        </div>
                 //        <div id="checkboxes${arr_data[i].id}" style="display:none">
                 //            <label for="one">
-                //                <input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" />טיול משפחתי</label> 
+                //                <input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" />טיול משפחתי</label>
                 //            <label for="two">
                 //                <input onclick='addTripProfile("${arr_data[i].id}",2,"${city}")' type="checkbox" id="TripProfile_2" />מסיבת רווקים/רווקות</label>
                 //            <label for="three">
@@ -133,14 +133,14 @@
                 //                <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" />טיול זוגי/ירח דבש</label>
                 //        </div>
                 //    </div>`;
-               
+
                 str_buildAtt += '<div class="row"><div dir="rtl" class="col-md-6 overflow1" ><p style="text-align: left;">' + arr_data[i].intro + '</p><br/></div>';
                 if (arr_data[i].images[0] == null || arr_data[i].images[0].sizes == null || arr_data[i].images[0].sizes.medium == null || arr_data[i].images[0].sizes.medium.url == null) {
                     str_buildAtt += '<div class="col-md-6"> <img class="img_att" src="../../images/NoImg.png" /> </div></div> </div></div></div>';
                 }
                 else {
                     str_buildAtt += '<div class="col-md-6"><img  class="img_att" src="' + arr_data[i].images[0].sizes.medium.url + '" /></div></div> </div></div></div></div>';
-                }             
+                }
 
             }
             document.getElementById('PH_Attraction').innerHTML = str_buildAtt;
@@ -149,12 +149,11 @@
             console.log(err);
         }
 
-        $(document).on('change', '.slider1' ,function () {
+        $(document).on('change', '.slider1', function () {
             console.log("בפנים");
         })
 
-        function promotionAtt(id_att,rate, cityName)
-        {
+        function promotionAtt(id_att, rate, cityName) {
             ajaxCall("PUT", "../../api/Promotion/Add_Rate?AttracionID=" + id_att + "&rate=" + rate + "&cityName=" + cityName + "&AgentID=" + Agent_ID, "", successGetAttrationID, errorGetAttrationID);
         }
 
@@ -164,7 +163,7 @@
         }
 
         function errorGetAttrationID(err) {
-            swal("משהו קרה!", "", "warning");        
+            swal("משהו קרה!", "", "warning");
         }
         //function remove_promotionAtt(id_att) {
         //    ajaxCall("PUT", "../../api/Promotion/removePromotion?AttracionID=" + id_att, "", successRemovePromotion, errorRemovePromotion);
@@ -174,13 +173,13 @@
         function addTripProfile(id_att, tripProfile, cityName) { //Add trip Profile to Attraction
             let id = "TripProfile_" + tripProfile;
             if (document.getElementById(id).checked == true) {
-                ajaxCall("PUT", "../../api/Promotion/Add_TripProfile?AttracionID=" + id_att + "&TripProfile=" + tripProfile + "&cityName=" + cityName + "&AgentID=" + Agent_ID , "", successGetTripProfile, errorGetTripProfile);
+                ajaxCall("PUT", "../../api/Promotion/Add_TripProfile?AttracionID=" + id_att + "&TripProfile=" + tripProfile + "&cityName=" + cityName + "&AgentID=" + Agent_ID, "", successGetTripProfile, errorGetTripProfile);
             } else {
                 ajaxCall("PUT", "../../api/Promotion/Remove_TripProfile?AttracionID=" + id_att + "&TripProfile=" + tripProfile + "&AgentID=" + Agent_ID, "", successRemoveTripProfile, errorRemoveTripProfile);
             }
         }
         function successGetTripProfile(check) {
-            swal("הפרופיל עודכן", "", "success");     
+            swal("הפרופיל עודכן", "", "success");
         }
 
         function errorGetTripProfile(err) {
@@ -194,7 +193,7 @@
         function errorRemoveTripProfile(err) {
             swal("משהו קרה!", "", "warning");
         }
-        
+
         function successRemovePromotion() {
             swal("הקידום נמחק", "", "success");
         }
@@ -238,7 +237,7 @@
         var expanded = false;
 
         function showCheckboxes(id) {
-            var checkboxes = document.getElementById("checkboxes"+id);
+            var checkboxes = document.getElementById("checkboxes" + id);
             if (!expanded) {
                 checkboxes.style.display = "block";
                 expanded = true;
@@ -474,7 +473,7 @@
                                                 <option value="practicalities">practicalities</option>
                                                 <option value="eatingout">eatingout</option>
                                             </select>
-                                            
+
                                         </div>
 
                                         <p class="card-description">
@@ -490,10 +489,10 @@
                                             </div>
                                     </div>
                                     <!--<div class="row">
-                                    <div id="resultsPH" class="col-lg-12 grid-margin stretch-card">
+                                        <div id="resultsPH" class="col-lg-12 grid-margin stretch-card">
 
-                                    </div>
-                                </div>-->
+                                        </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
