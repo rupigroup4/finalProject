@@ -589,9 +589,9 @@ public class DBservices
         }
     }
 
-    public List<Request> getShowALLRequest(int Agent_ID)
+    public List<object> getShowALLRequest(int Agent_ID)
      {
-        List<Request> Request_list = new List<Request>();
+        List<object> Request_customer_list = new List<object>();
         
 
         SqlConnection con = null;
@@ -614,11 +614,19 @@ public class DBservices
                 r.AttractionID = (string)dr["attractionID"];
                 r.AttractionName = (string)dr["attractionName"];
                 r.CustomerID = Convert.ToInt32(dr["CustomerId"]);
-                Request_list.Add(r);
+                Request_customer_list.Add(r);
+                Customer c = new Customer();
+                c.Id = Convert.ToInt32(dr["CustomerID"]);
+                c.FirstName = (string)dr["firstName"];
+                c.SureName = (string)dr["sureName"];
+                Request_customer_list.Add(c);
+
+                //CustomersRequest_list.Add(c);
+                //Request_list.Add(r);
 
             }
 
-            return Request_list;
+            return Request_customer_list;
         }
         catch (Exception ex)
         {
@@ -832,6 +840,92 @@ public class DBservices
 
         }
     }
+
+    public List<Trip> Read_NotActiveTrips(int Agent_ID)
+    {
+        List<Trip> trip_list = new List<Trip>();
+        SqlConnection con = null;
+
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT * FROM Trip_igroup4 LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where Agent_igroup4.AgentID=" + Agent_ID+ " and Trip_igroup4.active=1";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                Trip t = new Trip();
+                t.TripID = Convert.ToInt32(dr["_id"]);
+                t.ReturnDate = (string)dr["_return"];
+                trip_list.Add(t);
+            }
+
+            return trip_list;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+    public int SetTripToNotActive(int tripID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String rStr = "UPDATE Trip_igroup4 SET active= 0 WHERE _id =" + tripID ;
+
+        cmd = CreateCommand(rStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
 
     public DBservices readTable()
     {

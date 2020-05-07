@@ -31,9 +31,30 @@
             window.location.href = "Login/login-2.html";
         }
 
+        var now = new Date();
+        var millisTill12 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0) - now;
+        if (millisTill12 < 0) {
+            millisTill12 += 86400000; 
+        }
+        setTimeout(function () {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1;
+            var yyyy = today.getFullYear();
+            var today = new Date(yyyy, mm - 1, dd);
+            ajaxCall("PUT", "../api/Trip/ActiveTrips?Agent_ID=" + Agent_ID, "", successUpDateActiveTrip, errorUpDateActiveTrip);
+        }, millisTill12);
+
+        function successUpDateActiveTrip(numEffected) {
+            console.log(numEffected);
+        }
+
+        function errorUpDateActiveTrip() {
+            alert("errorUpDateActiveTrip");
+        }
 
         $(document).ready(function () {
-            setInterval(Check_new_message, 5000);
+            setTimeout(Check_new_message, 1000);
             Agent_ID = localStorage.getItem('AgentID');  
             Agent_Name = localStorage.getItem('AgentName');    
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
@@ -93,7 +114,6 @@
         }
 
         function successCountNEWRequest(count) {
-            console.log(count);
             if (count) {
                 document.getElementById("newRequest").style.display = "block";
                 document.getElementById("newRequest").innerHTML = count;
@@ -168,46 +188,58 @@
         }
 
 
-        function successShowALLRequest(Request_list) {
-            console.log(Request_list);
+        function successShowALLRequest(Request_customer_list) {
+            strRequest = "";
             var countSuccess = 0;
-            if (Request_list) {
-                Request_list_Save = Request_list;
-                ajaxCall("GET", "../api/Customer/ShowCustomerRequest/" + Agent_ID, "", successCustomer_Request, errorCustomer_Request);
-                for (var i = 0; i < Request_list.length; i++) {
-                    if (Request_list[i].Status == "success") {
+            for (var i = 0; i < Request_customer_list.length; i+=2) {
+                if (Request_customer_list[i].Status == "success") {
                         countSuccess++;
                     }
+                strRequest += "<tr><td>" + Request_customer_list[i + 1].FirstName + " " + Request_customer_list[i+1].SureName + "</td>";
+                strRequest += "<td>" + Request_customer_list[i].AttractionName + "</td>";
+                strRequest += '<td><div class="input-group-prepend">';
+                switch (Request_customer_list[i].Status) {
+                    case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
+                        break;
+                    case "in process": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-warning dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
+                        break;
+                    case "success": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-success dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
+                        break;
+                    default: strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-danger dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
                 }
-                document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
+                strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
+                strRequest += `<a class="dropdown-item " onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td>`;
             }
+            document.getElementById("requestPH").innerHTML = strRequest;
+            document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
+
         }
+
         function errorShowALLRequest(err) {
             alert("errorRequest_list");
 
         }
 
-        function successCustomer_Request(CustomerWithRequest) {
-            console.log(CustomerWithRequest);
-            strRequest = "";
-            for (var i = 0; i < CustomerWithRequest.length; i++) {
-                strRequest += "<tr><td>" + CustomerWithRequest[i].FirstName + " " + CustomerWithRequest[i].SureName + "</td>";
-                strRequest += "<td>" + Request_list_Save[i].AttractionName + "</td>";
-                strRequest += '<td><div class="input-group-prepend">';
-                switch (Request_list_Save[i].Status) {
-                    case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
-                        break;
-                    case "in process": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-warning dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
-                        break;
-                    case "success": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-success dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
-                        break;
-                    default: strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-danger dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
-                }
-                strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
-                strRequest += `<a class="dropdown-item " onclick="Change_status('new',${Request_list_Save[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_list_Save[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_list_Save[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_list_Save[i].Id})">failed</a></div></div></td>`;
-            }
-            document.getElementById("requestPH").innerHTML = strRequest;
-        }
+        //function successCustomer_Request(CustomerWithRequest) {
+        //    strRequest = "";
+        //    for (var i = 0; i < CustomerWithRequest.length; i++) {
+        //        strRequest += "<tr><td>" + CustomerWithRequest[i].FirstName + " " + CustomerWithRequest[i].SureName + "</td>";
+        //        strRequest += "<td>" + Request_list_Save[i].AttractionName + "</td>";
+        //        strRequest += '<td><div class="input-group-prepend">';
+        //        switch (Request_list_Save[i].Status) {
+        //            case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
+        //                break;
+        //            case "in process": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-warning dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
+        //                break;
+        //            case "success": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-success dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
+        //                break;
+        //            default: strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-danger dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
+        //        }
+        //        strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
+        //        strRequest += `<a class="dropdown-item " onclick="Change_status('new',${Request_list_Save[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_list_Save[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_list_Save[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_list_Save[i].Id})">failed</a></div></div></td>`;
+        //    }
+        //    document.getElementById("requestPH").innerHTML = strRequest;
+        //}
 
         function errorCustomer_Request(err) {
             alert("errorCustomerRequest_list");

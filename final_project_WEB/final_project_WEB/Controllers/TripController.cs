@@ -68,5 +68,15 @@ namespace final_project_WEB.Controllers
         public void Delete(int id)
         {
         }
+
+        [HttpPut]
+        [Route("api/Trip/ActiveTrips")]
+        public int UpDateActiveTrips(int Agent_ID)
+        {
+            DateTime today = new DateTime();
+            today = DateTime.Now;
+            Trip t = new Trip();
+            return t.getActiveTrips(Agent_ID, today);
+        }
     }
 }

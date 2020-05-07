@@ -14,11 +14,12 @@ namespace final_project_WEB.Models
         private int customerID;
         private int tripProfileID;
         private string pdf_Flightticket;
+        private bool activeTrip;
 
 
         public Trip() { }
 
-        public Trip(int tripID, string destination, string departDate, string returnDate, int customerID, int tripProfileID, string pdf_Flightticket)
+        public Trip(int tripID, string destination, string departDate, string returnDate, int customerID, int tripProfileID, string pdf_Flightticket, bool activeTrip)
         {
             TripID = tripID;
             Destination = destination;
@@ -27,6 +28,7 @@ namespace final_project_WEB.Models
             CustomerID = customerID;
             TripProfileID = tripProfileID;
             Pdf_Flightticket = pdf_Flightticket;
+            ActiveTrip = activeTrip;
         }
 
         public int TripID { get { return tripID; } set { tripID = value; } }
@@ -36,6 +38,7 @@ namespace final_project_WEB.Models
         public int CustomerID { get { return customerID; } set { customerID = value; } }
         public int TripProfileID { get { return tripProfileID; } set { tripProfileID = value; } }
         public string Pdf_Flightticket { get { return pdf_Flightticket; } set { pdf_Flightticket = value; } }
+        public bool ActiveTrip { get { return activeTrip; } set { activeTrip = value; } }
 
 
         public int insert_trip(Trip trip)
@@ -57,6 +60,25 @@ namespace final_project_WEB.Models
             DBservices dbs = new DBservices();
             return dbs.Read_AllTrips(Agent_ID);
         }
+
+        public int getActiveTrips(int Agent_ID, DateTime today)
+        {
+            DBservices dbs = new DBservices();
+            List <Trip> trip_list = dbs.Read_NotActiveTrips(Agent_ID);
+            int count = 0;
+            foreach (var item in trip_list)
+            {
+                string[] ReturnDate_arr = item.ReturnDate.Split('-');
+                DateTime ReturnDate = new DateTime(Convert.ToInt32(ReturnDate_arr[0]), Convert.ToInt32(ReturnDate_arr[1]) - 1, Convert.ToInt32(ReturnDate_arr[2]));
+                if (ReturnDate <= today)
+                {
+                    dbs.SetTripToNotActive(item.TripID);
+                    count++;
+                }
+            }
+            return count;
+        }
+
 
         //Mobile//
 

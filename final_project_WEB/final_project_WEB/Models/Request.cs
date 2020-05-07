@@ -63,7 +63,7 @@ namespace final_project_WEB.Models
             return dbs.getCountALLRequest(Agent_ID); ;
         }
 
-        public List<Request> getShowALLRequest(int Agent_ID)
+        public List<object> getShowALLRequest(int Agent_ID)
         {
             DBservices dbs = new DBservices();
             return dbs.getShowALLRequest(Agent_ID); ;

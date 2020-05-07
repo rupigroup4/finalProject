@@ -36,7 +36,7 @@ namespace final_project_WEB.Controllers
 
         [HttpGet]
         [Route("api/Request/ShowAllRequest")]
-        public List<Request> GetShowALLRequest(int Agent_ID)
+        public List<object> GetShowALLRequest(int Agent_ID)
         {
             Request request = new Request();
             return request.getShowALLRequest(Agent_ID);
