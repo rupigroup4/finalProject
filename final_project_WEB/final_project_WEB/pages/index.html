@@ -31,27 +31,22 @@
             window.location.href = "Login/login-2.html";
         }
 
-        var now = new Date();
-        var millisTill12 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0) - now;
-        if (millisTill12 < 0) {
-            millisTill12 += 86400000; 
-        }
-        setTimeout(function () {
-            var today = new Date();
-            var dd = today.getDate();
-            var mm = today.getMonth() + 1;
-            var yyyy = today.getFullYear();
-            var today = new Date(yyyy, mm - 1, dd);
-            ajaxCall("PUT", "../api/Trip/ActiveTrips?Agent_ID=" + Agent_ID, "", successUpDateActiveTrip, errorUpDateActiveTrip);
-        }, millisTill12);
+        //var now = new Date();
+        //var millisTill12 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 10, 0, 0) - now;
+        //if (millisTill12 < 0) {
+        //    millisTill12 += 86400000; 
+        //}
+        //setTimeout(function () {
+        //    ajaxCall("PUT", "../api/Trip/ActiveTrips?Agent_ID=" + Agent_ID, "", successUpDateActiveTrip, errorUpDateActiveTrip);
+        //}, millisTill12);
 
-        function successUpDateActiveTrip(numEffected) {
-            console.log(numEffected);
-        }
+        //function successUpDateActiveTrip(numEffected) {
+        //    console.log(numEffected);
+        //}
 
-        function errorUpDateActiveTrip() {
-            alert("errorUpDateActiveTrip");
-        }
+        //function errorUpDateActiveTrip() {
+        //    alert("errorUpDateActiveTrip");
+        //}
 
         $(document).ready(function () {
             setTimeout(Check_new_message, 1000);
@@ -66,6 +61,9 @@
             ajaxCall("GET", "../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
 
             ajaxCall("GET", "../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTrip_list);
+
+            ajaxCall("PUT", "../api/Trip/ActiveTrips?Agent_ID=" + Agent_ID, "", successUpDateActiveTrip, errorUpDateActiveTrip); //Active trips
+
 
             $('#upload').click(function () {
                 var data = new FormData();
@@ -93,6 +91,14 @@
 
 
         });
+
+        function successUpDateActiveTrip(numEffected) {
+            console.log(numEffected);
+        }
+
+        function errorUpDateActiveTrip() {
+            alert("errorUpDateActiveTrip");
+        }
 
         function successCountALLRequest(count) {
             document.getElementById("Request_numPH").innerHTML = count;
