@@ -10,12 +10,12 @@ namespace final_project_WEB.Controllers
 {
     public class PromotionController : ApiController
     {
-        //// GET api/<controller>
-        //public List<Promotion> Get(int Agent_ID)
-        //{
-        //    Customer customer = new Customer();
-        //    return customer.Read_customers(Agent_ID);
-        //}
+
+        public List<Promotion> GetPromotedAttraction(int Agent_ID)
+        {
+            Promotion promotion = new Promotion();
+            return promotion.GetPromotedAttraction(Agent_ID); ;
+        }
 
 
         [HttpPut]

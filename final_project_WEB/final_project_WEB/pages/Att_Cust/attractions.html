@@ -33,8 +33,17 @@
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
             //ajaxCall("GET", "../../api/Promotion/, "", successGetAttrationID, errorGetAttrationID);
-
+            ajaxCall("GET", "../../api/Promotion/GetPromotedAttraction?Agent_ID=" + Agent_ID, "", successPromotedAttractionList, errorPromotedAttractionList);
         });
+        
+        function successPromotedAttractionList(promotionAttraction_List) {
+            promotion_List = promotionAttraction_List;
+            console.log(promotion_List);
+        }
+
+        function errorPromotedAttractionList(err) {
+            console.log(err);
+        }
 
         function SecCategory() {
             city = $('#city').val();
@@ -68,7 +77,6 @@
                 urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_first + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
             }
             else urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_second + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
-            console.log(urlResults);
             $.get(urlResults).done(successAttractions);
             $.get(urlResults).fail(errorAttractions);
         }
@@ -93,7 +101,7 @@
         //ResultsURL
 
         function successAttractions(data) {
-            console.log(data);
+            console.log(promotion_List);
             str_buildAtt = "";
             arr_data = data.results;
             text = "";
@@ -102,9 +110,44 @@
                 str_buildAtt += '<h4 class="card-title">' + arr_data[i].name + '</h4>';
                 str_buildAtt += '<div class="card-description">ציון: ' + (arr_data[i].score).toFixed(2) + '</div>';
                 str_buildAtt += `<div id="img_fire" class="col-md-12 grid-margin"> <img id='fifth' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",5,"${city}")' src="../../images/flame-fire.png" /><img id='fourth'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",4,"${city}")' src="../../images/flame-fire.png" /><img id='third'class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",3,"${city}")' src="../../images/flame-fire.png" /><img id='second' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",2,"${city}")' src="../../images/flame-fire.png" /><img id='first'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",1,"${city}")' src="../../images/flame-fire.png" /></div>`;
+                str_buildAtt += `<div id="checkbox_Tp" class="col-md-12 grid-margin"><label for="one">`;
 
-                str_buildAtt += `<div id="checkbox_Tp" class="col-md-12 grid-margin"><label for="one">
-                                <input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" />טיול משפחתי</label>
+                //strCheck = str_buildAtt; //Dina 8/5
+
+                //for (var i = 0; i < promotion_List.length; i++) {
+                //    if (promotion_List[i].AttracionID == arr_data[i].name) {
+                //        if (promotion_List[i].TripProfile_1 == 1) {
+                //            str_buildAtt += `<input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" checked/>טיול משפחתי</label>`;
+                //        } else {
+                //            str_buildAtt += `<input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" />טיול משפחתי</label>`;
+                //        }
+
+                //        if (promotion_List[i].TripProfile_2 == 1) {
+                //            str_buildAtt += ` <label for="two"> <input onclick='addTripProfile("${arr_data[i].id}",2,"${city}")' type="checkbox" id="TripProfile_2" checked />מסיבת רווקים/רווקות</label> `;
+                //        } else {
+                //            str_buildAtt += `<label for="three"> <input onclick='addTripProfile("${arr_data[i].id}",2,"${city}")' type="checkbox" id="TripProfile_2" />מסיבת רווקים/רווקות</label>`;
+                //        }
+
+                //        if (promotion_List[i].TripProfile_3 == 1) {
+                //            str_buildAtt += ` <label for="three"> <input onclick='addTripProfile("${arr_data[i].id}",3,"${city}")' type="checkbox" id="TripProfile_3" checked />טיול פנסיונרים</label> `;
+                //        } else {
+                //            str_buildAtt += `<label for="three"> <input onclick='addTripProfile("${arr_data[i].id}",3,"${city}")' type="checkbox" id="TripProfile_3" />טיול פנסיונרים</label>`;
+                //        }
+                //        if (promotion_List[i].TripProfile_4 == 1) {
+                //            str_buildAtt += ` <label for="four"> <input onclick='addTripProfile("${arr_data[i].id}",4,"${city}")' type="checkbox" id="TripProfile_4" checked />נסיעת עסקים</label> `;
+                //        } else {
+                //            str_buildAtt += `<label for="four"> <input onclick='addTripProfile("${arr_data[i].id}",4,"${city}")' type="checkbox" id="TripProfile_4" />נסיעת עסקים</label>`;
+                //        }
+
+                //        if (promotion_List[i].TripProfile_5 == 1) {
+                //            str_buildAtt += ` <label for="five"> <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" checked />טיול זוגי/ירח דבש</label> `;
+                //        } else {
+                //            str_buildAtt += `<label for="five"> <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" />טיול זוגי/ירח דבש</label></div>`;
+                //        }
+                //    }
+                //}
+                //if (str_buildAtt == strCheck) {
+                    str_buildAtt +=`<input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" />טיול משפחתי</label>
                             <label for="two">
                                 <input onclick='addTripProfile("${arr_data[i].id}",2,"${city}")' type="checkbox" id="TripProfile_2" />מסיבת רווקים/רווקות</label>
                             <label for="three">
@@ -113,6 +156,8 @@
                                 <input onclick='addTripProfile("${arr_data[i].id}",4,"${city}")' type="checkbox" id="TripProfile_4" />נסיעת עסקים</label>
                             <label for="five">
                                 <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" />טיול זוגי/ירח דבש</label></div>`;
+/*                }*/ //Dina 8/5
+
                 //str_buildAtt +=
                 //    `<div class="multiselect" dir="rtl">
                 //        <div dir="rtl" class="selectBox" onclick="showCheckboxes('${arr_data[i].id}')">

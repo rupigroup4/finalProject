@@ -318,6 +318,52 @@ public class DBservices
 
     }
 
+    public List<Promotion> GetPromotedAttraction(int Agent_ID)
+    {
+        List<Promotion> promotion_list = new List<Promotion>();
+
+
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT * FROM PromotedAttraction_igroup4 where Agent_ID=" + Agent_ID;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                Promotion p = new Promotion();
+                p.AttracionID = (string)dr["attracionID"];
+                p.TripProfile_1 = Convert.ToInt32(dr["_1"]);
+                p.TripProfile_2 = Convert.ToInt32(dr["_2"]);
+                p.TripProfile_3 = Convert.ToInt32(dr["_3"]);
+                p.TripProfile_4 = Convert.ToInt32(dr["_4"]);
+                p.TripProfile_5 = Convert.ToInt32(dr["_5"]);
+                promotion_list.Add(p);
+            }
+
+            return promotion_list;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
     public int RemoveTripProfile(string attracionID, int new_tripProfile, int AgentID)
     {
 

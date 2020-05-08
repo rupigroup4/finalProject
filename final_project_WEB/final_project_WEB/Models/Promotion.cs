@@ -92,6 +92,10 @@ namespace final_project_WEB.Models
             return dbs.RemoveTripProfile(attracionID, tripProfile, AgentID);
         }
 
-
+        public List<Promotion> GetPromotedAttraction(int Agent_ID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetPromotedAttraction(Agent_ID); ;
+        }
     }
 }
