@@ -344,6 +344,7 @@ public class DBservices
                 p.TripProfile_3 = Convert.ToInt32(dr["_3"]);
                 p.TripProfile_4 = Convert.ToInt32(dr["_4"]);
                 p.TripProfile_5 = Convert.ToInt32(dr["_5"]);
+                p.Rate = Convert.ToInt32(dr["rate"]);
                 promotion_list.Add(p);
             }
 

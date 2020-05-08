@@ -21798,6 +21798,11 @@ div.dataTables_wrapper div.dataTables_paginate {
     -webkit-transform: scale(1.5); /* Safari 3-8 */
     transform: scale(1.5);
 }
+.current_rate {
+    -ms-transform: scale(1.5); /* IE 9 */
+    -webkit-transform: scale(1.5); /* Safari 3-8 */
+    transform: scale(1.5);
+}
 
 #ConversationWithCustomerPH {
     height: 90%;
@@ -21852,4 +21857,12 @@ body_chat {
 .time-left {
     float: left;
     color: #999;
+}
+#newRequest {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    display: block;
+    color: white;
+    top: -6px;
 }
