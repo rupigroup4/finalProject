@@ -466,7 +466,7 @@ public class DBservices
             throw (ex);
         }
 
-        String cStr = BuildInsertATT_PROCommand(attractionID, rate, cityName, AgentID);      // helper method to build the insert string
+        String cStr = BuildInsertATT_PROCommand(AgentID,attractionID, rate, cityName);      // helper method to build the insert string
 
         cmd = CreateCommand(cStr, con);             // create the command
 
@@ -493,14 +493,14 @@ public class DBservices
 
     }
 
-    private String BuildInsertATT_PROCommand(string attractionID, int rate, string cityName, int AgentID)
+    private String BuildInsertATT_PROCommand(int AgentID,string attractionID, int rate, string cityName)
     {
         String command;
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}','{1}','{2}','{3}')", attractionID, rate, cityName, AgentID);
-        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(attractionID,rate,cityName,agent_ID)";
+        sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", AgentID,attractionID, rate, cityName, 1, 1, 1, 1, 1);
+        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(agent_ID,attractionID,rate,cityName,_2,_3,_4,_5,_6)";
         command = prefix + sb.ToString();
 
         return command;
