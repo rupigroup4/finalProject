@@ -578,9 +578,9 @@ public class DBservicesMobile
 
     /////////////////////////////Promotion////////////////////////////////////////////////////////
 
-    public List<Promotion> getPromotionByCity(int agentId, string city,int tripProfile)
+    public List<string> getPromotionByCity(int agentId, string city,int tripProfile)
     {
-        List<Promotion> PromotionAttractions = new List<Promotion>();
+        List<string> PromotionAttractions = new List<string>();
         SqlConnection con = null;
 
         try
@@ -604,10 +604,7 @@ public class DBservicesMobile
 
             while (dr.Read())
             {
-                Promotion p = new Promotion();
-
-                p.AttractionID = (string)dr["attractionID"];
-                PromotionAttractions.Add(p);
+                PromotionAttractions.Add((string)dr["attractionID"]);
             }
             return PromotionAttractions;
         }
