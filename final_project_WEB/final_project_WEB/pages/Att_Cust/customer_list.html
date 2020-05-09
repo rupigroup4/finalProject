@@ -48,16 +48,53 @@
                 let destination = $('#destination').val();
                 let departure = $('#departure').val();
                 let returnDate = $('#return').val();
+                let tripProfile = $('#tripProfile').val();
 
                 newTrip = {
                     "Destination": destination,
                     "DepartDate": departure,
                     "ReturnDate": returnDate,
                     "CustomerID": id_customer,
+                    "tripProfileID": tripProfile,
                 }
                 ajaxCall("POST", "../../api/Trip", JSON.stringify(newTrip), POSTsuccessNewTrip, POSTerrorNewTrip);
                 return false;
             });
+
+            $(document).on("blur", "#departure", function () {
+                let departure = $('#departure').val();
+                console.log(departure);
+                var departureArr = departure.split("-");
+                var from = new Date(departureArr[0], parseInt(departureArr[1]) - 1, departureArr[2]); // -1 because months are from 0 to 11
+                for (var i = 0; i < Arr_trips.length; i++) {
+                    var TripsDepartDate = Arr_trips[i].DepartDate.split("/");
+                    var TripsDepartDateCheck = new Date(TripsDepartDate[2], parseInt(TripsDepartDate[1]) - 1, TripsDepartDate[0])
+                    if (TripsDepartDateCheck >= from) {
+                        console.log(this);
+                        this.validity.valid = false;
+                        this.setCustomValidity('קיים טיול בתאריכים אלו');
+                        break;
+                    }
+                }
+                this.validity.valid = true;
+                this.setCustomValidity('');
+
+            });
+
+            $(document).on("blur", "#return", function () {
+                let departure = $('#departure').val();
+                let returnDate = $('#return').val();
+                //if () {
+                //    this.validity.valid = false;
+                //    this.setCustomValidity('קיים טיול בתאריכים אלו');
+                //}
+                //else {
+                //    this.validity.valid = true;
+                //    this.setCustomValidity('');
+                //}
+
+                });
+
 
             $(document).on("click", ".saveBtn", function () {
                 let id = this.getAttribute('data-id');
@@ -201,8 +238,17 @@
         function showPopUp(id) {
             document.getElementById("loginPopup").style.display = "block";
             document.getElementById("PHaddtrip").innerHTML = "הזן פרטי טיסה";
+            ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successTrip_list, errorTrip_list)
 
             id_customer = id;
+        }
+
+        function successTrip_list(data) {
+            Arr_trips = data;
+            console.log(Arr_trips);
+        }
+        function errorTrip_list(err) {
+            alert("errorTrip_list");
         }
 
         function closeForm() {
@@ -219,7 +265,7 @@
         function POSTsuccessNewTrip(num) {
             if (num == 1)
                 swal("בוצע בהצלחה", "נוסף טיול חדש", "success");
-            else
+            else 
                 swal("שגיאה", "טיול לא נוסף", "error");
             clearFields();
             closeForm();
@@ -582,7 +628,18 @@
                                     <strong>טיסה חזור</strong>
                                 </label>
                                 <input type="date" class="form-control" id="return" placeholder="dd/mm/yyyy" value="25/04/2020" required />
-                                <button type="submit" class="btn" style="margin-top:10px">הוסף טיול</button>
+                                <label for="TripProfile">
+                                    <strong>מטרת הנסיעה</strong>
+                                </label>
+                                <select id="tripProfile" class="form-control">
+                                    <option value="1">כללי</option>
+                                    <option value="2">טיול משפחות</option>
+                                    <option value="3">מסיבת רווקים/ית</option>
+                                    <option value="4">טיול פנסיונרים</option>
+                                    <option value="5">טיול עסקי</option>
+                                    <option value="6">טיול זוגי</option>
+                                </select>
+                                <button type="submit" class="btn submit_trip" style="margin-top:10px">הוסף טיול</button>
                                 <button type="button" class="btn cancel" onclick="closeForm()">ביטול</button>
                             </form>
                         </div>

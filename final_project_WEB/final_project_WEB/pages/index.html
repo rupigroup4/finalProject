@@ -31,23 +31,6 @@
             window.location.href = "Login/login-2.html";
         }
 
-        //var now = new Date();
-        //var millisTill12 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 10, 0, 0) - now;
-        //if (millisTill12 < 0) {
-        //    millisTill12 += 86400000; 
-        //}
-        //setTimeout(function () {
-        //    ajaxCall("PUT", "../api/Trip/ActiveTrips?Agent_ID=" + Agent_ID, "", successUpDateActiveTrip, errorUpDateActiveTrip);
-        //}, millisTill12);
-
-        //function successUpDateActiveTrip(numEffected) {
-        //    console.log(numEffected);
-        //}
-
-        //function errorUpDateActiveTrip() {
-        //    alert("errorUpDateActiveTrip");
-        //}
-
         $(document).ready(function () {
             setTimeout(Check_new_message, 1000);
             Agent_ID = localStorage.getItem('AgentID');  
