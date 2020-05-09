@@ -97,5 +97,15 @@ namespace final_project_WEB.Models
             DBservices dbs = new DBservices();
             return dbs.GetPromotedAttraction(Agent_ID); ;
         }
+
+        //Mobile//
+
+        public List<Promotion> getPromotionByCity(int agentId,string city,int tripProfile)
+        {
+            DBservicesMobile dbs = new DBservicesMobile();
+            return dbs.getPromotionByCity(agentId,city, tripProfile);
+        }
+
+        //Mobile//
     }
 }

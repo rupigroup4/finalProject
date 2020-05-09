@@ -56,5 +56,15 @@ namespace final_project_WEB.Controllers
         public void Delete(int id)
         {
         }
+
+        //Mobile//
+        [HttpGet]
+        [Route("api/Promotion/getpromotionbycity/{agentId}/{city}/{tripProfile}")]
+        public List<Promotion> getPromotionByCity(int agentId,string city,int tripProfile)
+        {
+            Promotion p = new Promotion();
+            return p.getPromotionByCity(agentId, city, tripProfile);
+        }
+        //Mobile//
     }
 }

@@ -245,7 +245,7 @@ public class DBservicesMobile
                 t.DepartDate = (string)dr["_depart"];
                 t.ReturnDate = (string)dr["_return"];
                 t.TripProfileID = Convert.ToInt16(dr["_id_TripProfile"]);
-                if ((string)dr["pdf_Flightticket"]!="")
+                if ((string)dr["pdf_Flightticket"] != "")
                 {
                     t.Pdf_Flightticket = (string)dr["pdf_Flightticket"];
                 }
@@ -306,7 +306,7 @@ public class DBservicesMobile
         }
     }
 
-    public int updateTripProfile(int tripId , int tripProfile)
+    public int updateTripProfile(int tripId, int tripProfile)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -320,7 +320,7 @@ public class DBservicesMobile
             throw (ex);
         }
 
-        String cStr = "update Trip_igroup4 set _id_TripProfile='"+tripProfile+"' where _id='"+tripId+"'";
+        String cStr = "update Trip_igroup4 set _id_TripProfile='" + tripProfile + "' where _id='" + tripId + "'";
 
         cmd = CreateCommand(cStr, con);   // create the command
 
@@ -574,6 +574,57 @@ public class DBservicesMobile
     }
 
     /////////////////////////////notification////////////////////////////////////////////////////////
+
+
+    /////////////////////////////Promotion////////////////////////////////////////////////////////
+
+    public List<Promotion> getPromotionByCity(int agentId, string city,int tripProfile)
+    {
+        List<Promotion> PromotionAttractions = new List<Promotion>();
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "select * from PromotedAttraction_igroup4 where agent_ID='" + agentId + "'and cityName ='" + city + "' and _" + tripProfile + "=1 order by rate DESC";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                Promotion p = new Promotion();
+
+                p.AttracionID = (string)dr["attractionID"];
+                p.Rate = Convert.ToInt16(dr["rate"]);
+                p.TripProfile_1 = Convert.ToInt16(dr["_1"]);
+                p.TripProfile_2 = Convert.ToInt16(dr["_2"]);
+                p.TripProfile_3 = Convert.ToInt16(dr["_3"]);
+                p.TripProfile_4 = Convert.ToInt16(dr["_4"]);
+                p.TripProfile_5 = Convert.ToInt16(dr["_5"]);
+
+                PromotionAttractions.Add(p);
+            }
+            return PromotionAttractions;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+    /////////////////////////////Promotion////////////////////////////////////////////////////////
 
 
 }
