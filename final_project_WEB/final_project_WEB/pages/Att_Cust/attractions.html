@@ -27,7 +27,6 @@
         }
 
         $(document).ready(function () {
-
             setInterval(Check_new_message, 5000);
             Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
@@ -89,6 +88,7 @@
             }
             str += "</select>";
             document.getElementById('attractionPH').innerHTML = str;
+            $('#searchBtn').prop("disabled", false);
         }
 
 
@@ -191,6 +191,9 @@
             //console.log(id_img)
             document.getElementById("checkbox_Tp" + id_att).style.display = "block";
 
+
+            /////////////////////////////////////////////////////////////////////////
+
             document.getElementById("fifth").classList.remove("current_rate");
             document.getElementById("fourth").classList.remove("current_rate");
             document.getElementById("third").classList.remove("current_rate");
@@ -198,6 +201,9 @@
             document.getElementById("first").classList.remove("current_rate");
 
             document.getElementById(id_img).classList.add("current_rate");
+
+            /////////////////////////////////////////////////////////////////////////
+
             ajaxCall("PUT", "../../api/Promotion/Add_Rate?attractionID=" + id_att + "&rate=" + rate + "&cityName=" + cityName + "&AgentID=" + Agent_ID, "", successGetAttrationID, errorGetAttrationID);
         }
 
@@ -534,7 +540,7 @@
                                                 <div id="attractionPH">
                                                     <select class="form-control" required></select>
                                                 </div>
-                                                <button onclick="sendToAPI()" class="btn btn-primary mr-2">חפש</button>
+                                                <button id="searchBtn" onclick="sendToAPI()" class="btn btn-primary mr-2" disabled>חפש</button>
                                             </div>
                                     </div>
                                     <!--<div class="row">
