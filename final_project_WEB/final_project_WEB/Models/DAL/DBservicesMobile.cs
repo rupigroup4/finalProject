@@ -597,7 +597,7 @@ public class DBservicesMobile
             {
                 Promotion p = new Promotion();
 
-                p.AttracionID = (string)dr["attractionID"];
+                p.AttractionID = (string)dr["attractionID"];
                 p.Rate = Convert.ToInt16(dr["rate"]);
                 p.TripProfile_1 = Convert.ToInt16(dr["_1"]);
                 p.TripProfile_2 = Convert.ToInt16(dr["_2"]);

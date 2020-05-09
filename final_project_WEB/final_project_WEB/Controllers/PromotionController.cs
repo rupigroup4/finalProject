@@ -20,36 +20,36 @@ namespace final_project_WEB.Controllers
 
         [HttpPut]
         [Route("api/Promotion/Add_Rate")]
-        public int AddRate(string AttracionID,int rate, string cityName, int AgentID)
+        public int AddRate(string attractionID, int rate, string cityName, int AgentID)
         {
             Promotion promotion = new Promotion();
-            return promotion.CheckAttracionID(AttracionID, rate, cityName, AgentID);
+            return promotion.CheckattractionID(attractionID, rate, cityName, AgentID);
         }
 
         [HttpPut]
         [Route("api/Promotion/Add_TripProfile")] // Add Trip Profile
-        public int AddTripProfile(string AttracionID, int TripProfile, string cityName, int AgentID)
+        public int AddTripProfile(string attractionID, int TripProfile, string cityName, int AgentID)
         {
             Promotion promotion = new Promotion();
-            return promotion.AddTripProfile(AttracionID, TripProfile, cityName, AgentID);
+            return promotion.AddTripProfile(attractionID, TripProfile, cityName, AgentID);
         }
 
         [HttpPut]
         [Route("api/Promotion/Remove_TripProfile")] // Add Trip Profile
-        public int RemoveTripProfile(string AttracionID, int TripProfile, int AgentID)
+        public int RemoveTripProfile(string attractionID, int TripProfile, int AgentID)
         {
             Promotion promotion = new Promotion();
-            return promotion.RemoveTripProfile(AttracionID, TripProfile, AgentID);
+            return promotion.RemoveTripProfile(attractionID, TripProfile, AgentID);
         }
 
 
         [HttpPut]
         [Route("api/Promotion/removePromotion")]
         // PUT api/<controller>/5
-        public int PUT_removePromotion(string attracionID, int AgentID)
+        public int PUT_removePromotion(string attractionID, int AgentID)
         {
             Promotion promotion = new Promotion();
-            return promotion.RemovePromotion(attracionID, AgentID);
+            return promotion.RemovePromotion(attractionID, AgentID);
         }
 
         // DELETE api/<controller>/5

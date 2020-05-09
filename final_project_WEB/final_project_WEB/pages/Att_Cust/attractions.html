@@ -113,7 +113,7 @@
                 strCheck = str_buildAtt; //Dina 8/5
                 for (var k = 0; k < promotion_List.length; k++) {
 
-                    if (promotion_List[k].AttracionID == arr_data[i].id) {
+                    if (promotion_List[k].AttractionID == arr_data[i].id) {
                         switch (promotion_List[k].Rate) {
                             case 0: str_buildAtt += `<div id="img_fire" class="col-md-12 grid-margin"> <img id='fifth' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",5,"${city}","fifth")' src="../../images/flame-fire.png" /><img id='fourth'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",4,"${city}","fourth")' src="../../images/flame-fire.png" /><img id='third' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",3,"${city}","third")' src="../../images/flame-fire.png" /><img id='second' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",2,"${city}","second")' src="../../images/flame-fire.png" /><img id='first'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",1,"${city}","first")' src="../../images/flame-fire.png" /></div>`;
                                 break;
@@ -202,7 +202,7 @@
             document.getElementById("first").classList.remove("current_rate");
 
             document.getElementById(id_img).classList.add("current_rate");
-            ajaxCall("PUT", "../../api/Promotion/Add_Rate?AttracionID=" + id_att + "&rate=" + rate + "&cityName=" + cityName + "&AgentID=" + Agent_ID, "", successGetAttrationID, errorGetAttrationID);
+            ajaxCall("PUT", "../../api/Promotion/Add_Rate?attractionID=" + id_att + "&rate=" + rate + "&cityName=" + cityName + "&AgentID=" + Agent_ID, "", successGetAttrationID, errorGetAttrationID);
         }
 
         function successGetAttrationID(check) {
@@ -214,16 +214,16 @@
             swal("משהו קרה!", "", "warning");
         }
         //function remove_promotionAtt(id_att) {
-        //    ajaxCall("PUT", "../../api/Promotion/removePromotion?AttracionID=" + id_att, "", successRemovePromotion, errorRemovePromotion);
+        //    ajaxCall("PUT", "../../api/Promotion/removePromotion?attractionID=" + id_att, "", successRemovePromotion, errorRemovePromotion);
 
         //}
 
         function addTripProfile(id_att, tripProfile, cityName) { //Add trip Profile to Attraction
             let id = "TripProfile_" + tripProfile;
             if (document.getElementById(id).checked == true) {
-                ajaxCall("PUT", "../../api/Promotion/Add_TripProfile?AttracionID=" + id_att + "&TripProfile=" + tripProfile + "&cityName=" + cityName + "&AgentID=" + Agent_ID, "", successGetTripProfile, errorGetTripProfile);
+                ajaxCall("PUT", "../../api/Promotion/Add_TripProfile?attractionID=" + id_att + "&TripProfile=" + tripProfile + "&cityName=" + cityName + "&AgentID=" + Agent_ID, "", successGetTripProfile, errorGetTripProfile);
             } else {
-                ajaxCall("PUT", "../../api/Promotion/Remove_TripProfile?AttracionID=" + id_att + "&TripProfile=" + tripProfile + "&AgentID=" + Agent_ID, "", successRemoveTripProfile, errorRemoveTripProfile);
+                ajaxCall("PUT", "../../api/Promotion/Remove_TripProfile?attractionID=" + id_att + "&TripProfile=" + tripProfile + "&AgentID=" + Agent_ID, "", successRemoveTripProfile, errorRemoveTripProfile);
             }
         }
         function successGetTripProfile(check) {
