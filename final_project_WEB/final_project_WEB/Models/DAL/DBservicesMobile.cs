@@ -587,14 +587,19 @@ public class DBservicesMobile
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
             String selectSTR = "";
-            if (tripProfile==1)
+            if (tripProfile == 1)
             {
                 selectSTR = "select * from PromotedAttraction_igroup4 where agent_ID='" + agentId + "'and cityName ='" + city + "'order by rate DESC";
 
             }
-            else
+            else if (tripProfile!=1 && tripProfile!=10)
             {
                 selectSTR = "select * from PromotedAttraction_igroup4 where agent_ID='" + agentId + "'and cityName ='" + city + "' and _" + tripProfile + "=1 order by rate DESC";
+            }
+            
+            if (tripProfile==10)
+            {
+                selectSTR = "select * from PromotedAttraction_igroup4 where agent_ID='" + agentId + "'and cityName ='" + city + "' and _2=0 and _3=0 and _4=0 and _5=0 and _6=0 order by rate DESC";
 
             }
             SqlCommand cmd = new SqlCommand(selectSTR, con);
