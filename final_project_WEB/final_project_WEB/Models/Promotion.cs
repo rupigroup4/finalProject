@@ -101,7 +101,7 @@ namespace final_project_WEB.Models
 
         //Mobile//
 
-        public List<Promotion> getPromotionByCity(int agentId,string city,int tripProfile)
+        public List<string> getPromotionByCity(int agentId,string city,int tripProfile)
         {
             DBservicesMobile dbs = new DBservicesMobile();
             return dbs.getPromotionByCity(agentId,city, tripProfile);
