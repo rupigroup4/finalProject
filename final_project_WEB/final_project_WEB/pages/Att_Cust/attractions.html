@@ -130,11 +130,7 @@
                         }
                         str_buildAtt += `<div id="checkbox_Tp" class="col-md-12 grid-margin"><label for="one">`;
 
-                        if (promotion_List[k].TripProfile_1 == 1) {
-                            str_buildAtt += `<input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" checked/>טיול משפחתי</label>`;
-                        } else {
-                            str_buildAtt += `<input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" />טיול משפחתי</label>`;
-                        }
+
 
                         if (promotion_List[k].TripProfile_2 == 1) {
                             str_buildAtt += ` <label for="two"> <input onclick='addTripProfile("${arr_data[i].id}",2,"${city}")' type="checkbox" id="TripProfile_2" checked />מסיבת רווקים/רווקות</label> `;
@@ -158,20 +154,25 @@
                         } else {
                             str_buildAtt += `<label for="five"> <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" />טיול זוגי/ירח דבש</label></div>`;
                         }
+                        if (promotion_List[k].TripProfile_6 == 6) {
+                            str_buildAtt += `<input onclick='addTripProfile("${arr_data[i].id}",6,"${city}")' type="checkbox" id="TripProfile_6" checked/>טיול משפחתי</label>`;
+                        } else {
+                            str_buildAtt += `<input onclick='addTripProfile("${arr_data[i].id}",6,"${city}")' type="checkbox" id="TripProfile_6" />טיול משפחתי</label>`;
+                        }
                     }
                 }
                 if (str_buildAtt == strCheck) {
                     str_buildAtt += `<div id="img_fire" class="col-md-12 grid-margin"> <img id='fifth' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",5,"${city}","fifth")' src="../../images/flame-fire.png" /><img id='fourth'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",4,"${city}","fourth")' src="../../images/flame-fire.png" /><img id='third' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",3,"${city}","third")' src="../../images/flame-fire.png" /><img id='second' class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",2,"${city}","second")' src="../../images/flame-fire.png" /><img id='first'; class='imgRate'; onclick ='promotionAtt("${arr_data[i].id}",1,"${city}","first")' src="../../images/flame-fire.png" /></div>`;
-                    str_buildAtt += `<div id="checkbox_Tp" class="col-md-12 grid-margin"><label for="one">`;
-                    str_buildAtt +=`<input onclick='addTripProfile("${arr_data[i].id}",1,"${city}")' type="checkbox" id="TripProfile_1" />טיול משפחתי</label>
-                            <label for="two">
-                                <input onclick='addTripProfile("${arr_data[i].id}",2,"${city}")' type="checkbox" id="TripProfile_2" />מסיבת רווקים/רווקות</label>
+                    str_buildAtt += `<div id="checkbox_Tp" class="col-md-12 grid-margin"><label for="two">`;
+                    str_buildAtt +=`<input onclick='addTripProfile("${arr_data[i].id}",2,"${city}")' type="checkbox" id="TripProfile_2" />טיול משפחתי</label>
                             <label for="three">
-                                <input onclick='addTripProfile("${arr_data[i].id}",3,"${city}")' type="checkbox" id="TripProfile_3" />טיול פנסיונרים</label>
+                                <input onclick='addTripProfile("${arr_data[i].id}",3,"${city}")' type="checkbox" id="TripProfile_3" />מסיבת רווקים/רווקות</label>
                             <label for="four">
-                                <input onclick='addTripProfile("${arr_data[i].id}",4,"${city}")' type="checkbox" id="TripProfile_4" />נסיעת עסקים</label>
+                                <input onclick='addTripProfile("${arr_data[i].id}",4,"${city}")' type="checkbox" id="TripProfile_4" />טיול פנסיונרים</label>
                             <label for="five">
-                                <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" />טיול זוגי/ירח דבש</label></div>`;
+                                <input onclick='addTripProfile("${arr_data[i].id}",5,"${city}")' type="checkbox" id="TripProfile_5" />נסיעת עסקים</label>
+                            <label for="six">
+                                <input onclick='addTripProfile("${arr_data[i].id}",6,"${city}")' type="checkbox" id="TripProfile_6" />טיול זוגי/ירח דבש</label></div>`;
                 } //Dina 8/5
 
                 str_buildAtt += '<div class="row"><div dir="rtl" class="col-md-6 overflow1" ><p style="text-align: left;">' + arr_data[i].intro + '</p><br/></div>';

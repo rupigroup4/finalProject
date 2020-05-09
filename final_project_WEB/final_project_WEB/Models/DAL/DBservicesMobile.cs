@@ -599,11 +599,11 @@ public class DBservicesMobile
 
                 p.AttractionID = (string)dr["attractionID"];
                 p.Rate = Convert.ToInt16(dr["rate"]);
-                p.TripProfile_1 = Convert.ToInt16(dr["_1"]);
                 p.TripProfile_2 = Convert.ToInt16(dr["_2"]);
                 p.TripProfile_3 = Convert.ToInt16(dr["_3"]);
                 p.TripProfile_4 = Convert.ToInt16(dr["_4"]);
                 p.TripProfile_5 = Convert.ToInt16(dr["_5"]);
+                p.TripProfile_6 = Convert.ToInt16(dr["_6"]);
 
                 PromotionAttractions.Add(p);
             }

@@ -339,11 +339,11 @@ public class DBservices
             {
                 Promotion p = new Promotion();
                 p.AttractionID = (string)dr["attractionID"];
-                p.TripProfile_1 = Convert.ToInt32(dr["_1"]);
                 p.TripProfile_2 = Convert.ToInt32(dr["_2"]);
                 p.TripProfile_3 = Convert.ToInt32(dr["_3"]);
                 p.TripProfile_4 = Convert.ToInt32(dr["_4"]);
                 p.TripProfile_5 = Convert.ToInt32(dr["_5"]);
+                p.TripProfile_6 = Convert.ToInt32(dr["_6"]);
                 p.Rate = Convert.ToInt32(dr["rate"]);
                 promotion_list.Add(p);
             }

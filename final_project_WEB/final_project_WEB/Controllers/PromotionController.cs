@@ -14,7 +14,7 @@ namespace final_project_WEB.Controllers
         public List<Promotion> GetPromotedAttraction(int Agent_ID)
         {
             Promotion promotion = new Promotion();
-            return promotion.GetPromotedAttraction(Agent_ID); ;
+            return promotion.GetPromotedAttraction(Agent_ID); 
         }
 
 
