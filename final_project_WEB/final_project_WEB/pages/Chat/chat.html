@@ -27,6 +27,8 @@
             window.location.href = "../Login/login-2.html";
         }
         var chatObject = {};
+
+        var timer;
         $(document).ready(function () {
 
             if (sessionStorage.getItem('id_chat')) {
@@ -41,15 +43,64 @@
 
         });
 
+
+        
+        $(document).on("click", "#sendMessage", function () {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+
+            h = checkTime(h);
+            m = checkTime(m);
+            realTime = h + ":" + m ;
+
+            function checkTime(i) {
+                if (i < 10) {
+                    i = "0" + i;
+                }
+                return i;
+            }
+            arr = LengthChat.split('-');
+            customerId = arr[0];
+            id_message = arr[1];
+
+
+            var messageText = $('#agentMessage').val();
+            document.getElementById("agentMessage").value = "";
+
+            firebase.database().ref(`/chat/${customerId}`).push().set({
+                time: realTime,
+                userId: Agent_ID,
+                message: messageText,
+                id: id_message
+            })
+            let strConversation = `<div class="container_chat darker_chat">
+                            <img src="../../images/PeoplePic/3.jpg" alt="Avatar" class="right" style="width:100%;">
+                            <p>${messageText}</p>
+                            <span class="time-left">${realTime}</span>
+                            </div>`;
+            document.getElementById("ConversationWithCustomerPH").innerHTML += strConversation;
+
+        });
+
         $(document).on("click", ".StartChat", function () {
+            LengthChat = 0;
+            document.getElementById("agentMessage").value = "";
             $('.StartChat').css("background-color", "white")
-            $(this).css("background-color", "#dedede")
-            let strConversation = "";
+            $(this).css("background-color", "#dedede");
             let customerName = this.getAttribute('data-name');
             let customerID = this.getAttribute('data-id');
             let indexCustomer = this.getAttribute('data-indexC');
-            console.log(chatObject[customerID])
+            showConversation(customerID, indexCustomer);
+            document.getElementById("chatNamePH").innerHTML = "שלח הודעה ל" + customerName;
+            clearInterval(timer);
+            timer = setInterval(function () { showConversation(customerID, indexCustomer) }, 7000);
+        });
 
+
+        function showConversation(customerID, indexCustomer) {
+            console.log('נכנס')
+            let strConversation = "";
             chatObject[customerID] = [];
             firebase.database().ref(`/chat/${customerID}`).on('child_added', function (snapshot) {
                 chatObject[customerID].push((snapshot.val()));
@@ -70,22 +121,17 @@
                             <span class="time-right">${chatObject[customerID][i].time}</span>
                             </div>`;
                 }
+                LengthChat = customerID + "-" + chatObject[customerID].length;
+            }
+
+            if (LengthChat == 0) {
+                LengthChat = customerID + "-" + chatObject[customerID].length;
+
             }
             //bring Conversation from real-timeDB by customerID
             document.getElementById("ConversationWithCustomerPH").innerHTML = strConversation;
-            document.getElementById("chatNamePH").innerHTML = "שלח הודעה ל" + customerName;
 
-        });
-
-        $('#form_SendMassage').submit(function () {
-            let strConversation = "";
-            for (var i = 0; i < length; i++) { //enter the text massages that arrived from the real-timeDB
-                //https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_chat
-            }
-            let agentMassage = $('#agentMassage').val();
-            //Here code save the massage to the real-time DB and will enter to the chat window
-            document.getElementById("ConversationWithCustomerPH").innerHTML = strConversation;
-        });
+        }
 
         function successCustomer_list(customers_list1) {
             customers_list = customers_list1;
@@ -142,7 +188,6 @@
                     chatObject[id].push((snapshot.val()));
                     //console.log(chatObject[id])
                 })
-
             }
         }
 
@@ -370,14 +415,14 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form id="form_SendMassage" class="forms-sample">
+                                    <div id="form_SendMassage" class="forms-sample">
                                         <div class="input-group col-xs-12">
-                                            <textarea id="agentMassage" class="form-control" placeholder="כתוב כאן.." rows="1"></textarea>
+                                            <textarea id="agentMessage" class="form-control" placeholder="כתוב כאן.." rows="1"></textarea>
                                             <span class="input-group-append">
-                                                <button type="submit" class="btn btn-primary mr-2" style="border-radius:0px;">שלח</button>
+                                                <button id="sendMessage" type="submit" class="btn btn-primary mr-2" style="border-radius:0px;">שלח</button>
                                             </span>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

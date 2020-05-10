@@ -260,6 +260,8 @@
             if (check == 1) {
                 swal("האטרקציה קודמה", "", "success");
                 ajaxCall("GET", "../../api/Promotion/GetPromotedAttraction?Agent_ID=" + Agent_ID, "", successPromotedAttractionList, errorPromotedAttractionList);
+            document.getElementById(id_img).classList.add("current_rate");
+            /////////////////////////////////////////////////////////////////////////
 
             }
             else

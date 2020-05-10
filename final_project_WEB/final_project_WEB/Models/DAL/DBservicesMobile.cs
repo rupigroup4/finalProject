@@ -586,8 +586,15 @@ public class DBservicesMobile
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-
-            String selectSTR = "select * from PromotedAttraction_igroup4 where agent_ID='" + agentId + "'and cityName ='" + city + "' and _" + tripProfile + "=1 order by rate DESC";
+            String selectSTR = "";
+            if (tripProfile == 1)
+            {
+                selectSTR = "select * from PromotedAttraction_igroup4 where agent_ID='" + agentId + "'and cityName ='" + city + "' order by rate DESC";
+            }
+            else
+            {
+                selectSTR = "select * from PromotedAttraction_igroup4 where agent_ID='" + agentId + "'and cityName ='" + city + "' and _" + tripProfile + "=1 order by rate DESC";
+            }
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
