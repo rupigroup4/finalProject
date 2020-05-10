@@ -201,7 +201,6 @@
             document.getElementById("first").classList.remove("current_rate");
 
             document.getElementById(id_img).classList.add("current_rate");
-
             /////////////////////////////////////////////////////////////////////////
 
             ajaxCall("PUT", "../../api/Promotion/Add_Rate?attractionID=" + id_att + "&rate=" + rate + "&cityName=" + cityName + "&AgentID=" + Agent_ID, "", successGetAttrationID, errorGetAttrationID);
