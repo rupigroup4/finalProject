@@ -27,11 +27,10 @@ namespace final_project_WEB.Controllers
         }
 
         [HttpPut]
-        [Route("api/Promotion/Add_TripProfile")] // Add Trip Profile
-        public int AddTripProfile(string attractionID, int TripProfile, string cityName, int AgentID)
+        [Route("api/Promotion/promote_att")] 
+        public int Promote_att([FromBody] Promotion promote)
         {
-            Promotion promotion = new Promotion();
-            return promotion.AddTripProfile(attractionID, TripProfile, cityName, AgentID);
+            return promote.Promote_att(promote);
         }
 
         [HttpPut]

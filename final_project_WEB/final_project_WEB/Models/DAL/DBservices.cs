@@ -275,7 +275,7 @@ public class DBservices
 
     }
 
-    public int AddTripProfile(string attractionID, int new_tripProfile,int AgentID)
+    public int UpdatPromote(Promotion promote)
     {
 
         SqlConnection con;
@@ -291,7 +291,7 @@ public class DBservices
             throw (ex);
         }
 
-        String rStr = "UPDATE PromotedAttraction_igroup4 SET _"+ new_tripProfile + "= 1 WHERE agent_ID=" + AgentID + "AND attractionID = '" + attractionID + "'";
+        String rStr = "UPDATE PromotedAttraction_igroup4 SET rate="+ promote.Rate + ", _2="+promote.TripProfile_2+ ", _3=" + promote.TripProfile_3 + ", _4=" + promote.TripProfile_4 + ", _5=" + promote.TripProfile_5 + ", _6=" + promote.TripProfile_6 + " WHERE agent_ID=" + promote.AgentID + "AND attractionID = '" + promote.AttractionID + "'";
 
         cmd = CreateCommand(rStr, con);             // create the command
 
@@ -507,7 +507,7 @@ public class DBservices
     }
 
 
-    public int insert_TripProfile(string attractionID, int tripProfile, string cityName, int AgentID)
+    public int insert_Promote(Promotion promote)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -521,7 +521,7 @@ public class DBservices
             throw (ex);
         }
 
-        String cStr = BuildInsertTripProfile(attractionID, tripProfile, cityName, AgentID);      // helper method to build the insert string
+        String cStr = BuildInsertPromote(promote);      // helper method to build the insert string
 
         cmd = CreateCommand(cStr, con);             // create the command
 
@@ -548,14 +548,14 @@ public class DBservices
 
     }
 
-    private String BuildInsertTripProfile(string attractionID, int tripProfile, string cityName, int AgentID)
+    private String BuildInsertPromote(Promotion promote)
     {
         String command;
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}')", AgentID, attractionID, 0, cityName ,1);
-        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(agent_ID,attractionID,rate,cityName,_" + tripProfile+ ")";
+        sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", promote.AgentID, promote.AttractionID, promote.Rate, promote.CityName, promote.TripProfile_2, promote.TripProfile_3, promote.TripProfile_4, promote.TripProfile_5, promote.TripProfile_6);
+        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(agent_ID,attractionID,rate,cityName,_2,_3,_4,_5,_6)";
         command = prefix + sb.ToString();
 
         return command;
