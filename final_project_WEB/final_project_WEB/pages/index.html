@@ -24,7 +24,8 @@
     <link href="../css/style.css" rel="stylesheet" />
     <!-- endinject -->
     <link rel="shortcut icon" href="../images/As.png" />
-
+    <!--sorting by date format dd/mm/yyyy-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">
 
     <script>
 
@@ -188,11 +189,11 @@
                 if (Request_customer_list[i].Status == "success") {
                     countSuccess++;
                 }
-                strRequest += `<tr><td>תאריך</td>
-                                       <td><img src='${Request_customer_list[i + 1].Img}'/></td>"
-                                       <td>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
-                                       <td>${Request_customer_list[i].AttractionName}</td>
-                                       <td>${Request_customer_list[i].NumTickets}</td>`;
+                strRequest += `<tr><td>${Request_customer_list[i].Order_date}</td>
+                                               <td><img src='${Request_customer_list[i + 1].Img}'/></td>
+                                               <td>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
+                                               <td>${Request_customer_list[i].AttractionName}</td>
+                                               <td>${Request_customer_list[i].NumTickets}</td>`;
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_customer_list[i].Status) {
                     case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
@@ -204,13 +205,13 @@
                     default: strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-danger dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
                 }
                 strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
-                strRequest += `<a class="dropdown-item "onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td><td>כרטיסים</td></tr>`;
+                strRequest += `<a class="dropdown-item" "onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td><td>כרטיסים</td></tr>`;
             }
             document.getElementById("requestPH").innerHTML = strRequest;
             document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
             $("#Request_table").DataTable({
-                "columnDefs": [
-                    { "orderable": false, "targets": [0, 7] }
+                columnDefs: [
+                    { type: 'date-euro', targets: 0 }
                 ],
                 "language": {
                     "search": "חיפוש",
@@ -561,7 +562,7 @@
                                     <div class="card-body">
                                         <h4 class="card-title">רשימת טיולים</h4>
                                         <div class="table-responsive pt-3">
-                                            <table class="table table-hover overflow1" id="Request_table">
+                                            <table class="table mdl-data-table" style="width:100%" id="Request_table">
                                                 <thead>
                                                     <tr>
                                                         <th>תאריך הבקשה</th>
@@ -693,19 +694,20 @@
         <script src="../js/hoverable-collapse.js"></script>
         <script src="../js/template.js"></script>
         <script src="../js/todolist.js"></script>
-        <!-- endinject -->
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
         <!-- Custom js for this page-->
         <script src="../js/dashboard.js"></script>
         <!-- End custom js for this page-->
-        <!-->data table-->
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 
 
-        <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
     </div>
 </body>
 

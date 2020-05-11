@@ -25,7 +25,8 @@
     <!--style for customer list data table-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
-
+    <!--sorting by date format dd/mm/yyyy-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">
 
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
@@ -101,7 +102,7 @@
                 //this.validity.valid = true;
                 //this.setCustomValidity('');
 
-                });
+            });
 
 
             $(document).on("click", ".saveBtn", function () {
@@ -273,7 +274,7 @@
         function POSTsuccessNewTrip(num) {
             if (num == 1)
                 swal("בוצע בהצלחה", "נוסף טיול חדש", "success");
-            else 
+            else
                 swal("שגיאה", "טיול לא נוסף", "error");
             clearFields();
             closeForm();

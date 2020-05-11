@@ -657,6 +657,7 @@ public class DBservices
             {
                 Request r = new Request();
                 r.Id = Convert.ToInt32(dr["requestID"]);
+                r.Order_date = (string)dr["date_time"];
                 r.Status = (string)dr["status_"];
                 r.AttractionID = (string)dr["attractionID"];
                 r.NumTickets = Convert.ToInt32(dr["numTickets"]);
@@ -1297,6 +1298,60 @@ public class DBservices
             }
 
         }
+    }
+
+    public int insert_task(ToDoList task)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildInsertCommand(task);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildInsertCommand(ToDoList task)
+    {
+        String command;
+
+        StringBuilder sb = new StringBuilder();
+        // use a string builder to create the dynamic string
+        sb.AppendFormat("Values('{0}', '{1}','{2}')", task.Agent_ID, task.TaskID, task.Text);
+        String prefix = "INSERT INTO TodoList_igroup4 " + "(agent_ID,taskID,text)";
+        command = prefix + sb.ToString();
+
+        return command;
     }
 
 }
