@@ -21884,3 +21884,15 @@ body_chat {
     float:right ;
 }
 
+.att_form {
+    float: right;
+}
+    .att_form .col-sm-9 {
+        max-width: 100%;
+    }
+.att_form  label{
+    width: max-content;
+}
+#searchBtn{
+    margin-top: 29px;
+}

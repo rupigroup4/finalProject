@@ -659,6 +659,7 @@ public class DBservices
                 r.Id = Convert.ToInt32(dr["requestID"]);
                 r.Status = (string)dr["status_"];
                 r.AttractionID = (string)dr["attractionID"];
+                r.NumTickets = Convert.ToInt32(dr["numTickets"]);
                 r.AttractionName = (string)dr["attractionName"];
                 r.CustomerID = Convert.ToInt32(dr["CustomerId"]);
                 Request_customer_list.Add(r);
@@ -666,6 +667,8 @@ public class DBservices
                 c.Id = Convert.ToInt32(dr["CustomerID"]);
                 c.FirstName = (string)dr["firstName"];
                 c.SureName = (string)dr["sureName"];
+                c.Img = (string)dr["img"];
+
                 Request_customer_list.Add(c);
 
                 //CustomersRequest_list.Add(c);

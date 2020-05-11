@@ -33,6 +33,26 @@
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
             //ajaxCall("GET", "../../api/Promotion/, "", successGetAttrationID, errorGetAttrationID);
             ajaxCall("GET", "../../api/Promotion/GetPromotedAttraction?Agent_ID=" + Agent_ID, "", successPromotedAttractionList, errorPromotedAttractionList);
+            $('#attraction_form').submit(function () {
+                console.log("in")
+                Category_second = $('#category_sec_select').val();
+                if (Category_first == 'tours') {
+                    if (Category_second == 'All') {
+                        urlResults = "https://www.triposo.com/api/20200405/tour.json?location_ids=" + city + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+                    } else {
+                        urlResults = "https://www.triposo.com/api/20200405/tour.json?location_ids=" + city + "&tag_labels=" + Category_second + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+                        $.get(urlResults).done(successAttractions);
+                        $.get(urlResults).fail(errorAttractions);
+                    }
+                }
+                else if (Category_second == 'All') {
+                    urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_first + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+                }
+                else urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_second + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+                $.get(urlResults).done(successAttractions);
+                $.get(urlResults).fail(errorAttractions);
+                return false;
+            })
         });
         
         function successPromotedAttractionList(promotionAttraction_List) {
@@ -59,25 +79,8 @@
             $.get(url).done(successCategory);
             $.get(url).fail(errorCategory);
         }
+       
 
-        function sendToAPI() {
-            Category_second = $('#category_sec_select').val();
-            if (Category_first == 'tours') {
-                if (Category_second == 'All') {
-                    urlResults = "https://www.triposo.com/api/20200405/tour.json?location_ids=" + city + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
-                } else {
-                    urlResults = "https://www.triposo.com/api/20200405/tour.json?location_ids=" + city + "&tag_labels=" + Category_second + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
-                    $.get(urlResults).done(successAttractions);
-                    $.get(urlResults).fail(errorAttractions);
-                }
-            }
-            else if (Category_second == 'All') {
-                urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_first + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
-            }
-            else urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_second + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
-            $.get(urlResults).done(successAttractions);
-            $.get(urlResults).fail(errorAttractions);
-        }
 
         function successCategory(data) {
             str = "<select id='category_sec_select' class='form-control' required>";
@@ -100,9 +103,14 @@
         //ResultsURL
 
         function successAttractions(data) {
+           
             str_buildAtt = "";
             arr_data = data.results;
             text = "";
+            if (arr_data.length == 0) {
+                console.log("אין");
+                document.getElementById('PH_Attraction').innerHTML = "אין אטרקציות זמינות";
+            }
             for (var i = 0; i < arr_data.length; i++) {
                 //<input type="checkbox" class="form-check-input">
                 str_buildAtt += `<div class="row"> 
@@ -156,7 +164,7 @@
                                 </div>
 
                                    
-                                <button type="submit" class="btn btn-primary mr-2" style="float: left;">הוסף</button>
+                                <button type="submit" class="btn btn-primary mr-2" style="float: left;">קדם</button>
                                 </form></div>
                                 <div class="col-md-12 grid-margin att_width">
                                 <div class="card">
@@ -569,46 +577,53 @@
                                 <div class="card-body">
                                     <h4 class="card-title">אטרקציות</h4>
                                     <div class="row">
-                                        <div class="col-lg-4 grid-margin stretch-card">
-                                            <label for="city">
-                                                <strong>בחר עיר</strong>
-                                            </label>
-                                            <input value="Amsterdam" id="city" class="form-control " required>
-                                        </div>
-                                        <div class="col-lg-4 grid-margin stretch-card">
-                                            <label for="ancestor_lable">
-                                                <strong>בחר קטגוריה</strong>
-                                            </label>
-                                            <select onchange="SecCategory()" id="ancestor_lable" class="form-control" required>
-                                                <option></option>
-                                                <option value="do">do</option>
-                                                <option value="nightlife">nightlife</option>
-                                                <option value="tours">tours</option>
-                                                <option value="sightseeing">sighseeing</option>
-                                                <option value="feature">feature</option>
-                                                <option value="practicalities">practicalities</option>
-                                                <option value="eatingout">eatingout</option>
-                                            </select>
-
-                                        </div>
-
-                                        <p class="card-description">
-
-                                            <div class="col-lg-4 grid-margin stretch-card">
-                                                <label for="attraction">
-                                                    <strong>בחר אטרקציה</strong>
-                                                </label>
-                                                <div id="attractionPH">
-                                                    <select class="form-control" required></select>
+                                        <form id="attraction_form" style="width:100%">
+                                            <div class="att_form col-md-3">
+                                                <div class="col-sm-3">
+                                                    <label for="city">
+                                                        <strong>בחר עיר</strong>
+                                                    </label>
                                                 </div>
-                                                <button id="searchBtn" onclick="sendToAPI()" class="btn btn-primary mr-2" disabled>חפש</button>
+                                                <div class="col-sm-9">
+                                                    <input value="Amsterdam" id="city" class="form-control " required>
+                                                </div>
                                             </div>
+                                            <div class="att_form col-md-3">
+                                                <div class="col-sm-3">
+                                                    <label for="ancestor_lable">
+                                                        <strong>בחר קטגוריה</strong>
+                                                    </label>
+                                                </div>  
+                                                <div class="col-sm-9">
+                                                    <select onchange="SecCategory()" id="ancestor_lable" class="form-control" required>
+                                                        <option></option>
+                                                        <option value="do">do</option>
+                                                        <option value="nightlife">nightlife</option>
+                                                        <option value="tours">tours</option>
+                                                        <option value="sightseeing">sighseeing</option>
+                                                        <option value="feature">feature</option>
+                                                        <option value="practicalities">practicalities</option>
+                                                        <option value="eatingout">eatingout</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="att_form col-md-3">
+                                                    <div class="col-sm-3">
+                                                        <label for="attraction">
+                                                            <strong>בחר אטרקציה</strong>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <div id="attractionPH">
+                                                            <select class="form-control" required></select>
+                                                        </div>
+                                                    </div>
+                                             </div>
+                                            <div class="att_form col-md-3">
+                                                    <input type="submit" id="searchBtn" name="חפש" class="btn btn-primary mr-2" disabled />
+                                                </div>
+                                        </form>
                                     </div>
-                                    <!--<div class="row">
-                                        <div id="resultsPH" class="col-lg-12 grid-margin stretch-card">
-
-                                        </div>
-                                    </div>-->
                                 </div>
                             </div>
                         </div>
@@ -654,34 +669,7 @@
     <!-- Custom js for this page-->
     <!-- End custom js for this page-->
 
-    <script>
-        $('#searchBtn').click(function () {
-            $(".slider1").rangeslider();
-        });
-        $.fn.rangeslider = function () {
-            var obj = this;
-            var defautValue = obj.attr("value");
-            obj.wrap("<span class='range-slider'></span>");
-            obj.after("<span class='slider-container'><span class='bar'><span></span></span><span class='bar-btn'><span>0</span></span></span>");
-            obj.attr("oninput", "updateSlider(this)");
-            updateSlider(this);
-            return obj;
-        };
-
-        function updateSlider(passObj) {
-            var obj = $(passObj);
-            var value = obj.val();
-            var min = obj.attr("min");
-            var max = obj.attr("max");
-            var range = Math.round(max - min);
-            var percentage = Math.round((value - min) * 100 / range);
-            var nextObj = obj.next();
-            nextObj.find("span.bar-btn").css("left", percentage + "%");
-            nextObj.find("span.bar > span").css("width", percentage + "%");
-            nextObj.find("span.bar-btn > span").text(percentage);
-        };
-
-    </script>
+  
 </body>
 
 </html>
