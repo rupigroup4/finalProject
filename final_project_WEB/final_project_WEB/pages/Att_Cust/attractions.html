@@ -107,10 +107,9 @@
                 //<input type="checkbox" class="form-check-input">
                 str_buildAtt += `<div class="row"> 
                                 <div dir="rtl" class="col-md-12 grid-margin att_width" id="promotion_row">
-                                <form id="promotion_form" data-id="${arr_data[i].id}" data-city="${city}" onsubmit="return ValidateForm('${arr_data[i].id}')">
-                                <input dir="ltr" type="range" min="1" max="5" value="1" class="slider1" id="Range_${arr_data[i].id}">
-
-                                <div class="form-check form-check-flat form-check-primary checkbox_style">
+                                <form id="promotion_form" data-id="${arr_data[i].id}" data-city="${city}"">
+                                <input dir="ltr" type="range" min="1" max="5" value="1" class ="slider1" id="Range_${arr_data[i].id}">
+                                <div class ="form-check form-check-flat form-check-primary checkbox_style">
                                  <label class="form-check-label">
                                <input class="checkbox_1 form-check-input" data-id="${arr_data[i].id}" type="checkbox" id="TripProfile_1_${arr_data[i].id}" />
                                 <i class="input-helper"></i>
@@ -146,11 +145,16 @@
                                 </div>
 
                                 <div class="form-check form-check-flat form-check-primary checkbox_style">
-                                 <label class="form-check-label">
+                                <label class ="form-check-label">
                                 <input class="form-check-input" type="checkbox" id="TripProfile_6_${arr_data[i].id}" />
                                 <i class="input-helper"></i>
                                 טיול זוגי/ירח דבש </label>
                                 </div>
+
+                                <div hidden id="error_${arr_data[i].id}"  class ="form-check form-check-flat form-check-primary checkbox_style">
+                                <label style="color:red;" class ="form-check-label">אחת מתיבות הסימון חייבות להיות מסומנות</label>
+                                </div>
+
                                    
                                 <button type="submit" class="btn btn-primary mr-2" style="float: left;">הוסף</button>
                                 </form></div>
@@ -218,20 +222,21 @@
             var TripProfile_4 = document.getElementById('TripProfile_4_' + id_att).checked;
             var TripProfile_5 = document.getElementById('TripProfile_5_' + id_att).checked;
             var TripProfile_6 = document.getElementById('TripProfile_6_' + id_att).checked;
-            console.log(TripProfile_2, TripProfile_3, TripProfile_4, TripProfile_5, TripProfile_6)
             if (TripProfile_2 == false && TripProfile_3 == false && TripProfile_4 == false && TripProfile_5 == false && TripProfile_6 == false) {
-                //document.getElementById('TripProfile_1_' + id_att).setCustomValidity('Field must be a number.');
-                //document.getElementById('TripProfile_1_' + id_att).reportValidity();
-                //return false;
-                alert('בחר לפחות פרופיל טיול אחד');
+                return false;
             }
-            //console.log(document.getElementById('TripProfile_1_' + id_att).reportValidity());
-            //document.getElementById('TripProfile_1_' + id_att).setCustomValidity('');
+                return true;
         }
 
-        $(document).on('submit', '#promotion_form', function () {
-            
+        $(document).on('submit', '#promotion_form', function (e) {
+            e.preventDefault();
             var id_att = this.getAttribute('data-id');
+            if (!ValidateForm(id_att)) {
+                document.getElementById('error_' + id_att).removeAttribute('hidden');
+                return;
+            }
+            document.getElementById('error_' + id_att).setAttribute('hidden', '')
+
             var cityName = this.getAttribute('data-city');
             console.log(document.getElementById('TripProfile_1_' + id_att).validity)
             var TripProfile_2 = document.getElementById('TripProfile_2_' + id_att).checked;
@@ -648,6 +653,35 @@
     <!-- endinject -->
     <!-- Custom js for this page-->
     <!-- End custom js for this page-->
+
+    <script>
+        $('#searchBtn').click(function () {
+            $(".slider1").rangeslider();
+        });
+        $.fn.rangeslider = function () {
+            var obj = this;
+            var defautValue = obj.attr("value");
+            obj.wrap("<span class='range-slider'></span>");
+            obj.after("<span class='slider-container'><span class='bar'><span></span></span><span class='bar-btn'><span>0</span></span></span>");
+            obj.attr("oninput", "updateSlider(this)");
+            updateSlider(this);
+            return obj;
+        };
+
+        function updateSlider(passObj) {
+            var obj = $(passObj);
+            var value = obj.val();
+            var min = obj.attr("min");
+            var max = obj.attr("max");
+            var range = Math.round(max - min);
+            var percentage = Math.round((value - min) * 100 / range);
+            var nextObj = obj.next();
+            nextObj.find("span.bar-btn").css("left", percentage + "%");
+            nextObj.find("span.bar > span").css("width", percentage + "%");
+            nextObj.find("span.bar-btn > span").text(percentage);
+        };
+
+    </script>
 </body>
 
 </html>
