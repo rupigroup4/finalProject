@@ -18,8 +18,6 @@ namespace final_project_WEB.Models
         private int tripProfile_5;
         private int tripProfile_6;
 
-
-
         public Promotion(int agentID, string attractionID, int ordersQuantity, int rate, string cityName, int tripProfile_2, int tripProfile_3, int tripProfile_4, int tripProfile_5, int tripProfile_6)
         {
             AgentID = agentID;
@@ -72,18 +70,18 @@ namespace final_project_WEB.Models
             return 0;
         }
 
-        public int AddTripProfile(string attractionID, int tripProfile, string cityName, int AgentID)
+        public int Promote_att(Promotion promote)
         {
             DBservices dbs = new DBservices();
-            int ans = dbs.ExistsAttraction(attractionID, AgentID);
+            int ans = dbs.ExistsAttraction(promote.AttractionID, promote.AgentID);
             if (ans == 0) //attraction doesn't exist - Add atraction with Promotion 0 and trip profile
             {
-                int numaffected = dbs.insert_TripProfile(attractionID, tripProfile, cityName, AgentID);
+                int numaffected = dbs.insert_Promote(promote);
                 return numaffected;
             }
             else
             {
-                return dbs.AddTripProfile(attractionID, tripProfile, AgentID);
+                return dbs.UpdatPromote(promote);
             }
         }
 

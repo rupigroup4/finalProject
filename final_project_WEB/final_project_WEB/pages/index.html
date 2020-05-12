@@ -10,6 +10,9 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
             crossorigin="anonymous"></script>
+    <!-->data table-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">
     <!-- plugins:css -->
     <link href="../vendors/ti-icons/css/themify-icons.css" rel="stylesheet" />
     <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
@@ -21,8 +24,9 @@
     <link href="../css/style.css" rel="stylesheet" />
     <!-- endinject -->
     <link rel="shortcut icon" href="../images/As.png" />
-    
-    
+    <!--sorting by date format dd/mm/yyyy-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">
+
     <script>
 
         var RequestID = null;
@@ -33,8 +37,8 @@
 
         $(document).ready(function () {
             setTimeout(Check_new_message, 1000);
-            Agent_ID = localStorage.getItem('AgentID');  
-            Agent_Name = localStorage.getItem('AgentName');    
+            Agent_ID = localStorage.getItem('AgentID');
+            Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
 
             ajaxCall("GET", "../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
@@ -47,18 +51,42 @@
 
             ajaxCall("PUT", "../api/Trip/ActiveTrips?Agent_ID=" + Agent_ID, "", successUpDateActiveTrip, errorUpDateActiveTrip); //Active trips
 
+            ajaxCall("GET", "../api/ToDoList?Agent_ID=" + Agent_ID, "", successGETTask_list, errorGETTask_list);
+
+            function successGETTask_list(Task_List) {
+                strTask = '<ul class="d-flex flex-column-reverse todo-list todo-list-custom">';
+                console.log(Task_List);
+                for (var i = 0; i < Task_List.length; i++) {
+                    if (Task_List[i].Completed == 1) {
+                        strTask += '<li class="completed"><div class="form-check form-check-flat"><label class="form-check-label"><input class="checkbox" type="checkbox">';
+                        strTask += Task_List[i].Text;
+                        strTask += '</label></div><i class="remove ti-trash"></i></li>';
+                    }
+                    else {
+                        strTask += '<li><div class="form-check form-check-flat"><label class="form-check-label"><input class="checkbox" type="checkbox">';
+                        strTask += Task_List[i].Text;
+                        strTask += '</label></div><i class="remove ti-trash"></i></li>';
+                    }
+                }
+                strTask += '</ul>';
+                document.getElementById('TaskList').innerHTML = strTask;
+            }
+
+            function errorGETTask_list(err) {
+                console.log(err);
+            }
 
             $('#upload').click(function () {
                 var data = new FormData();
                 var files = $("#chooseFile").get(0).files;
-                // Add the uploaded file to the form data collection  
+                // Add the uploaded file to the form data collection
                 if (files.length > 0) {
                     for (f = 0; f < files.length; f++) {
                         data.append("Uploadedpdf", files[f]);
                     }
                 }
 
-                // Ajax upload  
+                // Ajax upload
                 $.ajax({
                     type: "POST",
                     url: "../Api/pdf/uploadpdf",
@@ -76,7 +104,7 @@
         });
 
         function successUpDateActiveTrip(numEffected) {
-            console.log(numEffected);
+            //console.log(numEffected);
         }
 
         function errorUpDateActiveTrip() {
@@ -103,7 +131,7 @@
         }
 
         function successCountNEWRequest(count) {
-            console.log(count);
+            //console.log(count);
             if (count) {
                 document.getElementById("newRequest").style.display = "block";
                 document.getElementById("newRequest").innerHTML = count;
@@ -181,12 +209,15 @@
         function successShowALLRequest(Request_customer_list) {
             strRequest = "";
             var countSuccess = 0;
-            for (var i = 0; i < Request_customer_list.length; i+=2) {
+            for (var i = 0; i < Request_customer_list.length; i += 2) {
                 if (Request_customer_list[i].Status == "success") {
-                        countSuccess++;
-                    }
-                strRequest += "<tr><td>" + Request_customer_list[i + 1].FirstName + " " + Request_customer_list[i+1].SureName + "</td>";
-                strRequest += "<td>" + Request_customer_list[i].AttractionName + "</td>";
+                    countSuccess++;
+                }
+                strRequest += `<tr><td>${Request_customer_list[i].Order_date}</td>
+                                               <td><img src='${Request_customer_list[i + 1].Img}'/></td>
+                                               <td>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
+                                               <td>${Request_customer_list[i].AttractionName}</td>
+                                               <td>${Request_customer_list[i].NumTickets}</td>`;
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_customer_list[i].Status) {
                     case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
@@ -198,10 +229,31 @@
                     default: strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-danger dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
                 }
                 strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
-                strRequest += `<a class="dropdown-item " onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td>`;
+                strRequest += `<a class="dropdown-item" "onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td><td>כרטיסים</td></tr>`;
             }
             document.getElementById("requestPH").innerHTML = strRequest;
             document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
+            $("#Request_table").DataTable({
+                columnDefs: [
+                    { type: 'date-euro', targets: 0 }
+                ],
+                "language": {
+                    "search": "חיפוש",
+                    "lengthMenu": "שורות להצגה _MENU_",
+                    "zeroRecords": "אין טיולים במערכת",
+                    "infoFiltered": "",
+                    "info": "הצג עמוד _PAGE_ מתוך _PAGES_",
+                    "infoEmpty": "",
+                    "loadingRecords": "טוען...",
+                    "paginate": {
+                        "first": "ראשון",
+                        "last": "אחרון",
+                        "next": "לעמוד הבא",
+                        "previous": "לעמוד הקודם"
+                    },
+                }
+
+            });
 
         }
 
@@ -243,7 +295,7 @@
         function successChange_status(RequestId) { //שלב ראשון לאחר השינוי בדאטה בייס הוא להביא את הקוד אליו נשלח את ההתראה
             //swal("הסטטוס שונה", "", "sucess");
             RequestID = RequestId;
-            ajaxCall('GET',`../api/notification/getpntoken/${RequestID}`,"",getPnTokenSucess,getPnTokenError);
+            ajaxCall('GET', `../api/notification/getpntoken/${RequestID}`, "", getPnTokenSucess, getPnTokenError);
         }
 
         function errorChange_status() {
@@ -277,7 +329,7 @@
         }
 
         function getPnTokenError(err) {
-            //להוסיף פה הודעת שגיאה על שלא התקבל PnToken 
+            //להוסיף פה הודעת שגיאה על שלא התקבל PnToken
             console.log("getPnTokenError");
         }
 
@@ -290,7 +342,67 @@
             console.log('err= ', err);
         }
 
-        
+        function sendTask(TextTask) {
+            text = TextTask;
+            console.log(text);
+            newTask = {
+                "Text": text,
+                "Agent_ID": Agent_ID,
+            }
+            let obj = JSON.stringify(newTask);
+
+            ajaxCall("POST", "../../api/ToDoList", obj, POSTsuccessNewTask, POSTerrorNewTask);
+            return false;
+        }
+
+        (function ($) {
+            'use strict';
+            $(function () {
+                var todoListItem = $('.todo-list');
+                var todoListInput = $('.todo-list-input');
+                $('.todo-list-add-btn').on("click", function (event) {
+                    event.preventDefault();
+
+                    let item = $(this).prevAll('.todo-list-input').val();
+                    console.log(item);
+                    if (item) {
+                        todoListItem.append("<li><div class='form-check'><label class='form-check-label'><input class='checkbox' type='checkbox'/>" + item + "<i class='input-helper'></i></label></div><i class='remove ti-trash'></i></li>");
+                        sendTask(item);
+                        todoListInput.val("");
+                    }
+
+                });
+
+                todoListItem.on('change', '.checkbox', function () {
+                    if ($(this).attr('checked')) {
+                        $(this).removeAttr('checked');
+                    } else {
+                        $(this).attr('checked', 'checked');
+                    }
+
+                    $(this).closest("li").toggleClass('completed');
+
+                });
+
+                todoListItem.on('click', '.remove', function () {
+                    $(this).parent().remove();
+                });
+
+            });
+        })(jQuery);
+
+        function POSTsuccessNewTask(num) {
+            if (num ==1) {
+                console.log("המשימה הוזנה בהצלחה");
+            }
+            else console.log("המשימה לא הוזנה");
+ 
+        }
+
+        function POSTerrorNewTask(err) {
+            swal("POSTerrorNewTask");
+        }
+
 
     </script>
 </head>
@@ -477,7 +589,7 @@
             <!-- partial -->
             <div class="main-panel">
                 <div class="content-wrapper">
-                    <div class="row" >
+                    <div class="row">
                         <div class="col-md-3 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
@@ -528,6 +640,31 @@
                         </div>
                     </div>
                     <div class="content-wrapper" style="padding-left:0;padding-right:0">
+                        <div class="row">
+                            <div class="col-md-12 grid-margin stretch-card">
+                                <div class="card position-relative">
+                                    <div class="card-body">
+                                        <h4 class="card-title">רשימת טיולים</h4>
+                                        <div class="table-responsive pt-3">
+                                            <table class="table mdl-data-table" style="width:100%" id="Request_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>תאריך הבקשה</th>
+                                                        <th>תמונה</th>
+                                                        <th>שם הלקוח</th>
+                                                        <th>שם אטרקציה</th>
+                                                        <th>כמות כרטיסים</th>
+                                                        <th>Status</th>
+                                                        <th>כרטיסים</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="requestPH"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row" dir="rtl">
                             <div class="col-lg-6 grid-margin stretch-card">
                                 <div class="card">
@@ -552,18 +689,59 @@
                             <div class="col-lg-6 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title">בקשות</h4>
-                                        <div class="table-responsive">
-                                            <table class="table table-hover overflow1">
-                                                <thead>
-                                                    <tr>
-                                                        <th>שם הלקוח</th>
-                                                        <th>שם אטרקציה</th>
-                                                        <th>Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="requestPH"></tbody>
-                                            </table>
+                                        <h4 class="card-title">To Do Lists</h4>
+                                        <div id="TaskList" class="list-wrapper pt-2">
+                                            <!--<ul class="d-flex flex-column-reverse todo-list todo-list-custom">
+                                                <li>
+                                                    <div class="form-check form-check-flat">
+                                                        <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox">
+                                                            Become A Travel Pro In One Easy Lesson
+                                                        </label>
+                                                    </div>
+                                                    <i class="remove ti-trash"></i>
+                                                </li>
+                                                <li class="completed">
+                                                    <div class="form-check form-check-flat">
+                                                        <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox" checked>
+                                                            See The Unmatched Beauty Of The Great Lakes
+                                                        </label>
+                                                    </div>
+                                                    <i class="remove ti-trash"></i>
+                                                </li>
+                                                <li>
+                                                    <div class="form-check form-check-flat">
+                                                        <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox">
+                                                            Copper Canyon
+                                                        </label>
+                                                    </div>
+                                                    <i class="remove ti-trash"></i>
+                                                </li>
+                                                <li class="completed">
+                                                    <div class="form-check form-check-flat">
+                                                        <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox" checked>
+                                                            Top Things To See During A Holiday In Hong Kong
+                                                        </label>
+                                                    </div>
+                                                    <i class="remove ti-trash"></i>
+                                                </li>
+                                                <li>
+                                                    <div class="form-check form-check-flat">
+                                                        <label class="form-check-label">
+                                                            <input class="checkbox" type="checkbox">
+                                                            Travelagent India
+                                                        </label>
+                                                    </div>
+                                                    <i class="remove ti-trash"></i>
+                                                </li>
+                                            </ul>-->
+                                        </div>
+                                        <div class="add-items d-flex mb-0 mt-4">
+                                            <input id="TaskText" type="text" class="form-control todo-list-input mr-2" placeholder="הוסף משימה חדשה">
+                                            <button class="add btn btn-icon text-primary todo-list-add-btn bg-transparent"><i class="ti-location-arrow"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -599,11 +777,20 @@
         <script src="../js/off-canvas.js"></script>
         <script src="../js/hoverable-collapse.js"></script>
         <script src="../js/template.js"></script>
-        <script src="../js/todolist.js"></script>
-        <!-- endinject -->
+        <!--<script src="../js/todolist.js"></script>-->
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
         <!-- Custom js for this page-->
         <script src="../js/dashboard.js"></script>
         <!-- End custom js for this page-->
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+
 
     </div>
 </body>

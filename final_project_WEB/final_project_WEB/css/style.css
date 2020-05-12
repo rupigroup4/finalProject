@@ -10737,7 +10737,7 @@ textarea.form-control {
 }
 
 .form-inline {
-  display: flex;
+  /*display: flex;*/
   flex-flow: row wrap;
   align-items: center;
 }
@@ -19831,13 +19831,14 @@ code {
   padding-left: 0;
 }
 
-.form-check .form-check-label {
-  min-height: 18px;
-  display: block;
-  margin-left: 1.75rem;
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
+    .form-check .form-check-label {
+        min-height: 18px;
+        display: block;
+        margin-right: 13px;
+        margin-left: 23px;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
 
 .rtl .form-check .form-check-label {
   margin-left: 0;
@@ -21715,10 +21716,12 @@ div.dataTables_wrapper div.dataTables_paginate {
 
 /*slider*/
 .slider1 {
+    float: right;
+    margin-left: 10px;
+    margin-top: 8px;
     -webkit-appearance: none;
-    /*width: 100%;*/
     height: 25px;
-    background: #d3d3d3;
+    background: #ffffff;
     outline: none;
     opacity: 0.7;
     -webkit-transition: .2s;
@@ -21865,4 +21868,31 @@ body_chat {
     display: block;
     color: white;
     top: -6px;
+}
+
+.att_width {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+#promotion_row {
+    padding: 10px;
+    margin-bottom: 0;
+    background-color: #ececeb; 
+}
+.checkbox_style{
+    float:right ;
+}
+
+.att_form {
+    float: right;
+}
+    .att_form .col-sm-9 {
+        max-width: 100%;
+    }
+.att_form  label{
+    width: max-content;
+}
+#searchBtn{
+    margin-top: 29px;
 }

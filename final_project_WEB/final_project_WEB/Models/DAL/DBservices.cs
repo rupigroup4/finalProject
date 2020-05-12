@@ -275,7 +275,7 @@ public class DBservices
 
     }
 
-    public int AddTripProfile(string attractionID, int new_tripProfile,int AgentID)
+    public int UpdatPromote(Promotion promote)
     {
 
         SqlConnection con;
@@ -291,7 +291,7 @@ public class DBservices
             throw (ex);
         }
 
-        String rStr = "UPDATE PromotedAttraction_igroup4 SET _"+ new_tripProfile + "= 1 WHERE agent_ID=" + AgentID + "AND attractionID = '" + attractionID + "'";
+        String rStr = "UPDATE PromotedAttraction_igroup4 SET rate="+ promote.Rate + ", _2="+promote.TripProfile_2+ ", _3=" + promote.TripProfile_3 + ", _4=" + promote.TripProfile_4 + ", _5=" + promote.TripProfile_5 + ", _6=" + promote.TripProfile_6 + " WHERE agent_ID=" + promote.AgentID + "AND attractionID = '" + promote.AttractionID + "'";
 
         cmd = CreateCommand(rStr, con);             // create the command
 
@@ -466,7 +466,7 @@ public class DBservices
             throw (ex);
         }
 
-        String cStr = BuildInsertATT_PROCommand(attractionID, rate, cityName, AgentID);      // helper method to build the insert string
+        String cStr = BuildInsertATT_PROCommand(AgentID,attractionID, rate, cityName);      // helper method to build the insert string
 
         cmd = CreateCommand(cStr, con);             // create the command
 
@@ -493,21 +493,21 @@ public class DBservices
 
     }
 
-    private String BuildInsertATT_PROCommand(string attractionID, int rate, string cityName, int AgentID)
+    private String BuildInsertATT_PROCommand(int AgentID,string attractionID, int rate, string cityName)
     {
         String command;
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}','{1}','{2}','{3}')", attractionID, rate, cityName, AgentID);
-        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(attractionID,rate,cityName,agent_ID)";
+        sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", AgentID,attractionID, rate, cityName, 1, 1, 1, 1, 1);
+        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(agent_ID,attractionID,rate,cityName,_2,_3,_4,_5,_6)";
         command = prefix + sb.ToString();
 
         return command;
     }
 
 
-    public int insert_TripProfile(string attractionID, int tripProfile, string cityName, int AgentID)
+    public int insert_Promote(Promotion promote)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -521,7 +521,7 @@ public class DBservices
             throw (ex);
         }
 
-        String cStr = BuildInsertTripProfile(attractionID, tripProfile, cityName, AgentID);      // helper method to build the insert string
+        String cStr = BuildInsertPromote(promote);      // helper method to build the insert string
 
         cmd = CreateCommand(cStr, con);             // create the command
 
@@ -548,14 +548,14 @@ public class DBservices
 
     }
 
-    private String BuildInsertTripProfile(string attractionID, int tripProfile, string cityName, int AgentID)
+    private String BuildInsertPromote(Promotion promote)
     {
         String command;
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}')", AgentID, attractionID, 0, cityName ,1);
-        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(agent_ID,attractionID,rate,cityName,_" + tripProfile+ ")";
+        sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", promote.AgentID, promote.AttractionID, promote.Rate, promote.CityName, promote.TripProfile_2, promote.TripProfile_3, promote.TripProfile_4, promote.TripProfile_5, promote.TripProfile_6);
+        String prefix = "INSERT INTO PromotedAttraction_igroup4 " + "(agent_ID,attractionID,rate,cityName,_2,_3,_4,_5,_6)";
         command = prefix + sb.ToString();
 
         return command;
@@ -657,8 +657,10 @@ public class DBservices
             {
                 Request r = new Request();
                 r.Id = Convert.ToInt32(dr["requestID"]);
+                r.Order_date = (string)dr["date_time"];
                 r.Status = (string)dr["status_"];
                 r.AttractionID = (string)dr["attractionID"];
+                r.NumTickets = Convert.ToInt32(dr["numTickets"]);
                 r.AttractionName = (string)dr["attractionName"];
                 r.CustomerID = Convert.ToInt32(dr["CustomerId"]);
                 Request_customer_list.Add(r);
@@ -666,6 +668,8 @@ public class DBservices
                 c.Id = Convert.ToInt32(dr["CustomerID"]);
                 c.FirstName = (string)dr["firstName"];
                 c.SureName = (string)dr["sureName"];
+                c.Img = (string)dr["img"];
+
                 Request_customer_list.Add(c);
 
                 //CustomersRequest_list.Add(c);
@@ -1295,5 +1299,101 @@ public class DBservices
 
         }
     }
+    //ToDoList - start
+    public int insert_task(ToDoList task)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildInsertCommand(task);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildInsertCommand(ToDoList task)
+    {
+        String command;
+
+        StringBuilder sb = new StringBuilder();
+        // use a string builder to create the dynamic string
+        sb.AppendFormat("Values('{0}', '{1}')", task.Agent_ID, task.Text);
+        String prefix = "INSERT INTO ToDoList_igroup4 " + "(agent_ID,TaskText)";
+        command = prefix + sb.ToString();
+
+        return command;
+    }
+
+    public List<ToDoList> Read_AllTasks(int Agent_ID)
+    {
+        List<ToDoList> Task_list = new List<ToDoList>();
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT * FROM ToDoList_igroup4 where agent_ID=" + Agent_ID;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                ToDoList t = new ToDoList();
+                t.Text = (string)dr["taskText"];
+                t.Completed = Convert.ToInt32(dr["completed"]);
+                Task_list.Add(t);
+            }
+
+            return Task_list;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+    //ToDoList - ends
 
 }

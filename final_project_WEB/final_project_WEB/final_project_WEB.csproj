@@ -177,6 +177,7 @@
     <Compile Include="Controllers\pdfController.cs" />
     <Compile Include="Controllers\PromotionController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
+    <Compile Include="Controllers\ToDoListController.cs" />
     <Compile Include="Controllers\TripController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -190,6 +191,7 @@
     <Compile Include="Models\DAL\DBservicesMobile.cs" />
     <Compile Include="Models\Promotion.cs" />
     <Compile Include="Models\Request.cs" />
+    <Compile Include="Models\ToDoList.cs" />
     <Compile Include="Models\Trip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -433,6 +435,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="pdfFiles\" />
     <Folder Include="uploadImages\" />
+    <Folder Include="Views\ToDoList\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

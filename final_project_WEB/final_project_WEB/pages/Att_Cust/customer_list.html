@@ -9,8 +9,7 @@
     <script src="../../Scripts/ajaxCalls.js"></script>
     <!-->data table-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">
-
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">ss
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
@@ -26,7 +25,8 @@
     <!--style for customer list data table-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
-
+    <!--sorting by date format dd/mm/yyyy-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">
 
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
@@ -70,10 +70,10 @@
                     var TripsDepartDate = Arr_trips[i].DepartDate.split("/");
                     var TripsDepartDateCheck = new Date(TripsDepartDate[2], parseInt(TripsDepartDate[1]) - 1, TripsDepartDate[0])
                     if (TripsDepartDateCheck >= from) {
-                        console.log(this);
+                        console.log('ok')
                         this.validity.valid = false;
-                        this.setCustomValidity('קיים טיול בתאריכים אלו');
-                        break;
+                        this.setCustomValidity('קיים טיול ללקוח בתאריך זה ');
+                        return;
                     }
                 }
                 this.validity.valid = true;
@@ -82,18 +82,27 @@
             });
 
             $(document).on("blur", "#return", function () {
-                let departure = $('#departure').val();
-                let returnDate = $('#return').val();
-                //if () {
-                //    this.validity.valid = false;
-                //    this.setCustomValidity('קיים טיול בתאריכים אלו');
-                //}
-                //else {
-                //    this.validity.valid = true;
-                //    this.setCustomValidity('');
-                //}
+                //let departure = $('#departure').val();
+                //var departureArr = departure.split("-");
+                //var from = new Date(departureArr[0], parseInt(departureArr[1]) - 1, departureArr[2]); // -1 because months are from 0 to 11
+                //let returnDate = $('#return').val();
 
-                });
+                //var returnDateArr = departure.split("-");
+                //var to = new Date(returnDate[0], parseInt(returnDate[1]) - 1, returnDate[2]); // -1 because months are from 0 to 11
+                //for (var i = 0; i < Arr_trips.length; i++) {
+                //    var TripsDepartDate = Arr_trips[i].DepartDate.split("/");
+                //    var TripsDepartDateCheck = new Date(TripsDepartDate[2], parseInt(TripsDepartDate[1]) - 1, TripsDepartDate[0])
+                //    if (TripsDepartDateCheck >= from) {
+                //        console.log('ok')
+                //        this.validity.valid = false;
+                //        this.setCustomValidity('קיים טיול ללקוח בתאריך זה ');
+                //        return;
+                //    }
+                //}
+                //this.validity.valid = true;
+                //this.setCustomValidity('');
+
+            });
 
 
             $(document).on("click", ".saveBtn", function () {
@@ -265,7 +274,7 @@
         function POSTsuccessNewTrip(num) {
             if (num == 1)
                 swal("בוצע בהצלחה", "נוסף טיול חדש", "success");
-            else 
+            else
                 swal("שגיאה", "טיול לא נוסף", "error");
             clearFields();
             closeForm();

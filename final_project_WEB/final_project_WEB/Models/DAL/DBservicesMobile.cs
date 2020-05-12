@@ -578,7 +578,7 @@ public class DBservicesMobile
 
     /////////////////////////////Promotion////////////////////////////////////////////////////////
 
-    public List<string> getPromotionByCity(int agentId, string city,int tripProfile)
+    public List<string> getPromotionByCity(int agentId, string city, int tripProfile)
     {
         List<string> PromotionAttractions = new List<string>();
         SqlConnection con = null;
@@ -587,15 +587,13 @@ public class DBservicesMobile
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
             String selectSTR = "";
-            if (tripProfile==1)
+            if (tripProfile == 1)
             {
-                selectSTR = "select * from PromotedAttraction_igroup4 where agent_ID='" + agentId + "'and cityName ='" + city + "'order by rate DESC";
-
+                selectSTR = "select * from PromotedAttraction_igroup4 where agent_ID='" + agentId + "'and cityName ='" + city + "' order by rate DESC";
             }
             else
             {
                 selectSTR = "select * from PromotedAttraction_igroup4 where agent_ID='" + agentId + "'and cityName ='" + city + "' and _" + tripProfile + "=1 order by rate DESC";
-
             }
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
