@@ -1299,7 +1299,7 @@ public class DBservices
 
         }
     }
-
+    //ToDoList - start
     public int insert_task(ToDoList task)
     {
         SqlConnection con;
@@ -1347,11 +1347,53 @@ public class DBservices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}')", task.Agent_ID, task.TaskID, task.Text);
-        String prefix = "INSERT INTO TodoList_igroup4 " + "(agent_ID,taskID,text)";
+        sb.AppendFormat("Values('{0}', '{1}')", task.Agent_ID, task.Text);
+        String prefix = "INSERT INTO ToDoList_igroup4 " + "(agent_ID,TaskText)";
         command = prefix + sb.ToString();
 
         return command;
     }
+
+    public List<ToDoList> Read_AllTasks(int Agent_ID)
+    {
+        List<ToDoList> Task_list = new List<ToDoList>();
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT * FROM ToDoList_igroup4 where agent_ID=" + Agent_ID;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                ToDoList t = new ToDoList();
+                t.Text = (string)dr["taskText"];
+                t.Completed = Convert.ToInt32(dr["completed"]);
+                Task_list.Add(t);
+            }
+
+            return Task_list;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+    //ToDoList - ends
 
 }

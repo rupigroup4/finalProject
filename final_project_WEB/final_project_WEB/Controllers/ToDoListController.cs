@@ -16,5 +16,11 @@ namespace final_project_WEB.Controllers
         {
             return task.insert_task(task);
         }
+
+        public List<ToDoList> Get(int Agent_ID)
+        {
+            ToDoList taskList = new ToDoList();
+            return taskList.Read_AllTasks(Agent_ID);
+        }
     }
 }

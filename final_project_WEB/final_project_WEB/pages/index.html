@@ -51,6 +51,30 @@
 
             ajaxCall("PUT", "../api/Trip/ActiveTrips?Agent_ID=" + Agent_ID, "", successUpDateActiveTrip, errorUpDateActiveTrip); //Active trips
 
+            ajaxCall("GET", "../api/ToDoList?Agent_ID=" + Agent_ID, "", successGETTask_list, errorGETTask_list);
+
+            function successGETTask_list(Task_List) {
+                strTask = '<ul class="d-flex flex-column-reverse todo-list todo-list-custom">';
+                console.log(Task_List);
+                for (var i = 0; i < Task_List.length; i++) {
+                    if (Task_List[i].Completed == 1) {
+                        strTask += '<li class="completed"><div class="form-check form-check-flat"><label class="form-check-label"><input class="checkbox" type="checkbox">';
+                        strTask += Task_List[i].Text;
+                        strTask += '</label></div><i class="remove ti-trash"></i></li>';
+                    }
+                    else {
+                        strTask += '<li><div class="form-check form-check-flat"><label class="form-check-label"><input class="checkbox" type="checkbox">';
+                        strTask += Task_List[i].Text;
+                        strTask += '</label></div><i class="remove ti-trash"></i></li>';
+                    }
+                }
+                strTask += '</ul>';
+                document.getElementById('TaskList').innerHTML = strTask;
+            }
+
+            function errorGETTask_list(err) {
+                console.log(err);
+            }
 
             $('#upload').click(function () {
                 var data = new FormData();
@@ -80,7 +104,7 @@
         });
 
         function successUpDateActiveTrip(numEffected) {
-            console.log(numEffected);
+            //console.log(numEffected);
         }
 
         function errorUpDateActiveTrip() {
@@ -107,7 +131,7 @@
         }
 
         function successCountNEWRequest(count) {
-            console.log(count);
+            //console.log(count);
             if (count) {
                 document.getElementById("newRequest").style.display = "block";
                 document.getElementById("newRequest").innerHTML = count;
@@ -318,6 +342,66 @@
             console.log('err= ', err);
         }
 
+        function sendTask(TextTask) {
+            text = TextTask;
+            console.log(text);
+            newTask = {
+                "Text": text,
+                "Agent_ID": Agent_ID,
+            }
+            let obj = JSON.stringify(newTask);
+
+            ajaxCall("POST", "../../api/ToDoList", obj, POSTsuccessNewTask, POSTerrorNewTask);
+            return false;
+        }
+
+        (function ($) {
+            'use strict';
+            $(function () {
+                var todoListItem = $('.todo-list');
+                var todoListInput = $('.todo-list-input');
+                $('.todo-list-add-btn').on("click", function (event) {
+                    event.preventDefault();
+
+                    let item = $(this).prevAll('.todo-list-input').val();
+                    console.log(item);
+                    if (item) {
+                        todoListItem.append("<li><div class='form-check'><label class='form-check-label'><input class='checkbox' type='checkbox'/>" + item + "<i class='input-helper'></i></label></div><i class='remove ti-trash'></i></li>");
+                        sendTask(item);
+                        todoListInput.val("");
+                    }
+
+                });
+
+                todoListItem.on('change', '.checkbox', function () {
+                    if ($(this).attr('checked')) {
+                        $(this).removeAttr('checked');
+                    } else {
+                        $(this).attr('checked', 'checked');
+                    }
+
+                    $(this).closest("li").toggleClass('completed');
+
+                });
+
+                todoListItem.on('click', '.remove', function () {
+                    $(this).parent().remove();
+                });
+
+            });
+        })(jQuery);
+
+        function POSTsuccessNewTask(num) {
+            if (num ==1) {
+                console.log("המשימה הוזנה בהצלחה");
+            }
+            else console.log("המשימה לא הוזנה");
+ 
+        }
+
+        function POSTerrorNewTask(err) {
+            swal("POSTerrorNewTask");
+        }
 
 
     </script>
@@ -606,8 +690,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 class="card-title">To Do Lists</h4>
-                                        <div class="list-wrapper pt-2">
-                                            <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
+                                        <div id="TaskList" class="list-wrapper pt-2">
+                                            <!--<ul class="d-flex flex-column-reverse todo-list todo-list-custom">
                                                 <li>
                                                     <div class="form-check form-check-flat">
                                                         <label class="form-check-label">
@@ -653,10 +737,10 @@
                                                     </div>
                                                     <i class="remove ti-trash"></i>
                                                 </li>
-                                            </ul>
+                                            </ul>-->
                                         </div>
                                         <div class="add-items d-flex mb-0 mt-4">
-                                            <input type="text" class="form-control todo-list-input mr-2" placeholder="Add new task">
+                                            <input id="TaskText" type="text" class="form-control todo-list-input mr-2" placeholder="הוסף משימה חדשה">
                                             <button class="add btn btn-icon text-primary todo-list-add-btn bg-transparent"><i class="ti-location-arrow"></i></button>
                                         </div>
                                     </div>
@@ -693,7 +777,7 @@
         <script src="../js/off-canvas.js"></script>
         <script src="../js/hoverable-collapse.js"></script>
         <script src="../js/template.js"></script>
-        <script src="../js/todolist.js"></script>
+        <!--<script src="../js/todolist.js"></script>-->
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
