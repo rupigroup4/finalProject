@@ -54,18 +54,15 @@
             ajaxCall("GET", "../api/ToDoList?Agent_ID=" + Agent_ID, "", successGETTask_list, errorGETTask_list);
 
             function successGETTask_list(Task_List) {
-                strTask = '<ul class="d-flex flex-column-reverse todo-list todo-list-custom">';
+                strTask = '<ul id="ul_todolist" dir="rtl" class="d-flex flex-column-reverse todo-list todo-list-custom">';
                 console.log(Task_List);
                 for (var i = 0; i < Task_List.length; i++) {
                     if (Task_List[i].Completed == 1) {
-                        strTask += '<li class="completed"><div class="form-check form-check-flat"><label class="form-check-label"><input class="checkbox" type="checkbox">';
-                        strTask += Task_List[i].Text;
-                        strTask += '</label></div><i class="remove ti-trash"></i></li>';
+                        strTask += `<li class="completed"><div class='form-check form-check-flat'><label class='form-check-label'><input class='checkbox' type='checkbox' checked='checked'/>${Task_List[i].Text}<i class='input-helper' ></i></label></div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`; 
                     }
                     else {
-                        strTask += '<li><div class="form-check form-check-flat"><label class="form-check-label"><input class="checkbox" type="checkbox">';
-                        strTask += Task_List[i].Text;
-                        strTask += '</label></div><i class="remove ti-trash"></i></li>';
+                        strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input class='checkbox' type='checkbox'/><i class='input-helper'></i>${Task_List[i].Text}</label></div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`; 
+
                     }
                 }
                 strTask += '</ul>';
@@ -262,26 +259,6 @@
 
         }
 
-        //function successCustomer_Request(CustomerWithRequest) {
-        //    strRequest = "";
-        //    for (var i = 0; i < CustomerWithRequest.length; i++) {
-        //        strRequest += "<tr><td>" + CustomerWithRequest[i].FirstName + " " + CustomerWithRequest[i].SureName + "</td>";
-        //        strRequest += "<td>" + Request_list_Save[i].AttractionName + "</td>";
-        //        strRequest += '<td><div class="input-group-prepend">';
-        //        switch (Request_list_Save[i].Status) {
-        //            case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
-        //                break;
-        //            case "in process": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-warning dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
-        //                break;
-        //            case "success": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-success dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
-        //                break;
-        //            default: strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-danger dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_list_Save[i].Status + '</button >';
-        //        }
-        //        strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
-        //        strRequest += `<a class="dropdown-item " onclick="Change_status('new',${Request_list_Save[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_list_Save[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_list_Save[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_list_Save[i].Id})">failed</a></div></div></td>`;
-        //    }
-        //    document.getElementById("requestPH").innerHTML = strRequest;
-        //}
 
         function errorCustomer_Request(err) {
             alert("errorCustomerRequest_list");
@@ -342,6 +319,21 @@
             console.log('err= ', err);
         }
 
+        function removeTask(idTask) {
+
+            ajaxCall("DELETE", "../../api/ToDoList", "", DELETEsuccessTask, DELETEerrorTask);
+        }
+
+        function DELETEsuccessTask(num){
+            if (num == 1) {
+                alert("נמחק");
+            }
+            else alert("לא נמחק")
+        }
+
+        function DELETEerrorTask(err) {
+            console.log('err= ', err);
+        }
         function sendTask(TextTask) {
             text = TextTask;
             console.log(text);
@@ -359,33 +351,37 @@
             'use strict';
             $(function () {
                 var todoListItem = $('.todo-list');
+                console.log(todoListItem);
+
                 var todoListInput = $('.todo-list-input');
                 $('.todo-list-add-btn').on("click", function (event) {
                     event.preventDefault();
 
                     let item = $(this).prevAll('.todo-list-input').val();
-                    console.log(item);
                     if (item) {
-                        todoListItem.append("<li><div class='form-check'><label class='form-check-label'><input class='checkbox' type='checkbox'/>" + item + "<i class='input-helper'></i></label></div><i class='remove ti-trash'></i></li>");
+                        document.getElementById('ul_todolist').innerHTML += `< li > <div class='form-check form-check-flat'><label class='form-check-label'><input class='checkbox' type='checkbox' /><i class='input-helper'></i>${item}</label></div> <i id="trash_i" class='remove ti-trash'></i></li>`; 
+                        //todoListItem.append("<li><div class='form-check'><label class='form-check-label'><input class='checkbox' type='checkbox'/>" + item + "<i class='input-helper'></i></label></div><i class='remove ti-trash'></i></li>");
                         sendTask(item);
                         todoListInput.val("");
                     }
 
                 });
 
-                todoListItem.on('change', '.checkbox', function () {
+                $(document).on('change', '.checkbox', function () {
+                    console.log($(this).attr('checked'))
                     if ($(this).attr('checked')) {
                         $(this).removeAttr('checked');
                     } else {
                         $(this).attr('checked', 'checked');
                     }
-
                     $(this).closest("li").toggleClass('completed');
 
                 });
 
-                todoListItem.on('click', '.remove', function () {
+                $(document).on('click', '.remove', function () {
                     $(this).parent().remove();
+                    var idTask = this.getAttribute('data-idTask');
+                    removeTask(idTask);
                 });
 
             });
@@ -691,53 +687,6 @@
                                     <div class="card-body">
                                         <h4 class="card-title">To Do Lists</h4>
                                         <div id="TaskList" class="list-wrapper pt-2">
-                                            <!--<ul class="d-flex flex-column-reverse todo-list todo-list-custom">
-                                                <li>
-                                                    <div class="form-check form-check-flat">
-                                                        <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox">
-                                                            Become A Travel Pro In One Easy Lesson
-                                                        </label>
-                                                    </div>
-                                                    <i class="remove ti-trash"></i>
-                                                </li>
-                                                <li class="completed">
-                                                    <div class="form-check form-check-flat">
-                                                        <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox" checked>
-                                                            See The Unmatched Beauty Of The Great Lakes
-                                                        </label>
-                                                    </div>
-                                                    <i class="remove ti-trash"></i>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check form-check-flat">
-                                                        <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox">
-                                                            Copper Canyon
-                                                        </label>
-                                                    </div>
-                                                    <i class="remove ti-trash"></i>
-                                                </li>
-                                                <li class="completed">
-                                                    <div class="form-check form-check-flat">
-                                                        <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox" checked>
-                                                            Top Things To See During A Holiday In Hong Kong
-                                                        </label>
-                                                    </div>
-                                                    <i class="remove ti-trash"></i>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check form-check-flat">
-                                                        <label class="form-check-label">
-                                                            <input class="checkbox" type="checkbox">
-                                                            Travelagent India
-                                                        </label>
-                                                    </div>
-                                                    <i class="remove ti-trash"></i>
-                                                </li>
-                                            </ul>-->
                                         </div>
                                         <div class="add-items d-flex mb-0 mt-4">
                                             <input id="TaskText" type="text" class="form-control todo-list-input mr-2" placeholder="הוסף משימה חדשה">

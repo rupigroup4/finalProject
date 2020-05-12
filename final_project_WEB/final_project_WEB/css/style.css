@@ -21896,3 +21896,8 @@ body_chat {
 #searchBtn{
     margin-top: 29px;
 }
+
+#trash_i {
+    margin-right: auto !important;
+    margin-left:0;
+}

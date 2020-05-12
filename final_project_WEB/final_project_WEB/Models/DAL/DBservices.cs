@@ -1374,6 +1374,8 @@ public class DBservices
                 ToDoList t = new ToDoList();
                 t.Text = (string)dr["taskText"];
                 t.Completed = Convert.ToInt32(dr["completed"]);
+                t.TaskID = Convert.ToInt32(dr["taskID"]);
+
                 Task_list.Add(t);
             }
 
