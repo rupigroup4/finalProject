@@ -215,14 +215,16 @@
 
 
         function successShowALLRequest(Request_customer_list) {
+            console.log(Request_customer_list);
             strRequest = "";
+            strNewRequest = `<p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p>`;
             var countSuccess = 0;
             for (var i = 0; i < Request_customer_list.length; i += 2) {
                 if (Request_customer_list[i].Status == "success") {
                     countSuccess++;
                 }
                 strRequest += `<tr>
-                                                <td><img src='${Request_customer_list[i + 1].Img}'/></td>
+                                               <td><img src='${Request_customer_list[i + 1].Img}'/></td>
                                                <td>${Request_customer_list[i].Order_date}</td>
                                                <td>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
                                                <td id="td_AttName">${Request_customer_list[i].AttractionName}</td>
@@ -230,6 +232,19 @@
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_customer_list[i].Status) {
                     case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
+                        strNewRequest += `<a class="dropdown-item">
+                                                <div class="item-thumbnail">
+                                                   <div class="item-icon bg-success">
+                                                   <i class="ti-flag-alt mx-0"></i>
+                                                   </div>
+                                                </div>
+                                                <div class="item-content">
+                                                   <h6 class="font-weight-normal">${Request_customer_list[i].AttractionName}</h6>
+                                                   <p class="font-weight-light small-text mb-0 text-muted">
+                                                   ${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}
+                                                   </p>
+                                                </div>
+                                          </a>`;
                         break;
                     case "in process": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-warning dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
                         break;
@@ -242,6 +257,7 @@
             }
             document.getElementById("requestPH").innerHTML = strRequest;
             document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
+            document.getElementById("NewReqMenu").innerHTML = strNewRequest;
             $("#Request_table").DataTable({
                 columnDefs: [
                     { type: 'date-euro', targets: 0 }
@@ -508,8 +524,8 @@
                             <i class="ti-bell mx-0"></i>
                             <p class="count" id="newRequest" style="display: none;"></p>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+                        <div dir="ltr" id="NewReqMenu" class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
+                            <!--<p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
                                     <div class="item-icon bg-success">
@@ -548,7 +564,7 @@
                                         2 days ago
                                     </p>
                                 </div>
-                            </a>
+                            </a>-->
                         </div>
                     </li>
                     <li class="nav-item nav-profile dropdown">

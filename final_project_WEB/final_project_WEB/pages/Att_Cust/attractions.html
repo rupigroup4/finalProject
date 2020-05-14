@@ -88,7 +88,11 @@
             str += "<option id='All_label value='All_label'>All</option>";
             arr_data = data.results;
             for (var i = 0; i < arr_data.length; i++) {
-                str += "<option id='" + arr_data[i].label + "' value='" + arr_data[i].label + "'>" + arr_data[i].name + "</option>";
+                if (arr_data[i].name == 'Shopping centre' || arr_data[i].name == 'Shopping district' || arr_data[i].name == 'Clothing shops' || arr_data[i].name == 'Jewelry shops' || arr_data[i].name == 'Red-light district' || arr_data[i].name == 'Relax in a park' || arr_data[i].name == 'Places to eat and drink' || arr_data[i].name == 'Comedy clubs' || arr_data[i].name == 'Department store') {
+                    str += '';
+                } else {
+                    str += "<option id='" + arr_data[i].label + "' value='" + arr_data[i].label + "'>" + arr_data[i].name + "</option>";
+                }
             }
             str += "</select>";
             document.getElementById('attractionPH').innerHTML = str;
@@ -533,13 +537,13 @@
                                                 <div class="col-sm-9">
                                                     <select onchange="SecCategory()" id="ancestor_lable" class="form-control" required>
                                                         <option></option>
-                                                        <option value="do">do</option>
-                                                        <option value="nightlife">nightlife</option>
-                                                        <option value="tours">tours</option>
-                                                        <option value="sightseeing">sighseeing</option>
-                                                        <option value="feature">feature</option>
-                                                        <option value="practicalities">practicalities</option>
-                                                        <option value="eatingout">eatingout</option>
+                                                        <option value="do">Leisure & Entertainment</option>
+                                                        <option value="nightlife">Night life</option>
+                                                        <option value="tours">Tours</option>
+                                                        <option value="sightseeing">Sights & Landmarks</option>
+                                                        <option value="feature">Teature</option>
+                                                        <option value="practicalities">Practicalities</option>
+                                                        <option value="eatingout">Restaurants & Bars</option>
                                                     </select>
                                                 </div>
                                             </div>
