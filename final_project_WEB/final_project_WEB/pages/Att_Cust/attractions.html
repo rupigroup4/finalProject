@@ -36,6 +36,7 @@
             $('#attraction_form').submit(function () {
                 console.log("in")
                 Category_second = $('#category_sec_select').val();
+                console.log(Category_second);
                 if (Category_first == 'tours') {
                     if (Category_second == 'All') {
                         urlResults = "https://www.triposo.com/api/20200405/tour.json?location_ids=" + city + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
