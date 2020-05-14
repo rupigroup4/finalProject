@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
             crossorigin="anonymous"></script>
-    <!-->data table-->
+    <!--data table-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">
     <!-- plugins:css -->
@@ -50,40 +50,13 @@
                                 str += "<tr> <td>" + CustomerList[k].FirstName + " " + CustomerList[k].SureName + "</td>";
                             }
                         }
-
                         str += "<td>" + trip_list[i].Destination + "</td>";
-
-
-                        //var dateFrom = trip_list[i].DepartDate;
-                        //var dateTo = trip_list[i].ReturnDate;
-
-                        //var d1 = dateFrom.split("/");
-                        //var d2 = dateTo.split("/");
-                        //var from = new Date(d1[2], parseInt(d1[1]) - 1, d1[0]); // -1 because months are from 0 to 11
-                        //var to = new Date(d2[2], parseInt(d2[1]) - 1, d2[0]);
-
-                        //var today = new Date();
-                        //var dd = today.getDate();
-                        //var mm = today.getMonth() + 1;
-                        //var yyyy = today.getFullYear();
-                        //var today = new Date(yyyy, mm - 1, dd);
-
-                        //if (today >= from && today <= to) {                            
                         str += "<td>" + trip_list[i].DepartDate + "</td>";
                         str += "<td>" + trip_list[i].ReturnDate + "</td>";
-
-                        //} else {
-                        //    str += "<td>" + trip_list[i].DepartDate + "</td>";
-                        //    str += "<td>" + trip_list[i].ReturnDate + "</td>";
-                        //}
-
-                        //str += '<td> <div class="progress"><div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div> </div> </td>';
                         if (trip_list[i].Pdf_Flightticket == "") {
                             let dataTrip = "data-tripId='" + trip_list[i].TripID + "'";
                             str += '<td><input id = "chooseFile' + trip_list[i].TripID + '" type = "file" /><button id="upload" class="savePdf" ' + dataTrip + '>שמור קובץ</button> </td >';
                         }
-
-                        //str += "<td>" + trip_list[i].TripProfileID + "</td>";
                         str += "</tr>";
                     }
                     document.getElementById("TripPH").innerHTML = str;
@@ -202,29 +175,15 @@
         <!-- partial:../../partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <!--src="../images/logo_iAgent_png.png"-->
-
-                <a class="navbar-brand brand-logo mr-5" href="../index.html"><img src="../../images/logo_iAgent_png.png" class="mr-2" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../../images/logo_mini_iAgent.png" alt="logo" /></a>
+                <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="../../images/logo_iAgent_png.png" class="mr-2" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../../images/logo_mini_iAgent.png" alt="logo" /></a>
 
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="ti-view-list"></span>
                 </button>
-                <ul class="navbar-nav mr-lg-2">
-                    <li class="nav-item nav-search d-none d-lg-block">
-                        <div class="input-group">
-                            <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-                                <span class="input-group-text" id="search">
-                                    <i class="ti-search"></i>
-                                </span>
-                            </div>
-                            <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
-                        </div>
-                    </li>
-                </ul>
-                <ul class="navbar-nav navbar-nav-right">
+                <ul id="nav_open" class="navbar-nav navbar-nav-right">
                     <li class="nav-item dropdown mr-1">
                         <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
                             <i class="ti-email mx-0"></i>
@@ -233,7 +192,7 @@
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../images/faces/face4.jpg" alt="image" class="profile-pic">
+                                    <img src="../images/faces/face4.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -246,7 +205,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../images/faces/face2.jpg" alt="image" class="profile-pic">
+                                    <img src="../images/faces/face2.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -259,7 +218,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../images/faces/face3.jpg" alt="image" class="profile-pic">
+                                    <img src="../images/faces/face3.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -275,7 +234,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
                             <i class="ti-bell mx-0"></i>
-                            <span class="count" id="newRequest" style="display: none;"></span>
+                            <p class="count" id="newRequest" style="display: none;"></p>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
@@ -455,7 +414,7 @@
     <script src="../../js/hoverable-collapse.js"></script>
     <script src="../../js/template.js"></script>
     <script src="../../js/todolist.js"></script>
-    <!-->data table-->
+    <!--data table-->
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>

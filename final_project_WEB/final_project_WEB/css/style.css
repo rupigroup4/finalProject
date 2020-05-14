@@ -9978,7 +9978,7 @@ pre code {
 
 .table th,
 .table td {
-  padding: 1.25rem 0.9375rem;
+  padding: 0.9rem 0.9375rem;
   vertical-align: top;
   border-top: 1px solid #c9ccd7;
 }
@@ -10871,7 +10871,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-secondary {
-  color: #212529;
+  color: white;
   background-color: #a3a4a5;
   border-color: #a3a4a5;
 }
@@ -19689,9 +19689,9 @@ code {
 
     .card .card-body {
         padding: 1.25rem 1.437rem;
-        width: 100%;
+        /*width: 100%;*/
         /*max-height: 800px;*/
-        overflow:auto;
+        /*overflow:auto;*/
     }
 
 .card .card-body + .card-body {
@@ -20518,8 +20518,8 @@ Button {
 
 .list-wrapper {
   height: 100%;
-  max-height: 361px;
-  overflow: scroll;
+  max-height: 280px;
+  overflow: auto;
 }
 
 .list-wrapper ul {
@@ -20531,7 +20531,7 @@ Button {
 
 .list-wrapper ul li {
   font-size: .9375rem;
-  padding: 1.063rem 0rem;
+  padding: 10px 0px;
   border-bottom: 1px solid #c9ccd7;
 }
 
@@ -20989,7 +20989,7 @@ Button {
 
 .navbar .navbar-brand-wrapper .navbar-brand img {
   /*width: calc(237px - 130px);*/
-  max-width: 100%;
+  max-width: 80%;
   /*height: 34px;*/
   margin: auto;
   vertical-align: middle;
@@ -21900,4 +21900,11 @@ body_chat {
 #trash_i {
     margin-right: auto !important;
     margin-left:0;
+}
+
+#td_AttName{
+    font-weight: bold;
+}
+#nav_open{
+    margin-right:auto;
 }

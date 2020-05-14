@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
             crossorigin="anonymous"></script>
-    <!-->data table-->
+    <!--data table-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">
     <!-- plugins:css -->
@@ -54,14 +54,25 @@
             ajaxCall("GET", "../api/ToDoList?Agent_ID=" + Agent_ID, "", successGETTask_list, errorGETTask_list);
 
             function successGETTask_list(Task_List) {
+                //if (Task_List.length) {
+                //    strTask = `<ul id="ul_todolist" dir="rtl" class="d-flex flex-column-reverse todo-list todo-list-custom"></ul>`;
+                //}
                 strTask = '<ul id="ul_todolist" dir="rtl" class="d-flex flex-column-reverse todo-list todo-list-custom">';
-                console.log(Task_List);
                 for (var i = 0; i < Task_List.length; i++) {
                     if (Task_List[i].Completed == 1) {
-                        strTask += `<li class="completed"><div class='form-check form-check-flat'><label class='form-check-label'><input class='checkbox' type='checkbox' checked='checked'/>${Task_List[i].Text}<i class='input-helper' ></i></label></div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`; 
+                        strTask += `<li class="completed">
+                                          <div class='form-check form-check-flat'>
+                                            <label class='form-check-label'">
+                                                <input style="" data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox' checked='checked'/>
+                                                <i class='input-helper' ></i><p>${Task_List[i].Text}<p/>
+
+                                            </label>
+                                          </div>
+                                        <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i>
+                                    </li>`; 
                     }
                     else {
-                        strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input class='checkbox' type='checkbox'/><i class='input-helper'></i>${Task_List[i].Text}</label></div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`; 
+                        strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox'/> ${Task_List[i].Text} <i class='input-helper'></i></label></div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`; 
 
                     }
                 }
@@ -101,7 +112,7 @@
         });
 
         function successUpDateActiveTrip(numEffected) {
-            //console.log(numEffected);
+            console.log(numEffected);
         }
 
         function errorUpDateActiveTrip() {
@@ -210,10 +221,11 @@
                 if (Request_customer_list[i].Status == "success") {
                     countSuccess++;
                 }
-                strRequest += `<tr><td>${Request_customer_list[i].Order_date}</td>
-                                               <td><img src='${Request_customer_list[i + 1].Img}'/></td>
+                strRequest += `<tr>
+                                                <td><img src='${Request_customer_list[i + 1].Img}'/></td>
+                                               <td>${Request_customer_list[i].Order_date}</td>
                                                <td>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
-                                               <td>${Request_customer_list[i].AttractionName}</td>
+                                               <td id="td_AttName">${Request_customer_list[i].AttractionName}</td>
                                                <td>${Request_customer_list[i].NumTickets}</td>`;
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_customer_list[i].Status) {
@@ -319,20 +331,36 @@
             console.log('err= ', err);
         }
 
-        function removeTask(idTask) {
+        function removeTask(taskID) {
 
-            ajaxCall("DELETE", "../../api/ToDoList", "", DELETEsuccessTask, DELETEerrorTask);
+            ajaxCall("DELETE", "../api/ToDoList?taskID=" + taskID, "", DELETEsuccessTask, DELETEerrorTask);
+        }
+
+        function updateTask(taskID, Agent_ID, completed) {
+            ajaxCall("PUT", "../api/ToDoList?taskID=" + taskID + "&agent_ID=" + Agent_ID + "&completed=" + completed, "", PUTsuccessTask, PUTEerrorTask);
+
+        }
+
+        function PUTsuccessTask(num) {
+            if (num == 1) {
+                console.log("עודכן");
+            }
+            else alert("לא עודכן")
+        }
+
+        function PUTEerrorTask(err) {
+            alert(PUTEerrorTask);
         }
 
         function DELETEsuccessTask(num){
-            if (num == 1) {
-                alert("נמחק");
+            if (num != 1) {
+                alert("לא נמחק")
             }
-            else alert("לא נמחק")
+            else console.log("נמחק")
         }
 
         function DELETEerrorTask(err) {
-            console.log('err= ', err);
+            alert(DELETEerrorTask);
         }
         function sendTask(TextTask) {
             text = TextTask;
@@ -342,11 +370,19 @@
                 "Agent_ID": Agent_ID,
             }
             let obj = JSON.stringify(newTask);
-
-            ajaxCall("POST", "../../api/ToDoList", obj, POSTsuccessNewTask, POSTerrorNewTask);
+            
+            ajaxCall("POST", "../api/ToDoList", obj, POSTsuccessNewTask, POSTerrorNewTask);
             return false;
         }
 
+        //$('.todo-list-input').addEventListener("keyup", function (event) {
+        //    if (event.keyCode === 13) {
+        //        event.preventDefault();
+        //        alert("ok")
+        //    }
+        //});
+
+        text_input_todolist = "";
         (function ($) {
             'use strict';
             $(function () {
@@ -354,25 +390,31 @@
                 console.log(todoListItem);
 
                 var todoListInput = $('.todo-list-input');
-                $('.todo-list-add-btn').on("click", function (event) {
+                $('.todo-list-add-btn').on("click ", function (event) {
                     event.preventDefault();
-
-                    let item = $(this).prevAll('.todo-list-input').val();
-                    if (item) {
-                        document.getElementById('ul_todolist').innerHTML += `< li > <div class='form-check form-check-flat'><label class='form-check-label'><input class='checkbox' type='checkbox' /><i class='input-helper'></i>${item}</label></div> <i id="trash_i" class='remove ti-trash'></i></li>`; 
-                        //todoListItem.append("<li><div class='form-check'><label class='form-check-label'><input class='checkbox' type='checkbox'/>" + item + "<i class='input-helper'></i></label></div><i class='remove ti-trash'></i></li>");
-                        sendTask(item);
+                     text_input_todolist = $(this).prevAll('.todo-list-input').val();
+                    if (text_input_todolist) {
+                        sendTask(text_input_todolist);
                         todoListInput.val("");
                     }
-
                 });
-
+                $('.todo-list-input').on("keyup ", function (event) {
+                    if (event.keyCode === 13) {
+                        text_input_todolist = $('.todo-list-input').val();
+                        if (text_input_todolist) {
+                            sendTask(text_input_todolist);
+                            todoListInput.val("");
+                        }
+                    }
+                });
                 $(document).on('change', '.checkbox', function () {
-                    console.log($(this).attr('checked'))
+                    var idTask = this.getAttribute('data-idTask');
                     if ($(this).attr('checked')) {
                         $(this).removeAttr('checked');
+                        updateTask(idTask, Agent_ID, 0);
                     } else {
                         $(this).attr('checked', 'checked');
+                        updateTask(idTask, Agent_ID, 1);
                     }
                     $(this).closest("li").toggleClass('completed');
 
@@ -387,12 +429,8 @@
             });
         })(jQuery);
 
-        function POSTsuccessNewTask(num) {
-            if (num ==1) {
-                console.log("המשימה הוזנה בהצלחה");
-            }
-            else console.log("המשימה לא הוזנה");
- 
+        function POSTsuccessNewTask(taskID) {
+            document.getElementById('ul_todolist').innerHTML += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${taskID}' class='checkbox' type='checkbox'/><i class='input-helper'></i>${text_input_todolist}</label></div><i id="trash_i" data-idTask='${taskID}' class='remove ti-trash'></i></li>`; 
         }
 
         function POSTerrorNewTask(err) {
@@ -417,7 +455,7 @@
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="ti-view-list"></span>
                 </button>
-                <ul class="navbar-nav navbar-nav-right">
+                <ul id="nav_open" class="navbar-nav navbar-nav-right">
                     <li class="nav-item dropdown mr-1">
                         <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
                             <i class="ti-email mx-0"></i>
@@ -594,7 +632,7 @@
                                         <h3 id="AmountOfSalesPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
                                         <i class="ti-ticket icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
-                                    <p class="mb-0 mt-2 text-danger">0.12% <span class="text-black ml-1"><small>(30 days)</small></span></p>
+                                    <!--<p class="mb-0 mt-2 text-danger">0.12% <span class="text-black ml-1"><small>(30 days)</small></span></p>-->
                                 </div>
                             </div>
                         </div>
@@ -606,7 +644,7 @@
                                         <h3 id="customers_numPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
                                         <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
-                                    <p class="mb-0 mt-2 text-danger">0.47% <span class="text-black ml-1"><small>(30 days)</small></span></p>
+                                    <!--<p class="mb-0 mt-2 text-danger">0.47% <span class="text-black ml-1"><small>(30 days)</small></span></p>-->
                                 </div>
                             </div>
                         </div>
@@ -618,7 +656,7 @@
                                         <h3 id="NumberOfCutomersOnTripPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
                                         <i class="ti-world icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
-                                    <p class="mb-0 mt-2 text-success">64.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>
+                                    <!--<p class="mb-0 mt-2 text-success">64.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>-->
                                 </div>
                             </div>
                         </div>
@@ -630,13 +668,12 @@
                                         <h3 id="Request_numPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">3</h3>
                                         <i class="ti-files icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
-                                    <p class="mb-0 mt-2 text-success">23.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>
+                                    <!--<p class="mb-0 mt-2 text-success">23.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>-->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="content-wrapper" style="padding-left:0;padding-right:0">
-                        <div class="row">
+                    <div class="row">
                             <div class="col-md-12 grid-margin stretch-card">
                                 <div class="card position-relative">
                                     <div class="card-body">
@@ -645,8 +682,8 @@
                                             <table class="table mdl-data-table" style="width:100%" id="Request_table">
                                                 <thead>
                                                     <tr>
-                                                        <th>תאריך הבקשה</th>
                                                         <th>תמונה</th>
+                                                        <th>תאריך הבקשה</th>
                                                         <th>שם הלקוח</th>
                                                         <th>שם אטרקציה</th>
                                                         <th>כמות כרטיסים</th>
@@ -661,7 +698,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" dir="rtl">
+                    <div class="row" dir="rtl">
                             <div class="col-lg-6 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
@@ -697,8 +734,6 @@
                             </div>
 
                         </div>
-                    </div>
-
                     <!-- partial:partials/_footer.html -->
                     <footer class="footer">
                         <div class="d-sm-flex justify-content-center justify-content-sm-between">

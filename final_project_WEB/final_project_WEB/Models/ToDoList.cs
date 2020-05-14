@@ -32,8 +32,18 @@ namespace final_project_WEB.Models
         public int insert_task(ToDoList task)
         {
             DBservices dbs = new DBservices();
-            int addTask = dbs.insert_task(task);
-            return addTask;
+            return dbs.insert_task(task);
+        }
+
+        public int removeTask(int taskID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.remove_Task(taskID);
+        }
+        public int updateTask(int taskID, int agent_ID, int completed)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.updateTask(taskID,agent_ID, completed);
         }
 
         public List<ToDoList> Read_AllTasks(int Agent_ID)

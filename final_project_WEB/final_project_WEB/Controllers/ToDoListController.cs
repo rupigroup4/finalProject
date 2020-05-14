@@ -22,5 +22,17 @@ namespace final_project_WEB.Controllers
             ToDoList taskList = new ToDoList();
             return taskList.Read_AllTasks(Agent_ID);
         }
+
+        public int PUT(int taskID, int agent_ID, int completed)
+        {
+            ToDoList task = new ToDoList();
+            return task.updateTask(taskID, agent_ID, completed);
+        }
+
+        public int Delete(int taskID)
+        {
+            ToDoList task = new ToDoList();
+            return task.removeTask(taskID);
+        }
     }
 }

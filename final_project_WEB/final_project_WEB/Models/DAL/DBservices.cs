@@ -232,6 +232,48 @@ public class DBservices
         }
 
     }
+    public int updateTask(int taskID, int agent_ID, int completed)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String rStr = "update ToDoList_igroup4 set completed ="+ completed + " where taskID ="+ taskID + " and agent_ID="+ agent_ID + ";";      // helper method to build the insert string
+
+        cmd = CreateCommand(rStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
     public int changePromotion(string attractionID, int rate)
     {
 
@@ -754,7 +796,49 @@ public class DBservices
             throw (ex);
         }
 
-        String rStr = BuildDelete_CustomerCommand(customerID);      // helper method to build the insert string
+        String rStr = "DELETE FROM Customer_igroup4 WHERE CustomerID='" + customerID + "'";//להוסיף פקודת מחיקה מהSQL
+
+        cmd = CreateCommand(rStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+     public int remove_Task(int taskID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String rStr = "DELETE FROM ToDoList_igroup4 WHERE taskID=" + taskID ;     // helper method to build the insert string
 
         cmd = CreateCommand(rStr, con);             // create the command
 
@@ -781,12 +865,12 @@ public class DBservices
 
     }
 
-    private String BuildDelete_CustomerCommand(int customerID)
-    {
-        String command;
-        command = "DELETE FROM Customer_igroup4 WHERE CustomerID='"+ customerID+"'";//להוסיף פקודת מחיקה מהSQL
-        return command;
-    }
+    //private String BuildDelete_CustomerCommand(int customerID)
+    //{
+    //    String command;
+    //    command = "DELETE FROM Customer_igroup4 WHERE CustomerID='"+ customerID+"'";//להוסיף פקודת מחיקה מהSQL
+    //    return command;
+    //}
 
 
 
@@ -1302,43 +1386,38 @@ public class DBservices
     //ToDoList - start
     public int insert_task(ToDoList task)
     {
-        SqlConnection con;
-        SqlCommand cmd;
+        int taskID = 0;
+        SqlConnection con = null;
+
         try
         {
-            con = connect("DBConnectionString"); // create the connection
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = BuildInsertCommand(task);
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                taskID = Convert.ToInt32(dr["taskID"]);
+            }
+            return taskID;
         }
         catch (Exception ex)
         {
             // write to log
             throw (ex);
         }
-
-        String cStr = BuildInsertCommand(task);      // helper method to build the insert string
-
-        cmd = CreateCommand(cStr, con);             // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            return 0;
-            // write to log
-            throw (ex);
-        }
-
         finally
         {
             if (con != null)
             {
-                // close the db connection
                 con.Close();
             }
-        }
 
+        }
     }
 
     private String BuildInsertCommand(ToDoList task)
@@ -1348,7 +1427,7 @@ public class DBservices
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
         sb.AppendFormat("Values('{0}', '{1}')", task.Agent_ID, task.Text);
-        String prefix = "INSERT INTO ToDoList_igroup4 " + "(agent_ID,TaskText)";
+        String prefix = "INSERT INTO ToDoList_igroup4 " + "(agent_ID,TaskText) OUTPUT Inserted.taskID ";
         command = prefix + sb.ToString();
 
         return command;
