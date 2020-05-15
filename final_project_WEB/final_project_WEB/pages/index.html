@@ -64,15 +64,16 @@
                                           <div class='form-check form-check-flat'>
                                             <label class='form-check-label'">
                                                 <input style="" data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox' checked='checked'/>
-                                                <i class='input-helper' ></i><p>${Task_List[i].Text}<p/>
-
+                                                <i class='input-helper' ></i>
                                             </label>
                                           </div>
+                                            <div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div>
+                                          
                                         <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i>
                                     </li>`; 
                     }
                     else {
-                        strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox'/> ${Task_List[i].Text} <i class='input-helper'></i></label></div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`; 
+                        strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox'/> <i class='input-helper'></i></label></div><div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`; 
 
                     }
                 }
@@ -217,7 +218,7 @@
         function successShowALLRequest(Request_customer_list) {
             console.log(Request_customer_list);
             strRequest = "";
-            strNewRequest = `<p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p>`;
+            strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
             var countSuccess = 0;
             for (var i = 0; i < Request_customer_list.length; i += 2) {
                 if (Request_customer_list[i].Status == "success") {
@@ -231,20 +232,22 @@
                                                <td>${Request_customer_list[i].NumTickets}</td>`;
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_customer_list[i].Status) {
-                    case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
-                        strNewRequest += `<a class="dropdown-item">
+                    case "new": 
+                                    strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
+                                    strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${Request_customer_list[i].AttractionName}">
                                                 <div class="item-thumbnail">
-                                                   <div class="item-icon bg-success">
-                                                   <i class="ti-flag-alt mx-0"></i>
+                                                   <div class="item-icon bg-primary">
+                                                   <i class="ti-info mx-0"></i>
                                                    </div>
                                                 </div>
                                                 <div class="item-content">
-                                                   <h6 class="font-weight-normal">${Request_customer_list[i].AttractionName}</h6>
+                                                   <h6 class="att_name_item font-weight-normal">${Request_customer_list[i].AttractionName}</h6>
                                                    <p class="font-weight-light small-text mb-0 text-muted">
                                                    ${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}
                                                    </p>
                                                 </div>
                                           </a>`;
+
                         break;
                     case "in process": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-warning dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
                         break;
@@ -253,7 +256,7 @@
                     default: strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-danger dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
                 }
                 strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
-                strRequest += `<a class="dropdown-item" "onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td><td>כרטיסים</td></tr>`;
+                strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td><td>כרטיסים</td></tr>`;
             }
             document.getElementById("requestPH").innerHTML = strRequest;
             document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
@@ -286,6 +289,14 @@
             alert("errorRequest_list");
 
         }
+        $(document).on('click', '#dropdown_Status_item', function () {
+            var Att_name = this.getAttribute('data-name');
+            console.log(Att_name);
+            var input_AttName = document.getElementById('Request_table_filter').childNodes[0].childNodes[1];
+            input_AttName.value = Att_name;
+            input_AttName.onkepress();
+        });
+
 
 
         function errorCustomer_Request(err) {
@@ -339,10 +350,8 @@
         }
 
         function successfullySentMessage(data) {
-            console.log('success data= ', data);
-            location.reload();
+            window.location.reload();        }
 
-        }
         function sendingMessageFailed(err) {
             console.log('err= ', err);
         }
@@ -446,7 +455,7 @@
         })(jQuery);
 
         function POSTsuccessNewTask(taskID) {
-            document.getElementById('ul_todolist').innerHTML += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${taskID}' class='checkbox' type='checkbox'/><i class='input-helper'></i>${text_input_todolist}</label></div><i id="trash_i" data-idTask='${taskID}' class='remove ti-trash'></i></li>`; 
+            document.getElementById('ul_todolist').innerHTML += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${taskID}' class='checkbox' type='checkbox'/><i class='input-helper'></i></label></div>  <div class='text_task form-check form-check-flat'>${text_input_todolist}</div><i id="trash_i" data-idTask='${taskID}' class='remove ti-trash'></i></li>`; 
         }
 
         function POSTerrorNewTask(err) {
