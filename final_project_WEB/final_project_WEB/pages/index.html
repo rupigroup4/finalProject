@@ -171,6 +171,10 @@
         }
 
         function successGETTrip_list(trip_list) {
+            var num_day_in_trip;
+            var num_day_passed;
+            var percent =100;
+
             if (trip_list.length == 0) {
                 alert("אין טיולים במערכת !");
                 return;
@@ -195,6 +199,10 @@
                     var today = new Date(yyyy, mm - 1, dd);
 
                     if (today >= from && today <= to) {
+                        num_day_in_trip = (to.getTime() - from.getTime()) / (1000 * 3600 * 24);
+                        num_day_passed = (today.getTime() - from.getTime()) / (1000 * 3600 * 24);
+                        percent = Math.round((num_day_passed / num_day_in_trip)*100);
+                        console.log(percent);
                         countInTrip++;
                         for (var k = 0; k < CustomerList.length; k++) {
                             if (CustomerList[k].Id == trip_list[i].CustomerID) {
@@ -203,7 +211,12 @@
                             }
                         }
                         strCustomerOnTrip += "<td>" + trip_list[i].Destination + "</td>";
-                        strCustomerOnTrip += "<td>" + trip_list[i].ReturnDate + "</td></tr>";
+                        strCustomerOnTrip += "<td>" + trip_list[i].ReturnDate + "</td>";
+                        strCustomerOnTrip += `<td>
+                                                  <div class="progress">
+                                                     <div class="progress-bar bg-danger" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
+                                                  </div>
+                                              </td></tr>`;
                     }
                 }
                 document.getElementById("NumberOfCutomersOnTripPH").innerHTML = countInTrip;
@@ -256,7 +269,8 @@
                     default: strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-danger dropdown-toggle  min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
                 }
                 strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
-                strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td><td>כרטיסים</td></tr>`;
+                let dataRequest = "data-RequestId='" + Request_customer_list[i].Id + "'";
+                strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td><td><input id = "chooseFile${Request_customer_list[i].Id}" type = "file" /><button id="upload" ${dataRequest} class="savePdf">שמור קובץ</button></td></tr>`;
             }
             document.getElementById("requestPH").innerHTML = strRequest;
             document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
@@ -284,6 +298,55 @@
             });
 
         }
+
+
+        $(document).on("click", ".savePdf", function () {
+            selectedRequest = this.getAttribute('data-RequestId');
+            console.log(selectedRequest);
+            var data = new FormData();
+            var files = $("#chooseFile" + selectedRequest).get(0).files;
+
+            if (files.length > 0) {
+                for (f = 0; f < files.length; f++) {
+                    data.append(`${selectedRequest}`, files[f]);
+                }
+            }
+
+            // Ajax upload
+            $.ajax({
+                type: "POST",
+                url: "../../Api/pdf/uploadpdf",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: SavePdfSuccess,
+                error: SavedPdfError
+            });
+
+            return false;
+        })
+
+        function SavePdfSuccess(dataPath) {
+            console.log('כאן2');
+            let arr = dataPath[0].split('!');
+
+            ajaxCall("POST", "../api/Request/Add_pdf_AttractionTicket?id=" + arr[0] + "&pdf=" + arr[1], {}, POSTsuccessAddPDF, POSTerrorAddPDF);
+
+        }
+
+        function SavedPdfError(err) {
+            alert("SavedPdfError")
+        }
+        function POSTsuccessAddPDF(numEF) {
+            if (numEF == 1) { alert("נוסף בהצלחה") }
+            else
+                alert("error");
+        }
+        function POSTerrorAddPDF(err) {
+            alert("POSTerrorAddPDF");
+        }
+
+
 
         function errorShowALLRequest(err) {
             alert("errorRequest_list");
@@ -489,7 +552,7 @@
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face4.jpg" alt="image" class="profile-pic">
+                                    <!--<img src="../images/faces/face4.jpg" alt="image" class="profile-pic">-->
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -502,7 +565,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face2.jpg" alt="image" class="profile-pic">
+                                    <!--<img src="../images/faces/face2.jpg" alt="image" class="profile-pic">-->
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -515,7 +578,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face3.jpg" alt="image" class="profile-pic">
+                                    <!--<img src="../images/faces/face3.jpg" alt="image" class="profile-pic">-->
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -534,46 +597,6 @@
                             <p class="count" id="newRequest" style="display: none;"></p>
                         </a>
                         <div dir="ltr" id="NewReqMenu" class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
-                            <!--<p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-success">
-                                        <i class="ti-info-alt mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">Application Error</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        Just now
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-warning">
-                                        <i class="ti-settings mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">Settings</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        Private message
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-info">
-                                        <i class="ti-user mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">New user registration</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        2 days ago
-                                    </p>
-                                </div>
-                            </a>-->
                         </div>
                     </li>
                     <li class="nav-item nav-profile dropdown">
@@ -736,6 +759,8 @@
                                                         <th>שם לקוח</th>
                                                         <th>יעד</th>
                                                         <th>תאריך חזרה</th>
+                                                        <th></th>
+
                                                     </tr>
                                                 </thead>
                                                 <tbody id="CustomerOnTripPH"></tbody>

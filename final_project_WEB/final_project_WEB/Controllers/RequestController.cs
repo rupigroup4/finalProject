@@ -63,5 +63,12 @@ namespace final_project_WEB.Controllers
         public void Delete(int id)
         {
         }
+        [HttpPost]
+        [Route("api/Request/Add_pdf_AttractionTicket")]
+        public int Post(string id, string pdf)
+        {
+            Request request = new Request();
+            return request.Add_pdf_AttractionTicket(id, pdf);
+        }
     }
 }

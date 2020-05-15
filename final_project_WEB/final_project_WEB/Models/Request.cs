@@ -69,6 +69,13 @@ namespace final_project_WEB.Models
             return dbs.getShowALLRequest(Agent_ID); ;
         }
 
+        public int Add_pdf_AttractionTicket(string id, string pdf)
+        {
+            string pdf1 = "http://proj.ruppin.ac.il/igroup4/prod/" + pdf;
+            DBservices dbs = new DBservices();
+            return dbs.Add_pdf_AttractionTicket(id, pdf1);
+        }
+
         //Mobile//
 
         public List<Request> getCustomerNotification(int customerId)

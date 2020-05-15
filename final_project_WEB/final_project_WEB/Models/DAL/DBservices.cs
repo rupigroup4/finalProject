@@ -232,6 +232,47 @@ public class DBservices
         }
 
     }
+
+    public int Add_pdf_AttractionTicket(string id, string pdf)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); 
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        String rStr = "update Request_igroup4 set pdfFile ='" + pdf + "' where requestID = '" + id + "'"; 
+
+        cmd = CreateCommand(rStr, con);    
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery();
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
+
     public int updateTask(int taskID, int agent_ID, int completed)
     {
 
