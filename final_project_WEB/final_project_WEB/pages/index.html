@@ -216,7 +216,7 @@
                         else if (percent >= 33 && percent<66) color_class = 'warning'
                             else color_class = 'danger'
                        
-                        strCustomerOnTrip += `<td>
+                        strCustomerOnTrip += `<td style="min-width: 100px;">
                                                  ${percent}% <div dir="ltr" class="progress">
                                                      <div class="progress-bar bg-${color_class}" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
                                                   </div>
@@ -755,7 +755,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 class="card-title">לקוחות בחול</h4>
-                                        <div class="table-responsive">
+                                        <div class="table-responsive table_trips">
                                             <table class="table">
                                                 <thead>
                                                     <tr>
@@ -764,7 +764,6 @@
                                                         <th>יעד</th>
                                                         <th>תאריך חזרה</th>
                                                         <th></th>
-
                                                     </tr>
                                                 </thead>
                                                 <tbody id="CustomerOnTripPH"></tbody>

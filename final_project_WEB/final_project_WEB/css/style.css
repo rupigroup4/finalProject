@@ -10258,7 +10258,7 @@ pre code {
   .table-responsive-sm {
     display: block;
     width: 100%;
-    overflow-x: auto;
+    /*overflow-x: auto;*/
     -webkit-overflow-scrolling: touch;
   }
   .table-responsive-sm > .table-bordered {
@@ -19657,7 +19657,6 @@ code {
 .progress {
   border-radius: 0px;
   height: 8px;
-  min-width:100px;
 }
 
 .progress .progress-bar {
@@ -20519,8 +20518,8 @@ Button {
 
 .list-wrapper {
   /*height: 100%;*/
-  height: 280px;
-  overflow: auto;
+  height: 320px;
+  overflow: scroll;
 }
 
 .list-wrapper ul {
@@ -21911,4 +21910,11 @@ body_chat {
 }
 .text_task{
     margin: 8px;
+}
+#PHaddtrip{
+    text-align:center;
+}
+.table_trips {
+    overflow: auto;
+    height: 373px;
 }

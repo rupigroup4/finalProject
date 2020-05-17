@@ -69,7 +69,7 @@ namespace final_project_WEB.Models
             foreach (var item in trip_list)
             {
                 string[] ReturnDate_arr = item.ReturnDate.Split('-');
-                DateTime ReturnDate = new DateTime(Convert.ToInt32(ReturnDate_arr[0]), Convert.ToInt32(ReturnDate_arr[1]) - 1, Convert.ToInt32(ReturnDate_arr[2]));
+                DateTime ReturnDate = new DateTime(Convert.ToInt32(ReturnDate_arr[0]), Convert.ToInt32(ReturnDate_arr[1]), Convert.ToInt32(ReturnDate_arr[2]));
                 if (ReturnDate <= today)
                 {
                     dbs.SetTripToNotActive(item.TripID);

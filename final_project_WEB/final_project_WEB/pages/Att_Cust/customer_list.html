@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>IAgent</title>
     <script src="../../Scripts/ajaxCalls.js"></script>
-    <!-->data table-->
+    <!--data table-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">ss
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
@@ -62,24 +62,26 @@
             });
 
             $(document).on("blur", "#departure", function () {
-                console.log(this);
+                var id_customer = this.getAttribute('data-id');
                 let departure = $('#departure').val();
-                console.log(departure);
+                var TripsDepartDateCheck;
+                var TripsDepartDate;
                 var departureArr = departure.split("-");
                 var from = new Date(departureArr[0], parseInt(departureArr[1]) - 1, departureArr[2]); // -1 because months are from 0 to 11
                 for (var i = 0; i < Arr_trips.length; i++) {
-                    var TripsDepartDate = Arr_trips[i].DepartDate.split("/");
-                    var TripsDepartDateCheck = new Date(TripsDepartDate[2], parseInt(TripsDepartDate[1]) - 1, TripsDepartDate[0])
-                    if (TripsDepartDateCheck >= from) {
-                        console.log('ok')
-                        this.validity.valid = false;
-                        this.setCustomValidity('קיים טיול ללקוח בתאריך זה ');
-                        return;
+                    if (Arr_trips[i].CustomerID == id_customer) {
+                         TripsDepartDate = Arr_trips[i].DepartDate.split("/");
+                         TripsDepartDateCheck = new Date(TripsDepartDate[2], parseInt(TripsDepartDate[1]) - 1, TripsDepartDate[0])
+                        if (TripsDepartDateCheck >= from) {
+                            console.log('ok');
+                            this.validity.valid = false;
+                            this.setCustomValidity('קיים טיול ללקוח בתאריך זה ');
+                            return;
+                        }
                     }
                 }
                 this.validity.valid = true;
                 this.setCustomValidity('');
-
             });
 
 
@@ -116,7 +118,7 @@
                     str += "<td>" + customers_list[i].Email + "</td>";
                     let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
                     str += "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
-                    str += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
+                    str += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`;
                     str += `<button type='button' title='שליחת הודעה' id='${customers_list[i].Id}' onclick='sendM(${customers_list[i].Id},"${customers_list[i].FirstName} ${customers_list[i].SureName}")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>`;
                     str += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
                 }
@@ -161,8 +163,7 @@
             let i = parseInt(index);
             let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
             str_btn = "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
-            str_btn += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
-            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
+            str += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`;            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
             str_btn += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td>";
             document.getElementById("Table_customer").rows[i + 1].cells.item(5).innerHTML = str_btn;
             document.getElementById("Table_customer").rows[i + 1].cells.item(1).innerHTML = customers_list[i].FirstName + " " + customers_list[i].SureName;
@@ -174,8 +175,7 @@
             numINlistcustomer = i;
             let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
             str_btn = "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
-            str_btn += "<button type='button' title='הוספת טיול' id='" + customers_list[i].Id + "' onclick='showPopUp(" + customers_list[i].Id + ")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>"
-            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
+            str += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`;            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
             str_btn += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td>";
             document.getElementById("Table_customer").rows[i + 1].cells.item(5).innerHTML = str_btn;
 
@@ -223,11 +223,12 @@
             alert("errordeleteCustomer");
         }
 
-        function showPopUp(id) {
-
+        function showPopUp(id, name) {
+            document.getElementById('departure').setAttribute('data-id', id);
+            console.log(document.getElementById('departure'));
             document.getElementById("loginPopup").style.display = "block";
-            document.getElementById("PHaddtrip").innerHTML = "הזן פרטי טיסה";
-            ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successTrip_list, errorTrip_list)
+            document.getElementById("PHaddtrip").innerHTML = " הזן פרטי טיסה עבור "+name;
+            ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successTrip_list, errorTrip_list)// dina- add id 
 
             id_customer = id;
         }
@@ -376,7 +377,7 @@
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face4.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face4.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -389,7 +390,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face2.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face2.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -402,7 +403,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face3.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face3.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
