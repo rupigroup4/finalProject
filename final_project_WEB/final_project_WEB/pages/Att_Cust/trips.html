@@ -55,7 +55,8 @@
                         str += "<td>" + trip_list[i].ReturnDate + "</td>";
                         if (trip_list[i].Pdf_Flightticket == "") {
                             let dataTrip = "data-tripId='" + trip_list[i].TripID + "'";
-                            str += '<td><input id="chooseFile' + trip_list[i].TripID + '" type = "file" /><button id="upload" class="savePdf btn btn-inverse-primary btn-fw" ' + dataTrip + '>שמור קובץ</button> </td >';
+                            str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input type="file" name="myfile" id ="chooseFile${trip_list[i].TripID}" /></div>
+                    <button id="upload" ${dataTrip} class="savePdf btn btn-inverse-primary btn-fw">שמור קובץ</button></td></tr>`;
                         }
                         str += "</tr>";
                     }
@@ -90,10 +91,11 @@
 
         $(document).on("click", ".savePdf", function () {
             selectedTrip = this.getAttribute('data-tripId'); //זה מחזיק את ה TRIPiD
+            console.log(document.getElementById("chooseFile" + selectedTrip));
             var data = new FormData();
             var files = $("#chooseFile" + selectedTrip).get(0).files;
             // Add the uploaded file to the form data collection
-
+            console.log(files);
             if (files.length > 0) {
                 for (f = 0; f < files.length; f++) {
                     data.append(`${selectedTrip}`, files[f]);
@@ -115,6 +117,7 @@
         })
 
         function SavePdfSuccess(dataPath) {
+            console.log("ok");
             let arr = dataPath[0].split('!');
             /*encodeURIComponent(arr[1]);*/ //check if needed
             ajaxCall("POST", "../../api/Trip/Add_pdf_Flightticket?id=" + arr[0] + "&pdf=" + arr[1], {}, POSTsuccessAddPDF, POSTerrorAddPDF);
@@ -126,7 +129,9 @@
             alert("SavedPdfError")
         }
         function POSTsuccessAddPDF(numEF) {
-            if (numEF == 1) { alert("נוסף בהצלחה") }
+            if (numEF == 1) {
+                swal("נוסף בהצלחה")
+            }
             else
                 alert("error");
         }
@@ -404,10 +409,13 @@
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="../../vendors/base/vendor.bundle.base.js"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
     <!-- endinject -->
     <!-- Plugin js for this page-->
-    <script src="../vendors/chart.js/Chart.min.js"></script>
-    <script src="../vendors/chart.js/Chart.min.js"></script>
+    <!--<script src="../vendors/chart.js/Chart.min.js"></script>-->
     <!-- End plugin js for this page-->
     <!-- inject:js -->
     <script src="../../js/off-canvas.js"></script>

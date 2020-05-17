@@ -1518,4 +1518,47 @@ public class DBservices
 
     //ToDoList - ends
 
+
+    public List<Trip> getAllCustomerTrips(int id)
+    {
+        List<Trip> trips = new List<Trip>();
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT * FROM Trip_igroup4 where _id_customer='" + id + "'";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                Trip t = new Trip();
+                t.TripID = Convert.ToInt16(dr["_id"]);
+                t.Destination = (string)dr["_destination"];
+                t.DepartDate = (string)dr["_depart"];
+                t.ReturnDate = (string)dr["_return"];
+                t.TripProfileID = Convert.ToInt16(dr["_id_TripProfile"]);
+                trips.Add(t);
+            }
+            return trips;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
 }

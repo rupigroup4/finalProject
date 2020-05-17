@@ -48,6 +48,12 @@ namespace final_project_WEB.Models
             return addedToTripList;
         }
 
+        public List<Trip> getAllCustomerTrips(int id)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.getAllCustomerTrips(id);
+        }
+
         public int Add_pdf_Flightticket(string id, string pdf)
         {
            string  pdf1 = "http://proj.ruppin.ac.il/igroup4/prod/"+pdf;

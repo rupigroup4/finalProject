@@ -16,7 +16,15 @@ namespace final_project_WEB.Controllers
             Trip trip = new Trip();
             return trip.Read_AllTrips(Agent_ID);
         }
-        
+
+        [HttpGet]
+        [Route("api/Trip/customertrips")] //Get all customer trips to do validation 
+        public List<Trip> getAllCustomerTrips(int customerID)
+        {
+            Trip t = new Trip();
+            return t.getAllCustomerTrips(customerID);
+        }
+
         //Mobile//
         [HttpGet]
         [Route("api/Trip/customertrips/{id}")]

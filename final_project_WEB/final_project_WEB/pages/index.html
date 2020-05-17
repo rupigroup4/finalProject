@@ -274,7 +274,13 @@
                 }
                 strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
                 let dataRequest = "data-RequestId='" + Request_customer_list[i].Id + "'";
-                strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a><a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a><a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a><a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td><td><input id = "chooseFile${Request_customer_list[i].Id}" type = "file" /><button id="upload" ${dataRequest} class="savePdf">שמור קובץ</button></td></tr>`;
+                strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a>
+                            <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a>
+                            <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a>
+                            <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td>
+
+                        <td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}" /></div>
+                    <button id="upload" ${dataRequest} class="savePdf btn btn-inverse-primary btn-fw">שמור קובץ</button></td></tr>`;
             }
             document.getElementById("requestPH").innerHTML = strRequest;
             document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
@@ -283,6 +289,7 @@
                 columnDefs: [
                     { type: 'date-euro', targets: 0 }
                 ],
+                "lengthMenu": [[5,10, 25, 50, -1], [5,10, 25, 50, "הצג הכל"]],
                 "language": {
                     "search": "חיפוש",
                     "lengthMenu": "שורות להצגה _MENU_",

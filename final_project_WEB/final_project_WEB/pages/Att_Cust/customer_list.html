@@ -228,16 +228,16 @@
             console.log(document.getElementById('departure'));
             document.getElementById("loginPopup").style.display = "block";
             document.getElementById("PHaddtrip").innerHTML = " הזן פרטי טיסה עבור "+name;
-            ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successTrip_list, errorTrip_list)// dina- add id 
+            ajaxCall("GET", "../../api/Trip/customertrips?customerID=" + id, "", successCustomerTrips_list, errorCustomerTrips_list)// dina- add id 
 
             id_customer = id;
         }
 
-        function successTrip_list(data) {
+        function successCustomerTrips_list(data) {
             Arr_trips = data;
             console.log(Arr_trips);
         }
-        function errorTrip_list(err) {
+        function errorCustomerTrips_list(err) {
             alert("errorTrip_list");
         }
 
@@ -377,7 +377,7 @@
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../images/faces/face4.jpg" alt="image" class="profile-pic">
+                                    <!--<img src="../../images/faces/face4.jpg" alt="image" class="profile-pic">-->
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -390,7 +390,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../images/faces/face2.jpg" alt="image" class="profile-pic">
+                                    <!--<img src="../../images/faces/face2.jpg" alt="image" class="profile-pic">-->
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -403,7 +403,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../../images/faces/face3.jpg" alt="image" class="profile-pic">
+                                    <!--<img src="../../images/faces/face3.jpg" alt="image" class="profile-pic">-->
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -635,8 +635,6 @@
     <script src="../../vendors/base/vendor.bundle.base.js"></script>
     <!-- Plugin js for this page-->
     <!-- End plugin js for this page-->
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 
     <!-- inject:js -->
