@@ -21808,8 +21808,9 @@ div.dataTables_wrapper div.dataTables_paginate {
 }
 
 #ConversationWithCustomerPH {
-    height: 90%;
+    height: 500px;
     border: 1px solid #ced4da;
+    overflow:auto;
 }
 
 body_chat {

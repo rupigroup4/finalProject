@@ -55,8 +55,8 @@
                         str += "<td>" + trip_list[i].ReturnDate + "</td>";
                         if (trip_list[i].Pdf_Flightticket == "") {
                             let dataTrip = "data-tripId='" + trip_list[i].TripID + "'";
-                            str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input type="file" name="myfile" id ="chooseFile${trip_list[i].TripID}" /></div>
-                    <button id="upload" ${dataTrip} class="savePdf btn btn-inverse-primary btn-fw">שמור קובץ</button></td></tr>`;
+                            str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input class="selectedFile" type="file" name="myfile" id ="chooseFile${trip_list[i].TripID}" ${dataTrip}/></div>
+                    <button id="upload" ${dataTrip} class="savePdf btn btn-inverse-primary btn-fw">שמור קובץ</button><div id="choosedFile${trip_list[i].TripID}"></div></td></tr>`;
                         }
                         str += "</tr>";
                     }
@@ -89,13 +89,24 @@
             alert("errorGETTripr_list");
         }
 
+        $(document).on("change", ".selectedFile", function () {
+            selectedTrip = this.getAttribute('data-tripId'); //זה מחזיק את ה TRIPiD
+            var data = new FormData();
+            var filesselected = $("#chooseFile" + selectedTrip).get(0).files;
+            console.log(filesselected);
+            document.getElementById("choosedFile" + selectedTrip).innerHTML = filesselected[0].name;
+
+            return false;
+        })
+
+
         $(document).on("click", ".savePdf", function () {
             selectedTrip = this.getAttribute('data-tripId'); //זה מחזיק את ה TRIPiD
-            console.log(document.getElementById("chooseFile" + selectedTrip));
             var data = new FormData();
             var files = $("#chooseFile" + selectedTrip).get(0).files;
+            console.log(files[0].name);
+            document.getElementById("choosedFile" + selectedTrip).innerHTML = files[0].name;
             // Add the uploaded file to the form data collection
-            console.log(files);
             if (files.length > 0) {
                 for (f = 0; f < files.length; f++) {
                     data.append(`${selectedTrip}`, files[f]);
