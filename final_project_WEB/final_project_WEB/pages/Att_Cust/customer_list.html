@@ -62,6 +62,7 @@
             });
 
             $(document).on("blur", "#departure", function () {
+                console.log(this);
                 let departure = $('#departure').val();
                 console.log(departure);
                 var departureArr = departure.split("-");
@@ -81,28 +82,6 @@
 
             });
 
-            $(document).on("blur", "#return", function () {
-                //let departure = $('#departure').val();
-                //var departureArr = departure.split("-");
-                //var from = new Date(departureArr[0], parseInt(departureArr[1]) - 1, departureArr[2]); // -1 because months are from 0 to 11
-                //let returnDate = $('#return').val();
-
-                //var returnDateArr = departure.split("-");
-                //var to = new Date(returnDate[0], parseInt(returnDate[1]) - 1, returnDate[2]); // -1 because months are from 0 to 11
-                //for (var i = 0; i < Arr_trips.length; i++) {
-                //    var TripsDepartDate = Arr_trips[i].DepartDate.split("/");
-                //    var TripsDepartDateCheck = new Date(TripsDepartDate[2], parseInt(TripsDepartDate[1]) - 1, TripsDepartDate[0])
-                //    if (TripsDepartDateCheck >= from) {
-                //        console.log('ok')
-                //        this.validity.valid = false;
-                //        this.setCustomValidity('קיים טיול ללקוח בתאריך זה ');
-                //        return;
-                //    }
-                //}
-                //this.validity.valid = true;
-                //this.setCustomValidity('');
-
-            });
 
 
             $(document).on("click", ".saveBtn", function () {
@@ -245,6 +224,7 @@
         }
 
         function showPopUp(id) {
+
             document.getElementById("loginPopup").style.display = "block";
             document.getElementById("PHaddtrip").innerHTML = "הזן פרטי טיסה";
             ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successTrip_list, errorTrip_list)

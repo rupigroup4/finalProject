@@ -19657,6 +19657,7 @@ code {
 .progress {
   border-radius: 0px;
   height: 8px;
+  min-width:100px;
 }
 
 .progress .progress-bar {

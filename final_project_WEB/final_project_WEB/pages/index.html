@@ -35,11 +35,13 @@
             window.location.href = "Login/login-2.html";
         }
 
+
         $(document).ready(function () {
             setTimeout(Check_new_message, 1000);
             Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
+
 
             ajaxCall("GET", "../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
 
@@ -47,16 +49,11 @@
 
             ajaxCall("GET", "../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
 
-            ajaxCall("GET", "../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTrip_list);
-
             ajaxCall("PUT", "../api/Trip/ActiveTrips?Agent_ID=" + Agent_ID, "", successUpDateActiveTrip, errorUpDateActiveTrip); //Active trips
 
             ajaxCall("GET", "../api/ToDoList?Agent_ID=" + Agent_ID, "", successGETTask_list, errorGETTask_list);
 
             function successGETTask_list(Task_List) {
-                //if (Task_List.length) {
-                //    strTask = `<ul id="ul_todolist" dir="rtl" class="d-flex flex-column-reverse todo-list todo-list-custom"></ul>`;
-                //}
                 strTask = '<ul id="ul_todolist" dir="rtl" class="d-flex flex-column-reverse todo-list todo-list-custom">';
                 for (var i = 0; i < Task_List.length; i++) {
                     if (Task_List[i].Completed == 1) {
@@ -163,6 +160,8 @@
         function successCustomer_list(customers_list) {
             CustomerList = customers_list;
             document.getElementById("customers_numPH").innerHTML = customers_list.length;
+            ajaxCall("GET", "../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTrip_list); 
+
         }
 
         function errorCustomer_list(err) {
@@ -197,13 +196,13 @@
                     var mm = today.getMonth() + 1;
                     var yyyy = today.getFullYear();
                     var today = new Date(yyyy, mm - 1, dd);
-
+                    var color_class;
                     if (today >= from && today <= to) {
                         num_day_in_trip = (to.getTime() - from.getTime()) / (1000 * 3600 * 24);
-                        num_day_passed = (today.getTime() - from.getTime()) / (1000 * 3600 * 24);
-                        percent = Math.round((num_day_passed / num_day_in_trip)*100);
-                        console.log(percent);
+                        num_day_passed = (today.getTime() - from.getTime()) / (1000 * 3600 * 24) + 1;
+                        percent = Math.round((num_day_passed / num_day_in_trip) * 100);
                         countInTrip++;
+
                         for (var k = 0; k < CustomerList.length; k++) {
                             if (CustomerList[k].Id == trip_list[i].CustomerID) {
                                 strCustomerOnTrip += "<tr><td><img src='" + CustomerList[k].Img + "' /> </td>";
@@ -212,9 +211,14 @@
                         }
                         strCustomerOnTrip += "<td>" + trip_list[i].Destination + "</td>";
                         strCustomerOnTrip += "<td>" + trip_list[i].ReturnDate + "</td>";
+
+                        if (percent < 33) color_class = 'success' 
+                        else if (percent >= 33 && percent<66) color_class = 'warning'
+                            else color_class = 'danger'
+                       
                         strCustomerOnTrip += `<td>
-                                                  <div class="progress">
-                                                     <div class="progress-bar bg-danger" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
+                                                 ${percent}% <div dir="ltr" class="progress">
+                                                     <div class="progress-bar bg-${color_class}" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
                                                   </div>
                                               </td></tr>`;
                     }
