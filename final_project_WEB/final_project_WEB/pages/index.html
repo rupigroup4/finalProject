@@ -173,7 +173,7 @@
             var num_day_in_trip;
             var num_day_passed;
             var percent =100;
-
+            console.log(trip_list);
             if (trip_list.length == 0) {
                 alert("אין טיולים במערכת !");
                 return;
@@ -202,13 +202,8 @@
                         num_day_passed = (today.getTime() - from.getTime()) / (1000 * 3600 * 24) + 1;
                         percent = Math.round((num_day_passed / num_day_in_trip) * 100);
                         countInTrip++;
-
-                        for (var k = 0; k < CustomerList.length; k++) {
-                            if (CustomerList[k].Id == trip_list[i].CustomerID) {
-                                strCustomerOnTrip += `<tr class='tr_search' id='${CustomerList[k].FirstName} ${CustomerList[k].SureName}' ><td><img src='${ CustomerList[k].Img}' /> </td>`;
-                                strCustomerOnTrip += "<td>" + CustomerList[k].FirstName + " " + CustomerList[k].SureName + "</td>";
-                            }
-                        }
+                        strCustomerOnTrip += `<tr class='tr_search' id='${trip_list[i+1].FirstName} ${trip_list[i+1].SureName}' ><td><img src='${trip_list[i+1].Img}' /> </td>`;
+                        strCustomerOnTrip += "<td>" + trip_list[i+1].FirstName + " " + trip_list[i+1].SureName + "</td>";
                         strCustomerOnTrip += "<td>" + trip_list[i].Destination + "</td>";
                         strCustomerOnTrip += "<td>" + trip_list[i].ReturnDate + "</td>";
 
@@ -222,6 +217,7 @@
                                                   </div>
                                               </td></tr>`;
                     }
+                    i = i + 2;
                 }
                 document.getElementById("NumberOfCutomersOnTripPH").innerHTML = countInTrip;
                 document.getElementById("CustomerOnTripPH").innerHTML = strCustomerOnTrip;

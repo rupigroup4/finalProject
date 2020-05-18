@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="../../css/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="../../images/favicon.png" />
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
@@ -55,10 +55,10 @@
                 return false;
             })
         });
-        
+
         function successPromotedAttractionList(promotionAttraction_List) {
             promotion_List = promotionAttraction_List;
-        }   
+        }
 
         function errorPromotedAttractionList(err) {
             console.log(err);
@@ -80,7 +80,7 @@
             $.get(url).done(successCategory);
             $.get(url).fail(errorCategory);
         }
-       
+
 
 
         function successCategory(data) {
@@ -108,7 +108,7 @@
         //ResultsURL
 
         function successAttractions(data) {
-           
+
             str_buildAtt = "";
             arr_data = data.results;
             text = "";
@@ -118,68 +118,68 @@
             }
             for (var i = 0; i < arr_data.length; i++) {
                 //<input type="checkbox" class="form-check-input">
-                str_buildAtt += `<div class="row"> 
-                                <div dir="rtl" class="col-md-12 grid-margin att_width" id="promotion_row">
-                                <form id="promotion_form" data-id="${arr_data[i].id}" data-city="${city}"">
-                                <input dir="ltr" type="range" min="1" max="5" value="1" class ="slider1" id="Range_${arr_data[i].id}">
-                                <div class ="form-check form-check-flat form-check-primary checkbox_style">
-                                 <label class="form-check-label">
-                               <input class="checkbox_1 form-check-input" data-id="${arr_data[i].id}" type="checkbox" id="TripProfile_1_${arr_data[i].id}" />
-                                <i class="input-helper"></i>
-                                כללי</label>
-                                </div>
+                str_buildAtt += `<div class="row">
+                                            <div dir="rtl" class="col-md-12 grid-margin att_width" id="promotion_row">
+                                            <form id="promotion_form" data-id="${arr_data[i].id}" data-city="${city}"">
+                                            <input dir="ltr" type="range" min="1" max="5" value="1" class ="slider1" id="Range_${arr_data[i].id}">
+                                            <div class ="form-check form-check-flat form-check-primary checkbox_style">
+                                             <label class="form-check-label">
+                                           <input class="checkbox_1 form-check-input" data-id="${arr_data[i].id}" type="checkbox" id="TripProfile_1_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            כללי</label>
+                                            </div>
 
-                                <div class="form-check form-check-flat form-check-primary checkbox_style">
-                                 <label class="form-check-label">
-                                 <input class="form-check-input" type="checkbox" id="TripProfile_2_${arr_data[i].id}" />
-                                <i class="input-helper"></i>
-                                טיול משפחתי </label>
-                                </div>
+                                            <div class="form-check form-check-flat form-check-primary checkbox_style">
+                                             <label class="form-check-label">
+                                             <input class="form-check-input" type="checkbox" id="TripProfile_2_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            טיול משפחתי </label>
+                                            </div>
 
-                                <div class="form-check form-check-flat form-check-primary checkbox_style">
-                                 <label class="form-check-label">
-                               <input class="form-check-input" type="checkbox" id="TripProfile_3_${arr_data[i].id}" />
-                                <i class="input-helper"></i>
-                                מסיבת רווקים/רווקות </label>
-                                </div>
-                                 
-                                <div class="form-check form-check-flat form-check-primary checkbox_style">
-                                 <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" id="TripProfile_4_${arr_data[i].id}" />
-                                <i class="input-helper"></i>
-                                טיול פנסיונרים </label>
-                                </div>
+                                            <div class="form-check form-check-flat form-check-primary checkbox_style">
+                                             <label class="form-check-label">
+                                           <input class="form-check-input" type="checkbox" id="TripProfile_3_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            מסיבת רווקים/רווקות </label>
+                                            </div>
 
-                                <div class="form-check form-check-flat form-check-primary checkbox_style">
-                                 <label class="form-check-label">
-                               <input class="form-check-input" type="checkbox" id="TripProfile_5_${arr_data[i].id}" /> 
-                                <i class="input-helper"></i>
-                                נסיעת עסקים </label>
-                                </div>
+                                            <div class="form-check form-check-flat form-check-primary checkbox_style">
+                                             <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" id="TripProfile_4_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            טיול פנסיונרים </label>
+                                            </div>
 
-                                <div class="form-check form-check-flat form-check-primary checkbox_style">
-                                <label class ="form-check-label">
-                                <input class="form-check-input" type="checkbox" id="TripProfile_6_${arr_data[i].id}" />
-                                <i class="input-helper"></i>
-                                טיול זוגי/ירח דבש </label>
-                                </div>
+                                            <div class="form-check form-check-flat form-check-primary checkbox_style">
+                                             <label class="form-check-label">
+                                           <input class="form-check-input" type="checkbox" id="TripProfile_5_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            נסיעת עסקים </label>
+                                            </div>
 
-                                <div hidden id="error_${arr_data[i].id}"  class ="form-check form-check-flat form-check-primary checkbox_style">
-                                <label style="color:red;" class ="form-check-label">אחת מתיבות הסימון חייבות להיות מסומנות</label>
-                                </div>
+                                            <div class="form-check form-check-flat form-check-primary checkbox_style">
+                                            <label class ="form-check-label">
+                                            <input class="form-check-input" type="checkbox" id="TripProfile_6_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            טיול זוגי/ירח דבש </label>
+                                            </div>
 
-                                   
-                                <button type="submit" class="btn btn-primary mr-2" style="float: left;">קדם</button>
-                                </form></div>
-                                <div class="col-md-12 grid-margin att_width">
-                                <div class="card">
-                                <div class="card-body"> <h4 class="card-title">${arr_data[i].name}</h4>
-                                <div class="card-description">ציון: ${(arr_data[i].score).toFixed(2)}</div>           
-                                <div class="row"><div dir="rtl" class="col-md-6 overflow1" ><p style="text-align: left;">${arr_data[i].intro}</p><br/></div>`;
+                                            <div hidden id="error_${arr_data[i].id}"  class ="form-check form-check-flat form-check-primary checkbox_style">
+                                            <label style="color:red;" class ="form-check-label">אחת מתיבות הסימון חייבות להיות מסומנות</label>
+                                            </div>
+
+
+                                            <button type="submit" class="btn btn-primary mr-2" style="float: left;">קדם</button>
+                                            </form></div>
+                                            <div class="col-md-12 grid-margin att_width">
+                                            <div class="card">
+                                            <div class="card-body"> <h4 class="card-title">${arr_data[i].name}</h4>
+                                            <div class="card-description">ציון: ${(arr_data[i].score).toFixed(2)}</div>
+                                            <div class="row"><div dir="rtl" class="col-md-6 overflow1" ><p style="text-align: left;">${arr_data[i].intro}</p><br/></div>`;
                 if (arr_data[i].images[0] == null || arr_data[i].images[0].sizes == null || arr_data[i].images[0].sizes.medium == null || arr_data[i].images[0].sizes.medium.url == null)
                     str_buildAtt += '<div class="col-md-6"> <img class="img_att" src="../../images/NoImg.png" /> </div></div> </div></div></div>';
                 else
-                    str_buildAtt += '<div class="col-md-6"><img  class="img_att" src="' + arr_data[i].images[0].sizes.medium.url + '" /></div></div> </div></div></div></div>';                
+                    str_buildAtt += '<div class="col-md-6"><img  class="img_att" src="' + arr_data[i].images[0].sizes.medium.url + '" /></div></div> </div></div></div></div>';
             }
             document.getElementById('PH_Attraction').innerHTML = str_buildAtt;
             Existing_promotions(arr_data);
@@ -198,7 +198,7 @@
                             document.getElementById('TripProfile_2_' + arr_data[i].id).checked = true;
                         if (promotion_List[k].TripProfile_3 == 1)
                             document.getElementById('TripProfile_3_' + arr_data[i].id).checked = true;
-                        if (promotion_List[k].TripProfile_4 == 1) 
+                        if (promotion_List[k].TripProfile_4 == 1)
                             document.getElementById('TripProfile_4_' + arr_data[i].id).checked = true;
                         if (promotion_List[k].TripProfile_5 == 1)
                             document.getElementById('TripProfile_5_' + arr_data[i].id).checked = true;
@@ -238,7 +238,7 @@
             if (TripProfile_2 == false && TripProfile_3 == false && TripProfile_4 == false && TripProfile_5 == false && TripProfile_6 == false) {
                 return false;
             }
-                return true;
+            return true;
         }
 
         $(document).on('submit', '#promotion_form', function (e) {
@@ -268,7 +268,7 @@
                 "TripProfile_4": Number(TripProfile_4),
                 "TripProfile_5": Number(TripProfile_5),
                 "TripProfile_6": Number(TripProfile_6),
-            } 
+            }
             let obj = JSON.stringify(promition_new);
             ajaxCall("PUT", "../../api/Promotion/promote_att", obj, successPromotionAttration, errorPromotionAttration);
             return false;
@@ -278,8 +278,8 @@
             if (check == 1) {
                 swal("האטרקציה קודמה", "", "success");
                 ajaxCall("GET", "../../api/Promotion/GetPromotedAttraction?Agent_ID=" + Agent_ID, "", successPromotedAttractionList, errorPromotedAttractionList);
-            document.getElementById(id_img).classList.add("current_rate");
-            /////////////////////////////////////////////////////////////////////////
+                document.getElementById(id_img).classList.add("current_rate");
+                /////////////////////////////////////////////////////////////////////////
 
             }
             else
@@ -290,7 +290,7 @@
         function errorPromotionAttration(err) {
             swal("משהו קרה!", "", "warning");
         }
-      
+
 
         function successAgent_name(name) {
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
@@ -324,7 +324,11 @@
             window.location.href = "../Login/login-2.html";
         }
 
-
+        function finedCity() {
+            $("#city").autocomplete({
+                source: ArrTopCities
+            });
+        }
     </script>
 
 
@@ -352,7 +356,7 @@
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face4.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face4.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -365,7 +369,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face2.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face2.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -378,7 +382,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face3.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face3.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -524,7 +528,7 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <input value="Amsterdam" id="city" class="form-control " required>
+                                                    <input onkeyup="finedCity()" id="city" class="form-control " required>
                                                 </div>
                                             </div>
                                             <div class="att_form col-md-3">
@@ -532,7 +536,7 @@
                                                     <label for="ancestor_lable">
                                                         <strong>בחר קטגוריה</strong>
                                                     </label>
-                                                </div>  
+                                                </div>
                                                 <div class="col-sm-9">
                                                     <select onchange="SecCategory()" id="ancestor_lable" class="form-control" required>
                                                         <option></option>
@@ -547,20 +551,20 @@
                                                 </div>
                                             </div>
                                             <div class="att_form col-md-3">
-                                                    <div class="col-sm-3">
-                                                        <label for="attraction">
-                                                            <strong>בחר אטרקציה</strong>
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-sm-9">
-                                                        <div id="attractionPH">
-                                                            <select class="form-control" required></select>
-                                                        </div>
-                                                    </div>
-                                             </div>
-                                            <div class="att_form col-md-3">
-                                                    <input type="submit" id="searchBtn" name="חפש" class="btn btn-primary mr-2" disabled />
+                                                <div class="col-sm-3">
+                                                    <label for="attraction">
+                                                        <strong>בחר אטרקציה</strong>
+                                                    </label>
                                                 </div>
+                                                <div class="col-sm-9">
+                                                    <div id="attractionPH">
+                                                        <select class="form-control" required></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="att_form col-md-3">
+                                                <input type="submit" id="searchBtn" name="חפש" class="btn btn-primary mr-2" disabled />
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -608,7 +612,9 @@
     <!-- Custom js for this page-->
     <!-- End custom js for this page-->
 
-  
+    <script src="../../Scripts/Top1000Cities.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 </body>
 
 </html>
