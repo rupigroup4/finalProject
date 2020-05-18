@@ -752,12 +752,7 @@ public class DBservices
                 c.FirstName = (string)dr["firstName"];
                 c.SureName = (string)dr["sureName"];
                 c.Img = (string)dr["img"];
-
                 Request_customer_list.Add(c);
-
-                //CustomersRequest_list.Add(c);
-                //Request_list.Add(r);
-
             }
 
             return Request_customer_list;
@@ -968,16 +963,16 @@ public class DBservices
         }
     }
 
-    public List<Trip> Read_AllTrips(int Agent_ID)
+    public List<object> Read_AllTrips(int Agent_ID)
     {
-        List<Trip> trip_list = new List<Trip>();
+        List<object> trip_customer_list = new List<object>();
         SqlConnection con = null;
 
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "SELECT * FROM Trip_igroup4 LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where Agent_igroup4.AgentID=" + Agent_ID;
+            String selectSTR = "SELECT * FROM Trip_igroup4 LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID LEFT JOIN CountryCode_igroup4 ON Trip_igroup4._destination=CountryCode_igroup4.city where Agent_igroup4.AgentID=" + Agent_ID;
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -989,18 +984,37 @@ public class DBservices
                 t.TripID = Convert.ToInt32(dr["_id"]);
                 t.CustomerID = Convert.ToInt32(dr["_id_customer"]);
                 t.Destination = (string)dr["_destination"];
-                t.DepartDate = (string)dr["_depart"];
-                string[] DepartDate_arr = t.DepartDate.Split('-');
+                             t.DepartDate = (string)dr["_depart"];
+                             string[] DepartDate_arr = t.DepartDate.Split('-');
                 t.DepartDate = DepartDate_arr[2] + "/" + DepartDate_arr[1] + "/" + DepartDate_arr[0];
-                t.ReturnDate = (string)dr["_return"];
-                string[] ReturnDate_arr = t.ReturnDate.Split('-');
+                             t.ReturnDate = (string)dr["_return"];
+                             string[] ReturnDate_arr = t.ReturnDate.Split('-');
                 t.ReturnDate = ReturnDate_arr[2] + "/" + ReturnDate_arr[1] + "/" + ReturnDate_arr[0];
-                t.TripProfileID = 1;//Convert.ToInt32(dr["_id_TripProfile"]);
-                t.Pdf_Flightticket = "";//(string)dr["pdf_Flightticket"];
-                trip_list.Add(t);
+                t.TripProfileID =Convert.ToInt32(dr["_id_TripProfile"]);
+
+                if ((string)dr["pdf_Flightticket"]=="" || dr["pdf_Flightticket"] == System.DBNull.Value) {
+                    t.Pdf_Flightticket = "";
+                }
+                else t.Pdf_Flightticket = (string)dr["pdf_Flightticket"];
+
+                trip_customer_list.Add(t);
+                Customer c = new Customer();
+                c.Id = Convert.ToInt32(dr["CustomerID"]);
+                c.FirstName = (string)dr["firstName"];
+                c.SureName = (string)dr["sureName"];
+                c.Img = (string)dr["img"];
+                trip_customer_list.Add(c);
+
+                country co = new country();
+                if (dr["iso2"]== System.DBNull.Value)
+                {
+                    co.Iso2 = "";
+                }
+                else co.Iso2 = (string)dr["iso2"];
+                trip_customer_list.Add(co);
             }
 
-            return trip_list;
+            return trip_customer_list;
         }
         catch (Exception ex)
         {

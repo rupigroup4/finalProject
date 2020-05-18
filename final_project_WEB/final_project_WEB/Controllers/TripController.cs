@@ -11,7 +11,7 @@ namespace final_project_WEB.Controllers
     public class TripController : ApiController
     {
         // GET api/<controller>
-        public List<Trip> Get(int Agent_ID)
+        public List<object> Get(int Agent_ID)
         {
             Trip trip = new Trip();
             return trip.Read_AllTrips(Agent_ID);

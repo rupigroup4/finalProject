@@ -13577,12 +13577,12 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .progress {
-  display: flex;
-  height: 1rem;
-  overflow: hidden;
-  font-size: 0.75rem;
-  background-color: #e9ecef;
-  border-radius: 0.25rem;
+    display: flex;
+    height: 1rem;
+    overflow: hidden;
+    font-size: 0.75rem;
+    background-color: #dddfe1;
+    border-radius: 0.25rem;
 }
 
 .progress-bar {

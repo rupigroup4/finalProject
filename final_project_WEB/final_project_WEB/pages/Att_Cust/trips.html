@@ -37,52 +37,56 @@
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
+            ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTripr_list);
+
         });
-        function successGETTrip_list(trip_list) {
-            try {
-                if (trip_list.length == 0)
-                    alert("אין טיולים במערכת !");
-                else {
-                    let str = "";
-                    for (var i = 0; i < trip_list.length; i++) {
-                        for (var k = 0; k < CustomerList.length; k++) {
-                            if (trip_list[i].CustomerID == CustomerList[k].Id) {
-                                str += "<tr> <td>" + CustomerList[k].FirstName + " " + CustomerList[k].SureName + "</td>";
-                            }
-                        }
-                        str += "<td>" + trip_list[i].Destination + "</td>";
-                        str += "<td>" + trip_list[i].DepartDate + "</td>";
-                        str += "<td>" + trip_list[i].ReturnDate + "</td>";
-                        if (trip_list[i].Pdf_Flightticket == "") {
-                            let dataTrip = "data-tripId='" + trip_list[i].TripID + "'";
-                            str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input class="selectedFile" type="file" name="myfile" id ="chooseFile${trip_list[i].TripID}" ${dataTrip}/></div>
-                    <button id="upload" ${dataTrip} class="savePdf btn btn-inverse-primary btn-fw">שמור קובץ</button><div id="choosedFile${trip_list[i].TripID}"></div></td></tr>`;
-                        }
-                        str += "</tr>";
-                    }
-                    document.getElementById("TripPH").innerHTML = str;
-                    $('#trip_table').DataTable({
-                        "language": {
-                            "search": "חיפוש",
-                            "lengthMenu": "שורות להצגה _MENU_",
-                            "zeroRecords": "אין טיולים במערכת",
-                            "infoFiltered": "",
-                            "info": "הצג עמוד _PAGE_ מתוך _PAGES_",
-                            "infoEmpty": "",
-                            "loadingRecords": "טוען...",
-                            "paginate": {
-                                "first": "ראשון",
-                                "last": "אחרון",
-                                "next": "לעמוד הבא",
-                                "previous": "לעמוד הקודם"
-                            },
-                        }
-                    });
-                }
-            }
-            catch (err) {
-                alert(err);
-            }
+        function successGETTrip_list(trip_customer_list) {
+            console.log(trip_customer_list);
+            //try {
+            //    if (trip_list.length == 0)
+            //        alert("אין טיולים במערכת !");
+            //    else {
+            //        let str = "";
+            //        for (var i = 0; i < trip_list.length; i++) {
+            //            for (var k = 0; k < CustomerList.length; k++) {
+            //                if (trip_list[i].CustomerID == CustomerList[k].Id) {
+            //                    str += "<tr> <td>" + CustomerList[k].FirstName + " " + CustomerList[k].SureName + "</td>";
+            //                }
+            //            }
+            //            str = `<td>${trip_list[i].Destination}</td>
+            //                   <td>${trip_list[i].DepartDate}</td>
+            //                    <td>${trip_list[i].ReturnDate}</td>`;
+
+            //            if (trip_list[i].Pdf_Flightticket == "") {
+            //                let dataTrip = "data-tripId='" + trip_list[i].TripID + "'";
+            //                str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input class="selectedFile" type="file" name="myfile" id ="chooseFile${trip_list[i].TripID}" ${dataTrip}/></div>
+            //        <button id="upload" ${dataTrip} class="savePdf btn btn-inverse-primary btn-fw">שמור קובץ</button><div id="choosedFile${trip_list[i].TripID}"></div></td></tr>`;
+            //            }
+            //            str += "</tr>";
+            //        }
+            //        document.getElementById("TripPH").innerHTML = str;
+            //        $('#trip_table').DataTable({
+            //            "language": {
+            //                "search": "חיפוש",
+            //                "lengthMenu": "שורות להצגה _MENU_",
+            //                "zeroRecords": "אין טיולים במערכת",
+            //                "infoFiltered": "",
+            //                "info": "הצג עמוד _PAGE_ מתוך _PAGES_",
+            //                "infoEmpty": "",
+            //                "loadingRecords": "טוען...",
+            //                "paginate": {
+            //                    "first": "ראשון",
+            //                    "last": "אחרון",
+            //                    "next": "לעמוד הבא",
+            //                    "previous": "לעמוד הקודם"
+            //                },
+            //            }
+            //        });
+            //    }
+            //}
+            //catch (err) {
+            //    alert(err);
+            //}
         }
 
         function errorGETTripr_list(err) {
@@ -168,7 +172,6 @@
 
         function successCustomer_list(customers_list) {
             CustomerList = customers_list;
-            ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTripr_list);
         }
 
         function errorCustomer_list(err) {

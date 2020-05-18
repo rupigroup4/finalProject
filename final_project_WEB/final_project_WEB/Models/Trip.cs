@@ -61,7 +61,7 @@ namespace final_project_WEB.Models
             return dbs.Add_pdf_Flightticket( id, pdf1);
         }
 
-        public List<Trip> Read_AllTrips(int Agent_ID)
+        public List<object> Read_AllTrips(int Agent_ID)
         {
             DBservices dbs = new DBservices();
             return dbs.Read_AllTrips(Agent_ID);

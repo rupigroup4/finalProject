@@ -205,7 +205,7 @@
 
                         for (var k = 0; k < CustomerList.length; k++) {
                             if (CustomerList[k].Id == trip_list[i].CustomerID) {
-                                strCustomerOnTrip += "<tr><td><img src='" + CustomerList[k].Img + "' /> </td>";
+                                strCustomerOnTrip += `<tr class='tr_search' id='${CustomerList[k].FirstName} ${CustomerList[k].SureName}' ><td><img src='${ CustomerList[k].Img}' /> </td>`;
                                 strCustomerOnTrip += "<td>" + CustomerList[k].FirstName + " " + CustomerList[k].SureName + "</td>";
                             }
                         }
@@ -227,6 +227,14 @@
                 document.getElementById("CustomerOnTripPH").innerHTML = strCustomerOnTrip;
             }
         }
+
+        $(document).on('click', '.tr_search', function () {
+            var name = this.id;
+            sessionStorage.setItem("customerName_click", name);
+            window.location.href = "Att_Cust/customer_list.html";
+        });
+
+
         function errorGETTrip_list(err) {
             alert("errorGETTripr_list");
         }
@@ -241,7 +249,7 @@
                 if (Request_customer_list[i].Status == "success") {
                     countSuccess++;
                 }
-                strRequest += `<tr>
+                strRequest += `<tr class='tr_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>
                                                <td><img src='${Request_customer_list[i + 1].Img}'/></td>
                                                <td>${Request_customer_list[i].Order_date}</td>
                                                <td>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
@@ -365,10 +373,12 @@
         }
         $(document).on('click', '#dropdown_Status_item', function () {
             var Att_name = this.getAttribute('data-name');
-            console.log(Att_name);
             var input_AttName = document.getElementById('Request_table_filter').childNodes[0].childNodes[1];
-            input_AttName.value = Att_name;
-            input_AttName.onkepress();
+            var table = $('#Request_table').DataTable();
+            table.search(Att_name).draw();
+            setTimeout(function () {
+                table.search("").draw(); }, 5000);
+
         });
 
 
@@ -763,7 +773,7 @@
                                     <div class="card-body">
                                         <h4 class="card-title">לקוחות בחול</h4>
                                         <div class="table-responsive table_trips">
-                                            <table class="table">
+                                            <table class="table table-hover">
                                                 <thead>
                                                     <tr>
                                                         <th></th>

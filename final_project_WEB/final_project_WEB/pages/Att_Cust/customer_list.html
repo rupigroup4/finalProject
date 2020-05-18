@@ -111,7 +111,7 @@
             else {
                 let str = "";
                 for (var i = 0; i < customers_list.length; i++) {
-                    str += "<tr> <td><img src='" + customers_list[i].Img + "' /> </td>";
+                    str += "<tr id='tr_"+ customers_list[i].Id+"'> <td><img src='" + customers_list[i].Img + "' /> </td>";
                     str += "<td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td>";
                     str += "<td>" + customers_list[i].PhoneNumber + "</td>";
                     str += "<td>" + customers_list[i].BirthDay + "</td>";
@@ -145,6 +145,14 @@
 
                 });
 
+            }
+            if (sessionStorage.getItem('customerName_click')) {
+                var name = sessionStorage.getItem('customerName_click')
+                sessionStorage.removeItem('customerName_click');
+
+                var table = $('#Table_customer').DataTable();
+                table.search(name).draw();
+                setTimeout(function () {table.search("").draw();}, 5000);
             }
         }
 
