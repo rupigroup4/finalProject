@@ -20,7 +20,7 @@ namespace final_project_WEB.Controllers
         // GET api/<controller>/5
         [HttpGet]
         [Route("api/Request/CountNEWRequest")]
-        public int GetCountNEWRequest(int Agent_ID)
+        public List<object> GetCountNEWRequest(int Agent_ID)
         {
             Request request = new Request();
             return request.getCountNEWRequest(Agent_ID);

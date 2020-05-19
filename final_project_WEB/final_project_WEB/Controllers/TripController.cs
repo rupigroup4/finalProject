@@ -73,8 +73,11 @@ namespace final_project_WEB.Controllers
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public int Delete(int tripID)
         {
+            Trip trip = new Trip();
+            return trip.Delete_trip(tripID);
+
         }
 
         [HttpPut]

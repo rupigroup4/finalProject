@@ -646,16 +646,17 @@ public class DBservices
 
 
 
-    public int getCountNEWRequest(int Agent_ID)
+    public List<object> getCountNEWRequest(int Agent_ID)
     {
-        var CountRequest = 0;
+        List<object> NEW_Request_list = new List<object>();
+
         SqlConnection con = null;
 
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "SELECT COUNT(requestID) as count_ FROM Request_igroup4 LEFT JOIN Trip_igroup4 ON Request_igroup4.TripID = Trip_igroup4._id LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where status_='new' AND Customer_igroup4.AgentID=" + Agent_ID;
+            String selectSTR = "SELECT * FROM Request_igroup4 LEFT JOIN Trip_igroup4 ON Request_igroup4.TripID = Trip_igroup4._id LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where status_='new' AND Customer_igroup4.AgentID=" + Agent_ID;
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -663,10 +664,20 @@ public class DBservices
 
             while (dr.Read())
             {
-                CountRequest = Convert.ToInt32(dr["count_"]);
+                Request r = new Request();
+                r.Id = Convert.ToInt32(dr["requestID"]);
+                r.AttractionName = (string)dr["attractionName"];
+                r.CustomerID = Convert.ToInt32(dr["CustomerId"]);
+                NEW_Request_list.Add(r);
+                Customer c = new Customer();
+                c.Id = Convert.ToInt32(dr["CustomerID"]);
+                c.FirstName = (string)dr["firstName"];
+                c.SureName = (string)dr["sureName"];
+                c.Img = (string)dr["img"];
+                NEW_Request_list.Add(c);
             }
 
-            return CountRequest;
+            return NEW_Request_list;
         }
         catch (Exception ex)
         {
@@ -833,6 +844,47 @@ public class DBservices
         }
 
         String rStr = "DELETE FROM Customer_igroup4 WHERE CustomerID='" + customerID + "'";//להוסיף פקודת מחיקה מהSQL
+
+        cmd = CreateCommand(rStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    } public int Delete_trip(int tripID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String rStr = "DELETE FROM Trip_igroup4 WHERE _id='" + tripID + "'";//להוסיף פקודת מחיקה מהSQL
 
         cmd = CreateCommand(rStr, con);             // create the command
 

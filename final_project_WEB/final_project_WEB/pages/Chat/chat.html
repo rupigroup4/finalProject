@@ -30,7 +30,7 @@
 
         var timer;
         $(document).ready(function () {
-
+            setTimeout(Check_new_Request, 1000);
             if (sessionStorage.getItem('id_chat')) {
                 document.getElementById("chatNamePH").innerHTML = "שלח הודעה ל" + sessionStorage.getItem('name_chat');
                 //bring Conversation from real-timeDB by id_chat
@@ -40,9 +40,46 @@
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
+        });
+        function Check_new_Request() {
+            ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
+        }
 
+        function successCountNEWRequest(data) {
+            console.log(data);
+            var count = data.length;
+            var strNewRequest;
+            if (count) {
+                document.getElementById("newRequest").style.display = "block";
+                document.getElementById("newRequest").innerHTML = count;
+                strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
+                for (var i = 0; i < data.length; i += 2) {
+                    strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${data[i].AttractionName}">
+                                         <div class="item-thumbnail">
+                                               <div class="item-icon bg-primary">
+                                                  <i class="ti-info mx-0"></i>
+                                                </div>
+                                          </div>
+                                           <div class="item-content">
+                                                   <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
+                                                     <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
+                                                     </p>
+                                           </div></a >`;
+                }
+                document.getElementById("NewReqMenu").innerHTML = strNewRequest;
+                return;
+            }
+            document.getElementById("newRequest").style.display = "none";
+        }
+        $(document).on('click', '#dropdown_Status_item', function () {
+            var Att_name = this.getAttribute('data-name');
+            sessionStorage.setItem("dropdown_ATT_Name", Att_name);
+            window.location.href = "../index.html";
         });
 
+        function errorCountNEWRequest(err) {
+            alert("errorCountNEWRequest");
+        }
 
         
         $(document).on("click", "#sendMessage", function () {
@@ -145,7 +182,7 @@
             }
             document.getElementById("CustomerPH").innerHTML += str;
 
-            setInterval(Check_new_message(customers_list1), 5000);
+            setInterval(Check_new_message_chat(customers_list1), 5000);
         }
 
 
@@ -181,7 +218,7 @@
             window.location.href = "../Login/login-2.html";
         }
 
-        function Check_new_message(customers_list1) {
+        function Check_new_message_chat(customers_list1) {
             for (var i = 0; i < customers_list1.length; i++) {
                 let id = customers_list[i].Id;
                 firebase.database().ref(`/chat/${id}`).on('child_added', function (snapshot) {
@@ -191,17 +228,6 @@
             }
         }
 
-        function successCountNEWRequest(count) {
-            if (count) {
-                document.getElementById("newRequest").style.display = "block";
-                return;
-            }
-            document.getElementById("newRequest").style.display = "none";
-        }
-
-        function errorCountNEWRequest(err) {
-            alert("errorCountNEWRequest");
-        }
     </script>
 </head>
 
@@ -227,7 +253,7 @@
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face4.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face4.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -240,7 +266,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face2.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face2.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -253,7 +279,7 @@
                             </a>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
-                                    <img src="../images/faces/face3.jpg" alt="image" class="profile-pic">
+                                    <img src="../../images/faces/face3.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="item-content flex-grow">
                                     <h6 class="ellipsis font-weight-normal">
@@ -271,7 +297,7 @@
                             <i class="ti-bell mx-0"></i>
                             <p class="count" id="newRequest" style="display: none;"></p>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
+                        <div dir="ltr" id="NewReqMenu" class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
@@ -372,12 +398,6 @@
                         <a class="nav-link" href="chat.html">
                             <i class="ti-comment menu-icon"></i>
                             <span class="menu-title">צ'אט</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../Reports/reports.html">
-                            <i class="ti-bar-chart-alt menu-icon"></i>
-                            <span class="menu-title">דוחות</span>
                         </a>
                     </li>
                 </ul>

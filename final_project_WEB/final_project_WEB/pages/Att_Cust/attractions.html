@@ -27,7 +27,7 @@
         }
 
         $(document).ready(function () {
-            setInterval(Check_new_message, 5000);
+            setTimeout(Check_new_Request, 1000);
             Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
@@ -48,6 +48,8 @@
                 }
                 else if (Category_second == 'All') {
                     urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_first + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+                    console.log(urlResults);
+
                 }
                 else urlResults = "https://www.triposo.com/api/20200405/poi.json?location_id=" + city + "&tag_labels=" + Category_second + "&fields=id,name,score,intro,images,location_id&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
                 $.get(urlResults).done(successAttractions);
@@ -55,6 +57,44 @@
                 return false;
             })
         });
+        $(document).on('click', '#dropdown_Status_item', function () {
+            var Att_name = this.getAttribute('data-name');
+            sessionStorage.setItem("dropdown_ATT_Name", Att_name);
+            window.location.href = "../index.html";
+        });
+        function Check_new_Request() {
+            ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
+        }
+        function successCountNEWRequest(data) {
+            console.log(data);
+            var count = data.length;
+            var strNewRequest;
+            if (count) {
+                document.getElementById("newRequest").style.display = "block";
+                document.getElementById("newRequest").innerHTML = count;
+                strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
+                for (var i = 0; i < data.length; i += 2) {
+                    strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${data[i].AttractionName}">
+                                         <div class="item-thumbnail">
+                                               <div class="item-icon bg-primary">
+                                                  <i class="ti-info mx-0"></i>
+                                                </div>
+                                          </div>
+                                           <div class="item-content">
+                                                   <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
+                                                     <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
+                                                     </p>
+                                           </div></a >`;
+                }
+                document.getElementById("NewReqMenu").innerHTML = strNewRequest;
+                return;
+            }
+            document.getElementById("newRequest").style.display = "none";
+        }
+
+        function errorCountNEWRequest(err) {
+            alert("errorCountNEWRequest");
+        }
 
         function successPromotedAttractionList(promotionAttraction_List) {
             promotion_List = promotionAttraction_List;
@@ -108,7 +148,7 @@
         //ResultsURL
 
         function successAttractions(data) {
-
+            console.log(data);
             str_buildAtt = "";
             arr_data = data.results;
             text = "";
@@ -301,21 +341,7 @@
         }
 
 
-        function Check_new_message() {
-            ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
-        }
-
-        function successCountNEWRequest(count) {
-            if (count) {
-                document.getElementById("newRequest").style.display = "block";
-                return;
-            }
-            document.getElementById("newRequest").style.display = "none";
-        }
-
-        function errorCountNEWRequest(err) {
-            alert("errorCountNEWRequest");
-        }
+        
 
         function Moveto_login() {
             localStorage.setItem('Email', "");
@@ -400,7 +426,7 @@
                             <i class="ti-bell mx-0"></i>
                             <p class="count" id="newRequest" style="display: none;"></p>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
+                        <div dir="ltr" id="NewReqMenu" class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
@@ -501,12 +527,6 @@
                         <a class="nav-link" href="../Chat/chat.html">
                             <i class="ti-comment menu-icon"></i>
                             <span class="menu-title">צ'אט</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../Reports/reports.html">
-                            <i class="ti-bar-chart-alt menu-icon"></i>
-                            <span class="menu-title">דוחות</span>
                         </a>
                     </li>
                 </ul>

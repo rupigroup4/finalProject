@@ -13,9 +13,8 @@ namespace final_project_WEB
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-
             EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
-            config.EnableCors(cors);
+            config.EnableCors();
 
             // Web API routes
             config.MapHttpAttributeRoutes();

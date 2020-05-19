@@ -25,6 +25,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-uk.js">
 
     <script>
+
+        const TripProfile = ['','כללי', 'טיול משפחתי', 'מסיבת רווקים/רווקות', 'טיול פנסיונרים', 'נסיעת עסקים', 'טיול זוגי/ירח דבש'];
+
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
             window.location.href = "../Login/login-2.html";
         }
@@ -32,7 +35,7 @@
 
         $(document).ready(function () {
 
-            setInterval(Check_new_message, 5000);
+            setTimeout(Check_new_Request, 1000);
             Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
@@ -40,22 +43,75 @@
             ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTripr_list);
 
         });
-        function successGETTrip_list(trip_customer_list) {
-            console.log(trip_customer_list);
+        function Check_new_Request() {
+            ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
+        }
+
+        function successCountNEWRequest(data) {
+            console.log(data);
+            var count = data.length;
+            var strNewRequest;
+            if (count) {
+                document.getElementById("newRequest").style.display = "block";
+                document.getElementById("newRequest").innerHTML = count;
+                strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
+                for (var i = 0; i < data.length; i += 2) {
+                    strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${data[i].AttractionName}">
+                                         <div class="item-thumbnail">
+                                               <div class="item-icon bg-primary">
+                                                  <i class="ti-info mx-0"></i>
+                                                </div>
+                                          </div>
+                                           <div class="item-content">
+                                                   <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
+                                                     <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
+                                                     </p>
+                                           </div></a >`;
+                }
+                document.getElementById("NewReqMenu").innerHTML = strNewRequest;
+                return;
+            }
+            document.getElementById("newRequest").style.display = "none";
+        }
+        $(document).on('click', '#dropdown_Status_item', function () {
+            var Att_name = this.getAttribute('data-name');
+            sessionStorage.setItem("dropdown_ATT_Name", Att_name);
+            window.location.href = "../index.html";
+        });
+
+        function errorCountNEWRequest(err) {
+            alert("errorCountNEWRequest");
+        }
+
+        //async function getFlagUrl(data) {
+        //    var flagUrlArr = []
+        //    for (var i = 2; i < data.length; i += 3) {
+        //        console.log('1')
+        //        let response = await axios.get(`https://www.countryflags.io/${data[i].Iso2}/shiny/64.png`)
+        //        console.log(response.data);
+        //    }
+        //    return 1;
+        //}
+
+         function successGETTrip_list(trip_customer_list) {
+             console.log(trip_customer_list);
+            //let flagUrlArr = await getFlagUrl(trip_customer_list);
+            //console.log(flagUrlArr);
             try {
                 if (trip_customer_list.length == 0)
                     alert("אין טיולים במערכת !");
                 else {
                     let str = "";
-                    for (var i = 0; i < trip_customer_list.length; i++) {
-                        str += "<tr> <td>" + trip_customer_list[i + 1].FirstName + " " + trip_customer_list[i+1].SureName + "</td>";
-                        str += `<td>${trip_customer_list[i].Destination}</td>
+                    for (var i = 0; i < trip_customer_list.length; i += 3) {
+                        str += "<tr> <td>" + trip_customer_list[i + 1].FirstName + " " + trip_customer_list[i + 1].SureName + "</td>";
+                        str += `<td style="font-weight: bold;">${trip_customer_list[i].Destination}</td>
                                <td>${trip_customer_list[i].DepartDate}</td>
-                                <td>${trip_customer_list[i].ReturnDate}</td>`;
-                            let dataTrip = "data-tripId='" + trip_customer_list[i].TripID + "'";
-                            str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input class="selectedFile" type="file" name="myfile" id ="chooseFile${trip_customer_list[i].TripID}" ${dataTrip}/></div>
+                                <td>${trip_customer_list[i].ReturnDate}</td>
+                                <td>${TripProfile[trip_customer_list[i].TripProfileID]}</td>`;
+                        let dataTrip = "data-tripId='" + trip_customer_list[i].TripID + "'";
+                        str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input class="selectedFile" type="file" name="myfile" id ="chooseFile${trip_customer_list[i].TripID}" ${dataTrip}/></div>
                             <button id="upload" ${dataTrip} class="savePdf btn btn-inverse-primary btn-fw">שמור קובץ</button>
-                         <div id="choosedFile${trip_customer_list[i].TripID}"></div></td>`; 
+                         <div id="choosedFile${trip_customer_list[i].TripID}"></div></td>`;
                         if (trip_customer_list[i].Pdf_Flightticket != "") { //Not working
                             str += `<div class="form-check form-check-flat form-check-primary checkbox_style" id="choosedFile${trip_customer_list[i].TripID}"><label class="form-check-label"> <input class="form-check-input" type="checkbox" checked><i class="input-helper"></i>כרטיס טיסה</label></div></td>`;
                             //document.getElementById("choosedFile" + trip_customer_list[i].TripID).innerHTML = `<label class="form-check-label"> <input class="form-check-input" type="checkbox" checked><i class="input-helper"></i></label>`;
@@ -64,10 +120,9 @@
                         else {
                             str += `<div id="choosedFile${trip_customer_list[i].TripID}"></div></td>`;
                         }
-                        str += "</tr>";
-                        i = i + 2;
+                        str += "<td><button type='button' title='מחיקת טיול' id='" + trip_customer_list[i].TripID + "' onclick='deleteT(" + trip_customer_list[i].TripID + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
                     }
-                    document.getElementById("TripPH").innerHTML = str;
+                document.getElementById("TripPH").innerHTML = str;
                     $('#trip_table').DataTable({
                         "language": {
                             "search": "חיפוש",
@@ -91,7 +146,24 @@
                 alert(err);
             }
         }
+        function deleteT(id) {
+            ajaxCall("DELETE", "../../api/Trip?tripID=" + id, "", successdeleteTrip, errordeleteTrip)
+        }
 
+        function successdeleteTrip(num) {
+            if (num == 1) {
+                swal("נמחק בהצלחה", "הטיול נמחק מהמערכת", "success");
+                window.location.reload(); 
+            }
+            else {
+                swal("הטיול לא נמחק", "ללקוח זה קיימת בקשה זמינה במערכת", "error");// 
+            }
+            clearFields();
+        }
+
+        function errordeleteTrip(err) {
+            alert("errordeleteTrip");
+        }
         function errorGETTripr_list(err) {
             alert("errorGETTripr_list");
         }
@@ -157,21 +229,7 @@
             alert("POSTerrorAddPDF");
         }
 
-        function Check_new_message() {
-            ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
-        }
-
-        function successCountNEWRequest(count) {
-            if (count) {
-                document.getElementById("newRequest").style.display = "block";
-                return;
-            }
-            document.getElementById("newRequest").style.display = "none";
-        }
-
-        function errorCountNEWRequest(err) {
-            alert("errorCountNEWRequest");
-        }
+        
 
         function successCustomer_list(customers_list) {
             CustomerList = customers_list;
@@ -258,7 +316,7 @@
                             <i class="ti-bell mx-0"></i>
                             <p class="count" id="newRequest" style="display: none;"></p>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
+                        <div dir="ltr" id="NewReqMenu" class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
                             <a class="dropdown-item">
                                 <div class="item-thumbnail">
@@ -362,12 +420,7 @@
                             <span class="menu-title">צ'אט</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../Reports/reports.html">
-                            <i class="ti-bar-chart-alt menu-icon"></i>
-                            <span class="menu-title">דוחות</span>
-                        </a>
-                    </li>
+
                 </ul>
             </nav>
 
@@ -380,7 +433,7 @@
                                 <div class="card-body">
                                     <h4 class="card-title">רשימת טיולים</h4>
                                     <div class="table-responsive pt-3">
-                                        <table class="table table-bordered" style="width:100%" id="trip_table">
+                                        <table class="table " style="width:100%" id="trip_table">
                                             <thead>
                                                 <tr>
                                                     <th>
@@ -396,7 +449,13 @@
                                                         תאריך חזרה
                                                     </th>
                                                     <th>
+                                                        פרופיל טיול
+                                                    </th>
+                                                    <th>
                                                         כרטיסי טיסה
+                                                    </th>                                                   
+                                                    <th>
+                                                      
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -447,6 +506,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
     <!-- End custom js for this page-->

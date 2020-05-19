@@ -67,6 +67,12 @@ namespace final_project_WEB.Models
             return dbs.Read_AllTrips(Agent_ID);
         }
 
+        public int Delete_trip(int tripID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.Delete_trip(tripID);
+        }
+
         public int getActiveTrips(int Agent_ID, DateTime today)
         {
             DBservices dbs = new DBservices();

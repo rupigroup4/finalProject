@@ -51,7 +51,7 @@ namespace final_project_WEB.Models
             return dbs.Update_status(stat, RequestID);
         }
 
-        public int getCountNEWRequest(int Agent_ID)
+        public List<object> getCountNEWRequest(int Agent_ID)
         {
             DBservices dbs = new DBservices();
             return dbs.getCountNEWRequest(Agent_ID); ;
