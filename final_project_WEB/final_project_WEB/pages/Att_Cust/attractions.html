@@ -33,8 +33,7 @@
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
             //ajaxCall("GET", "../../api/Promotion/, "", successGetAttrationID, errorGetAttrationID);
             ajaxCall("GET", "../../api/Promotion/GetPromotedAttraction?Agent_ID=" + Agent_ID, "", successPromotedAttractionList, errorPromotedAttractionList);
-            $('#attraction_form').submit(function () {
-                console.log("in")
+            $('#attraction_form_ByCategory').submit(function () {
                 Category_second = $('#category_sec_select').val();
                 console.log(Category_second);
                 if (Category_first == 'tours') {
@@ -56,6 +55,16 @@
                 $.get(urlResults).fail(errorAttractions);
                 return false;
             })
+            $('#attraction_form_ByName').submit(function () {
+                console.log("in");
+                var city = $('#city').val();
+                var name = $('#att_Name').val();
+                var urlResults = "https://www.triposo.com/api/20190906/poi.json?location_id="+city+"&annotate=trigram:"+name+"&trigram=>=0.3&count=10&fields=all&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+                console.log(urlResults);
+                $.get(urlResults).done(successByName);
+                $.get(urlResults).fail(errorByName);
+                return false;
+            })
         });
         $(document).on('click', '#dropdown_Status_item', function () {
             var Att_name = this.getAttribute('data-name');
@@ -65,8 +74,8 @@
         function Check_new_Request() {
             ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
         }
+    
         function successCountNEWRequest(data) {
-            console.log(data);
             var count = data.length/2;
             var strNewRequest;
             if (count) {
@@ -90,6 +99,88 @@
                 return;
             }
             document.getElementById("newRequest").style.display = "none";
+        }
+
+        function errorByName() {
+            alert(errorByName);
+        }
+
+        function successByName(data) {
+            console.log(data);
+            var str_buildAtt = "";
+            var arr_data = data.results;
+            text = "";
+            if (arr_data.length == 0) {
+                console.log("אין");
+                document.getElementById('PH_Attraction').innerHTML = "אין אטרקציות זמינות";
+            }
+            for (var i = 0; i < arr_data.length; i++) {
+                //<input type="checkbox" class="form-check-input">
+                str_buildAtt += `<div class="row">
+                                            <div dir="rtl" class="col-md-12 grid-margin att_width" id="promotion_row">
+                                            <form id="promotion_form" data-id="${arr_data[i].id}" data-city="${city}"">
+                                            <input dir="ltr" type="range" min="1" max="5" value="1" class ="slider1" id="Range_${arr_data[i].id}">
+                                            <div class ="form-check form-check-flat form-check-primary checkbox_style">
+                                             <label class="form-check-label">
+                                           <input class="checkbox_1 form-check-input" data-id="${arr_data[i].id}" type="checkbox" id="TripProfile_1_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            כללי</label>
+                                            </div>
+
+                                            <div class="form-check form-check-flat form-check-primary checkbox_style">
+                                             <label class="form-check-label">
+                                             <input class="form-check-input" type="checkbox" id="TripProfile_2_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            טיול משפחתי </label>
+                                            </div>
+
+                                            <div class="form-check form-check-flat form-check-primary checkbox_style">
+                                             <label class="form-check-label">
+                                           <input class="form-check-input" type="checkbox" id="TripProfile_3_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            מסיבת רווקים/רווקות </label>
+                                            </div>
+
+                                            <div class="form-check form-check-flat form-check-primary checkbox_style">
+                                             <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" id="TripProfile_4_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            טיול פנסיונרים </label>
+                                            </div>
+
+                                            <div class="form-check form-check-flat form-check-primary checkbox_style">
+                                             <label class="form-check-label">
+                                           <input class="form-check-input" type="checkbox" id="TripProfile_5_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            נסיעת עסקים </label>
+                                            </div>
+
+                                            <div class="form-check form-check-flat form-check-primary checkbox_style">
+                                            <label class ="form-check-label">
+                                            <input class="form-check-input" type="checkbox" id="TripProfile_6_${arr_data[i].id}" />
+                                            <i class="input-helper"></i>
+                                            טיול זוגי/ירח דבש </label>
+                                            </div>
+
+                                            <div hidden id="error_${arr_data[i].id}"  class ="form-check form-check-flat form-check-primary checkbox_style">
+                                            <label style="color:red;" class ="form-check-label">אחת מתיבות הסימון חייבות להיות מסומנות</label>
+                                            </div>
+
+
+                                            <button type="submit" class="btn btn-primary mr-2" style="float: left;">קדם</button>
+                                            </form></div>
+                                            <div class="col-md-12 grid-margin att_width">
+                                            <div class="card">
+                                            <div class="card-body"> <h4 class="card-title">${arr_data[i].name}</h4>
+                                            <div class="card-description">ציון: ${(arr_data[i].score).toFixed(2)}</div>
+                                            <div class="row"><div dir="rtl" class="col-md-6 overflow1" ><p style="text-align: left;">${arr_data[i].intro}</p><br/></div>`;
+                if (arr_data[i].images[0] == null || arr_data[i].images[0].sizes == null || arr_data[i].images[0].sizes.medium == null || arr_data[i].images[0].sizes.medium.url == null)
+                    str_buildAtt += '<div class="col-md-6"> <img class="img_att" src="../../images/NoImg.png" /> </div></div> </div></div></div>';
+                else
+                    str_buildAtt += '<div class="col-md-6"><img  class="img_att" src="' + arr_data[i].images[0].sizes.medium.url + '" /></div></div> </div></div></div></div>';
+            }
+            document.getElementById('PH_Attraction').innerHTML = str_buildAtt;
+            Existing_promotions(arr_data);
         }
 
         function errorCountNEWRequest(err) {
@@ -121,8 +212,6 @@
             $.get(url).fail(errorCategory);
         }
 
-
-
         function successCategory(data) {
             str = "<select id='category_sec_select' class='form-control' required>";
             str += "<option id='All_label value='All_label'>All</option>";
@@ -136,14 +225,12 @@
             }
             str += "</select>";
             document.getElementById('attractionPH').innerHTML = str;
-            $('#searchBtn').prop("disabled", false);
+            $('#searchBtn_ByCategory').prop("disabled", false);
         }
-
 
         function errorCategory(err) {
             console.log(err);
         }
-
 
         //ResultsURL
 
@@ -540,7 +627,7 @@
                                 <div class="card-body">
                                     <h4 class="card-title">אטרקציות</h4>
                                     <div class="row">
-                                        <form id="attraction_form" style="width:100%">
+                                        <form id="attraction_form_ByCategory" style="width:100%">
                                             <div class="att_form col-md-3">
                                                 <div class="col-sm-3">
                                                     <label for="city">
@@ -583,7 +670,36 @@
                                                 </div>
                                             </div>
                                             <div class="att_form col-md-3">
-                                                <input type="submit" id="searchBtn" name="חפש" class="btn btn-primary mr-2" disabled />
+                                                <input type="submit" id="searchBtn_ByCategory" name="חפש" class="btn btn-primary mr-2" disabled />
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="row">
+                                        <form id="attraction_form_ByName" style="width:100%">
+                                            <div class="att_form col-md-4">
+                                                <div class="col-sm-3">
+                                                    <label for="city">
+                                                        <strong>בחר עיר</strong>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input onkeyup="finedCity()" id="city" class="form-control " required>
+                                                </div>
+                                            </div>
+                                            <div class="att_form col-md-4">
+                                                <div class="col-sm-3">
+                                                    <label for="attraction">
+                                                        <strong>שם האטרקציה</strong>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <div id="attraction_namePH">
+                                                        <input id="att_Name" class="form-control " required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="att_form col-md-4">
+                                                <input type="submit" id="searchBtn_ByName" name="חפש" class="btn btn-primary mr-2" />
                                             </div>
                                         </form>
                                     </div>

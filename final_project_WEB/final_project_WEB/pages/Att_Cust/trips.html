@@ -109,17 +109,16 @@
                                 <td>${trip_customer_list[i].ReturnDate}</td>
                                 <td>${TripProfile[trip_customer_list[i].TripProfileID]}</td>`;
                         let dataTrip = "data-tripId='" + trip_customer_list[i].TripID + "'";
-                        str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input class="selectedFile" type="file" name="myfile" id ="chooseFile${trip_customer_list[i].TripID}" ${dataTrip}/></div>
-                         <div id="choosedFile${trip_customer_list[i].TripID}"></div></td>`;
-                        if (trip_customer_list[i].Pdf_Flightticket != "") { //Not working
-                            str += `<div class="form-check form-check-flat form-check-primary checkbox_style" id="choosedFile${trip_customer_list[i].TripID}"><label class="form-check-label"> <input class="form-check-input" type="checkbox" checked><i class="input-helper"></i>כרטיס טיסה</label></div></td>`;
-                            //document.getElementById("choosedFile" + trip_customer_list[i].TripID).innerHTML = `<label class="form-check-label"> <input class="form-check-input" type="checkbox" checked><i class="input-helper"></i></label>`;
-                            //document.getElementById("choosedFile" + trip_customer_list[i].TripID).innerHTML = trip_customer_list[i].Pdf_Flightticket;
-                        }
-                        else {
-                            str += `<div id="choosedFile${trip_customer_list[i].TripID}"></div></td>`;
-                        }
-                        str += "<td><button type='button' title='מחיקת טיול' id='" + trip_customer_list[i].TripID + "' onclick='deleteT(" + trip_customer_list[i].TripID + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
+                        str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input class="selectedFile" type="file" name="myfile" id ="chooseFile${trip_customer_list[i].TripID}" ${dataTrip}/></div>`;
+                        var pdf = trip_customer_list[i].Pdf_Flightticket
+                        if (pdf != "") {
+                            var pdf_Arr = pdf.split('pdfFiles/');
+                            str += `<div id="choosedFile${trip_customer_list[i].TripID}">${pdf_Arr[1]}</div></td>`;
+
+                        } else {
+                            str += `<div id="choosedFile${trip_customer_list[i].TripID}"></div></td>`;}
+
+                        str += "<td><button type='button' title='מחיקת טיול' id='" + trip_customer_list[i].TripID + "' onclick='deleteT(" + trip_customer_list[i].TripID + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button></td></tr>";
                     }
                 document.getElementById("TripPH").innerHTML = str;
                     $('#trip_table').DataTable({
@@ -172,7 +171,7 @@
             var data = new FormData();
             var files = $("#chooseFile" + selectedTrip).get(0).files;
             console.log(files);
-            document.getElementById("choosedFile" + selectedTrip).innerHTML = files[0].name;
+            //document.getElementById("choosedFile" + selectedTrip).innerHTML = files[0].name;
             // Add the uploaded file to the form data collection
             if (files.length > 0) {
                 for (f = 0; f < files.length; f++) {
@@ -194,37 +193,8 @@
             return false;
         })
 
-
-        //$(document).on("click", ".savePdf", function () {
-        //    selectedTrip = this.getAttribute('data-tripId'); //זה מחזיק את ה TRIPiD
-        //    var data = new FormData();
-        //    var files = $("#chooseFile" + selectedTrip).get(0).files;
-        //    document.getElementById("choosedFile" + selectedTrip).innerHTML = files[0].name;
-        //    // Add the uploaded file to the form data collection
-        //    if (files.length > 0) {
-        //        for (f = 0; f < files.length; f++) {
-        //            data.append(`${selectedTrip}`, files[f]);
-        //        }
-        //    }
-
-        //    // Ajax upload
-        //    $.ajax({
-        //        type: "POST",
-        //        url: "../../Api/pdf/uploadpdf",
-        //        contentType: false,
-        //        processData: false,
-        //        data: data,
-        //        success: SavePdfSuccess,
-        //        error: SavedPdfError
-        //    });
-
-        //    return false;
-        //})
-
         function SavePdfSuccess(dataPath) {
-            console.log("ok");
             let arr = dataPath[0].split('!');
-            /*encodeURIComponent(arr[1]);*/ //check if needed
             ajaxCall("POST", "../../api/Trip/Add_pdf_Flightticket?id=" + arr[0] + "&pdf=" + arr[1], {}, POSTsuccessAddPDF, POSTerrorAddPDF);
 
 
@@ -233,9 +203,10 @@
         function SavedPdfError(err) {
             alert("SavedPdfError")
         }
-        function POSTsuccessAddPDF(numEF) {
-            if (numEF == 1) {
-                swal("נוסף בהצלחה")
+        function POSTsuccessAddPDF(pdf) {
+            if (pdf != "") {
+                var pdf_Arr = pdf.split('pdfFiles/');
+                document.getElementById("choosedFile" + selectedTrip).innerHTML = pdf_Arr[1];
             }
             else
                 alert("error");

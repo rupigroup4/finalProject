@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
             crossorigin="anonymous"></script>
-    <!--data table-->
+    <!-- data table -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">
     <!-- plugins:css -->
@@ -216,7 +216,8 @@
                     var color_class;
                     if (today >= from && today <= to) {
                         num_day_in_trip = (to.getTime() - from.getTime()) / (1000 * 3600 * 24);
-                        num_day_passed = (today.getTime() - from.getTime()) / (1000 * 3600 * 24) + 1;
+                        if (num_day_in_trip == (today.getTime() - from.getTime()) / (1000 * 3600 * 24)) num_day_passed = (today.getTime() - from.getTime()) / (1000 * 3600 * 24);
+                        else num_day_passed = (today.getTime() - from.getTime()) / (1000 * 3600 * 24) + 1;
                         percent = Math.round((num_day_passed / num_day_in_trip) * 100);
                         countInTrip++;
                         strCustomerOnTrip += `<tr class='tr_search' id='${trip_list[i+1].FirstName} ${trip_list[i+1].SureName}' ><td><img src='${trip_list[i+1].Img}' /> </td>`;
@@ -287,7 +288,7 @@
                 strRequest += `<tr>
                                                <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'><img src='${Request_customer_list[i + 1].Img}'/></td>
                                                <td>${Request_customer_list[i].Order_date}</td>
-                                               <td class='tr_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
+                                               <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
                                                <td id="td_AttName" data-attractionId=${Request_customer_list[i].AttractionID} >${Request_customer_list[i].AttractionName}</td>
                                                <td>${Request_customer_list[i].NumTickets}</td>`;
                 strRequest += '<td><div class="input-group-prepend">';

@@ -21894,7 +21894,7 @@ body_chat {
 .att_form  label{
     width: max-content;
 }
-#searchBtn{
+#searchBtn_ByCategory, #searchBtn_ByName {
     margin-top: 29px;
 }
 
@@ -21907,8 +21907,11 @@ body_chat {
     font-weight: bold;
     cursor:pointer;
 }
-#nav_open{
-    margin-right:auto;
+.td_search {
+    cursor: pointer;
+}
+#nav_open {
+    margin-right: auto;
 }
 .text_task{
     margin: 8px;

@@ -61,10 +61,13 @@ namespace final_project_WEB.Controllers
 
         [HttpPost]
         [Route("api/Trip/Add_pdf_Flightticket")]
-        public int Post(string id, string pdf)
+        public string Post(string id, string pdf)
         {
             Trip trip = new Trip();
-            return trip.Add_pdf_Flightticket( id, pdf);
+            int num_aff = trip.Add_pdf_Flightticket( id, pdf);
+            if(num_aff==1)
+                return pdf;
+            return "";
         }
 
         // PUT api/<controller>/5
