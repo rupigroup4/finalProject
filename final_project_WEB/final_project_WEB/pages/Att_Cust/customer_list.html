@@ -26,8 +26,8 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
     <!--sorting by date format dd/mm/yyyy-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">
-
+    <!--<link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
             window.location.href = "../Login/login-2.html";
@@ -61,25 +61,25 @@
 
             function successCountNEWRequest(data) {
                 console.log(data);
-                var count = data.length;
+                var count = data.length / 2;
                 var strNewRequest;
                 if (count) {
                     document.getElementById("newRequest").style.display = "block";
                     document.getElementById("newRequest").innerHTML = count;
                     strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
-                    for (var i = 0; i < data.length; i+=2) {
+                    for (var i = 0; i < data.length; i += 2) {
                         strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${data[i].AttractionName}">
-                                         <div class="item-thumbnail">
-                                               <div class="item-icon bg-primary">
-                                                  <i class="ti-info mx-0"></i>
-                                                </div>
-                                          </div>
-                                           <div class="item-content">
-                                                   <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
-                                                     <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i+1].SureName}
-                                                     </p>
-                                           </div></a >`;
-                    } 
+                                             <div class="item-thumbnail">
+                                                   <div class="item-icon bg-primary">
+                                                      <i class="ti-info mx-0"></i>
+                                                    </div>
+                                              </div>
+                                               <div class="item-content">
+                                                       <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
+                                                         <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
+                                                         </p>
+                                               </div></a >`;
+                    }
                     document.getElementById("NewReqMenu").innerHTML = strNewRequest;
                     return;
                 }
@@ -105,12 +105,12 @@
                 var from = new Date(departureArr[0], parseInt(departureArr[1]) - 1, departureArr[2]); // -1 because months are from 0 to 11
                 for (var i = 0; i < Arr_trips.length; i++) {
                     if (Arr_trips[i].CustomerID == id_customer) {
-                         TripsDepartDate = Arr_trips[i].DepartDate.split("/");
-                         TripsDepartDateCheck = new Date(TripsDepartDate[2], parseInt(TripsDepartDate[1]) - 1, TripsDepartDate[0])
+                        TripsDepartDate = Arr_trips[i].DepartDate.split("/");
+                        TripsDepartDateCheck = new Date(TripsDepartDate[2], parseInt(TripsDepartDate[1]) - 1, TripsDepartDate[0])
                         if (TripsDepartDateCheck >= from) {
                             console.log('ok');
                             this.validity.valid = false;
-                            this.setCustomValidity('קיים טיול ללקוח בתאריך זה ');
+                            this.setCustomValidity('קיים טיול ללקוח בתאריך זה');
                             return;
                         }
                     }
@@ -133,7 +133,11 @@
                 table.rows[num_row].cells.item(1).innerHTML = change_Name;
                 var change_Phone = '<input type="text" class="form-control td-change " id="new_phoneNumber" placeholder="" required value="' + customers_list[i].PhoneNumber + '">';
                 table.rows[num_row].cells.item(2).innerHTML = change_Phone;
-                var change_Bday = ' <input type="date" class="form-control td-change " id="new_birthDay" value="' + customers_list[i].BirthDay + '" required />';
+                var birthDay = customers_list[i].BirthDay;
+                var birthDay_Arr = birthDay.split("/");
+                var birthDay_date = `${birthDay_Arr[2]}-${birthDay_Arr[1]}-${birthDay_Arr[0]}`; //new Date(birthDay_Arr[0], parseInt(birthDay_Arr[1]) - 1, birthDay_Arr[2]);
+                console.log(birthDay_date);
+                var change_Bday = `<input type="date" class="form-control td-change " id="new_birthDay" value="${birthDay_date}" required />`;
                 table.rows[num_row].cells.item(3).innerHTML = change_Bday;
             });
 
@@ -147,7 +151,7 @@
             else {
                 let str = "";
                 for (var i = 0; i < customers_list.length; i++) {
-                    str += "<tr id='tr_"+ customers_list[i].Id+"'> <td><img src='" + customers_list[i].Img + "' /> </td>";
+                    str += "<tr id='tr_" + customers_list[i].Id + "'> <td><img src='" + customers_list[i].Img + "' /> </td>";
                     str += "<td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td>";
                     str += "<td>" + customers_list[i].PhoneNumber + "</td>";
                     str += "<td>" + customers_list[i].BirthDay + "</td>";
@@ -207,7 +211,7 @@
             let i = parseInt(index);
             let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
             str_btn = "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
-            str += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`;            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
+            str_btn += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`; str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
             str_btn += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td>";
             document.getElementById("Table_customer").rows[i + 1].cells.item(5).innerHTML = str_btn;
             document.getElementById("Table_customer").rows[i + 1].cells.item(1).innerHTML = customers_list[i].FirstName + " " + customers_list[i].SureName;
@@ -219,15 +223,21 @@
             numINlistcustomer = i;
             let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
             str_btn = "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
-            str += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`;            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
+            str_btn += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' 
+            onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`;
+            str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
             str_btn += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td>";
             document.getElementById("Table_customer").rows[i + 1].cells.item(5).innerHTML = str_btn;
+
 
             new_Name = $('#new_Name').val().split(' ');
             let firstName = new_Name[0];
             let sureName = new_Name[1];
             let phoneNumber = $('#new_phoneNumber').val();
             let birthDay = $('#new_birthDay').val();
+            if (birthDay == "") {
+                birthDay = customers_list[i].BirthDay;
+            }
             editCustomer = {
                 "Id": id,
                 "FirstName": firstName,
@@ -235,14 +245,16 @@
                 "PhoneNumber": phoneNumber,
                 "BirthDay": birthDay,
             }
-            ajaxCall("POST", "../../api/Customer/Change_details", JSON.stringify(editCustomer), successEditCustomer, errorEditCustomer)
+            console.log(birthDay);
+            console.log(editCustomer);
+            //ajaxCall("PUT", "../../api/Customer/Change_details", JSON.stringify(editCustomer), successEditCustomer, errorEditCustomer)
         }
 
         function successEditCustomer(customer) {
-            ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
             document.getElementById("Table_customer").rows[numINlistcustomer + 1].cells.item(1).innerHTML = customer.FirstName + " " + customer.SureName;
             document.getElementById("Table_customer").rows[numINlistcustomer + 1].cells.item(2).innerHTML = customer.PhoneNumber;
             document.getElementById("Table_customer").rows[numINlistcustomer + 1].cells.item(3).innerHTML = customer.BirthDay;
+            ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
         }
 
         function errorEditCustomer(err) {
@@ -271,8 +283,8 @@
             document.getElementById('departure').setAttribute('data-id', id);
             console.log(document.getElementById('departure'));
             document.getElementById("loginPopup").style.display = "block";
-            document.getElementById("PHaddtrip").innerHTML = " הזן פרטי טיסה עבור "+name;
-            ajaxCall("GET", "../../api/Trip/customertrips?customerID=" + id, "", successCustomerTrips_list, errorCustomerTrips_list)// dina- add id 
+            document.getElementById("PHaddtrip").innerHTML = " הזן פרטי טיסה עבור " + name;
+            ajaxCall("GET", "../../api/Trip/customertrips?customerID=" + id, "", successCustomerTrips_list, errorCustomerTrips_list)// dina- add id
 
             id_customer = id;
         }
@@ -363,7 +375,7 @@
         //}
 
 
-   
+
 
         function Moveto_login() {
             localStorage.setItem('Email', "");
@@ -379,6 +391,12 @@
 
         function errorAgent_name(err) {
             alert("errorAgent_name");
+        }
+
+        function finedCity() {
+            $("#destination").autocomplete({
+                source: ArrTopCities
+            });
         }
 
     </script>
@@ -620,7 +638,7 @@
                                 <label for="destination">
                                     <strong>יעד טיסה</strong>
                                 </label>
-                                <input id="destination" class="form-control" value="Berlin" required>
+                                <input onkeyup="finedCity()" id="destination" class="form-control" required>
                                 <label for="departure">
                                     <strong>טיסה הלוך</strong>
                                 </label>
@@ -660,8 +678,6 @@
     <script src="../../vendors/base/vendor.bundle.base.js"></script>
     <!-- Plugin js for this page-->
     <!-- End plugin js for this page-->
-
-
     <!-- inject:js -->
     <script src="../../js/off-canvas.js"></script>
     <script src="../../js/hoverable-collapse.js"></script>
@@ -671,24 +687,26 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
     <script>
-                //$(function () {
-                //    $("#destination").autocomplete({
-                //        source: cityNames
-                //    });
-                //});
+                        //$(function () {
+                        //    $("#destination").autocomplete({
+                        //        source: cityNames
+                        //    });
+                        //});
 
     </script>
     <!-->data table-->
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-    <script src="../../Scripts/city.js"></script>
+    <!--<script src="../../Scripts/city.js"></script>-->
     <!-- endinject -->
     <!-- Custom js for this page-->
     <!-- End custom js for this page-->
+    <script src="../../Scripts/Top1000Cities.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </body>
 
 </html>

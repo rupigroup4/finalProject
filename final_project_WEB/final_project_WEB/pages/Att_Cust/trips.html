@@ -49,7 +49,7 @@
 
         function successCountNEWRequest(data) {
             console.log(data);
-            var count = data.length;
+            var count = data.length/2;
             var strNewRequest;
             if (count) {
                 document.getElementById("newRequest").style.display = "block";
@@ -110,7 +110,6 @@
                                 <td>${TripProfile[trip_customer_list[i].TripProfileID]}</td>`;
                         let dataTrip = "data-tripId='" + trip_customer_list[i].TripID + "'";
                         str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input class="selectedFile" type="file" name="myfile" id ="chooseFile${trip_customer_list[i].TripID}" ${dataTrip}/></div>
-                            <button id="upload" ${dataTrip} class="savePdf btn btn-inverse-primary btn-fw">שמור קובץ</button>
                          <div id="choosedFile${trip_customer_list[i].TripID}"></div></td>`;
                         if (trip_customer_list[i].Pdf_Flightticket != "") { //Not working
                             str += `<div class="form-check form-check-flat form-check-primary checkbox_style" id="choosedFile${trip_customer_list[i].TripID}"><label class="form-check-label"> <input class="form-check-input" type="checkbox" checked><i class="input-helper"></i>כרטיס טיסה</label></div></td>`;
@@ -171,19 +170,8 @@
         $(document).on("change", ".selectedFile", function () {
             selectedTrip = this.getAttribute('data-tripId'); //זה מחזיק את ה TRIPiD
             var data = new FormData();
-            var filesselected = $("#chooseFile" + selectedTrip).get(0).files;
-            console.log(filesselected);
-            document.getElementById("choosedFile" + selectedTrip).innerHTML = filesselected[0].name;
-
-            return false;
-        })
-
-
-        $(document).on("click", ".savePdf", function () {
-            selectedTrip = this.getAttribute('data-tripId'); //זה מחזיק את ה TRIPiD
-            var data = new FormData();
             var files = $("#chooseFile" + selectedTrip).get(0).files;
-            console.log(files[0].name);
+            console.log(files);
             document.getElementById("choosedFile" + selectedTrip).innerHTML = files[0].name;
             // Add the uploaded file to the form data collection
             if (files.length > 0) {
@@ -205,6 +193,33 @@
 
             return false;
         })
+
+
+        //$(document).on("click", ".savePdf", function () {
+        //    selectedTrip = this.getAttribute('data-tripId'); //זה מחזיק את ה TRIPiD
+        //    var data = new FormData();
+        //    var files = $("#chooseFile" + selectedTrip).get(0).files;
+        //    document.getElementById("choosedFile" + selectedTrip).innerHTML = files[0].name;
+        //    // Add the uploaded file to the form data collection
+        //    if (files.length > 0) {
+        //        for (f = 0; f < files.length; f++) {
+        //            data.append(`${selectedTrip}`, files[f]);
+        //        }
+        //    }
+
+        //    // Ajax upload
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "../../Api/pdf/uploadpdf",
+        //        contentType: false,
+        //        processData: false,
+        //        data: data,
+        //        success: SavePdfSuccess,
+        //        error: SavedPdfError
+        //    });
+
+        //    return false;
+        //})
 
         function SavePdfSuccess(dataPath) {
             console.log("ok");

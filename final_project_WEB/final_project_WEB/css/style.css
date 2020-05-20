@@ -21905,6 +21905,7 @@ body_chat {
 
 #td_AttName{
     font-weight: bold;
+    cursor:pointer;
 }
 #nav_open{
     margin-right:auto;

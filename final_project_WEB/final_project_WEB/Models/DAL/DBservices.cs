@@ -667,6 +667,7 @@ public class DBservices
                 Request r = new Request();
                 r.Id = Convert.ToInt32(dr["requestID"]);
                 r.AttractionName = (string)dr["attractionName"];
+                r.AttractionID = (string)dr["attractionId"];
                 r.CustomerID = Convert.ToInt32(dr["CustomerId"]);
                 NEW_Request_list.Add(r);
                 Customer c = new Customer();
@@ -1044,7 +1045,7 @@ public class DBservices
                 t.ReturnDate = ReturnDate_arr[2] + "/" + ReturnDate_arr[1] + "/" + ReturnDate_arr[0];
                 t.TripProfileID =Convert.ToInt32(dr["_id_TripProfile"]);
 
-                if ((string)dr["pdf_Flightticket"]=="" || dr["pdf_Flightticket"] == System.DBNull.Value) {
+                if (dr["pdf_Flightticket"] == System.DBNull.Value) {
                     t.Pdf_Flightticket = "";
                 }
                 else t.Pdf_Flightticket = (string)dr["pdf_Flightticket"];
@@ -1176,7 +1177,7 @@ public class DBservices
         try
         {
             con = connect("DBConnectionString");
-            da = new SqlDataAdapter("select * from Customer_igroup4 where agent_ID=" + AgentID, con);
+            da = new SqlDataAdapter("select * from Customer_igroup4 where AgentID=" + AgentID, con);
             SqlCommandBuilder builder = new SqlCommandBuilder(da);
             DataSet ds = new DataSet();
             da.Fill(ds);

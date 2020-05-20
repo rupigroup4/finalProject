@@ -403,7 +403,7 @@ public class DBservicesMobile
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "select * from Request_igroup4 where customerId ='" + customerId + "'";
+            String selectSTR = "select * from Request_igroup4 where customerId ='" + customerId + "'order by send_date";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -414,7 +414,7 @@ public class DBservicesMobile
                 Request n = new Request();
                 n.Id = Convert.ToInt16(dr["requestID"]);
                 n.Order_date = (string)dr["date_time"];
-                if ((string)dr["pdfFile"] != "")
+                if (dr["pdfFile"] != System.DBNull.Value)
                 {
                     n.PdfFile = (string)dr["pdfFile"];
                 }

@@ -39,9 +39,9 @@ namespace final_project_WEB.Controllers
             return customer.insert_customer(customer);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("api/Customer/Change_details")]
-        public Customer Post_Change_details([FromBody] Customer customer)
+        public Customer UpDate_Change_details([FromBody] Customer customer)
         {
             return customer.Update_customer(customer);
         }

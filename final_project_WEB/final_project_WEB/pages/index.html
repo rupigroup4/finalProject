@@ -138,7 +138,7 @@
 
         function successCountNEWRequest(data) {
             console.log(data);
-            var count = data.length;
+            var count = data.length/2;
             var strNewRequest;
             if (count) {
                 document.getElementById("newRequest").style.display = "block";
@@ -252,8 +252,31 @@
             alert("errorGETTripr_list");
         }
 
+        $(document).on("click", "#td_AttName", function () {
+            let attId = this.getAttribute('data-attractionId');
+            urlResults = "https://www.triposo.com/api/20200405/poi.json?id=" + attId + "&fields=properties&order_by=-score&count=20&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
+            console.log(urlResults)
+            $.get(urlResults).done(successSpecificWebsite);
+            $.get(urlResults).fail(errorSpecificWebsite);
+        })
+
+        function successSpecificWebsite(properties) {
+            let props = properties.results[0].properties;
+            console.log(props)
+            for (var i = 0; i < props.length; i++) {
+                if (props[i].key == "website") {
+                    window.open(props[i].value, '_blank');
+                    //window.location.href= props[i].value
+                }
+            }
+            
+        }
+        function errorSpecificWebsite(err) {
+            console.log(err)
+        }
 
         function successShowALLRequest(Request_customer_list) {
+
             console.log(Request_customer_list);
             strRequest = "";
             var countSuccess = 0;
@@ -265,7 +288,7 @@
                                                <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'><img src='${Request_customer_list[i + 1].Img}'/></td>
                                                <td>${Request_customer_list[i].Order_date}</td>
                                                <td class='tr_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
-                                               <td id="td_AttName">${Request_customer_list[i].AttractionName}</td>
+                                               <td id="td_AttName" data-attractionId=${Request_customer_list[i].AttractionID} >${Request_customer_list[i].AttractionName}</td>
                                                <td>${Request_customer_list[i].NumTickets}</td>`;
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_customer_list[i].Status) {
