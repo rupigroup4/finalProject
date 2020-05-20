@@ -245,7 +245,7 @@ public class DBservicesMobile
                 t.DepartDate = (string)dr["_depart"];
                 t.ReturnDate = (string)dr["_return"];
                 t.TripProfileID = Convert.ToInt16(dr["_id_TripProfile"]);
-                if ((string)dr["pdf_Flightticket"] != "")
+                if (dr["pdf_Flightticket"] != System.DBNull.Value)
                 {
                     t.Pdf_Flightticket = (string)dr["pdf_Flightticket"];
                 }
