@@ -21808,7 +21808,7 @@ div.dataTables_wrapper div.dataTables_paginate {
 }
 
 #ConversationWithCustomerPH {
-    height: 500px;
+    height: 380px;
     border: 1px solid #ced4da;
     overflow:auto;
 }
@@ -21820,6 +21820,7 @@ body_chat {
 }
 
 .container_chat {
+    width: 80%;
     border: 2px solid #dedede;
     background-color: #f1f1f1;
     border-radius: 5px;
@@ -21830,6 +21831,9 @@ body_chat {
 .darker_chat {
     border-color: #ccc;
     background-color: #ddd;
+}
+.customer_chat{
+    margin-right: 130px;
 }
 
 .container_chat::after {
@@ -21947,4 +21951,8 @@ body_chat {
     left: 0;
     top: 0;
     opacity: 0;
+}
+
+.fileName{
+    color: gray;
 }

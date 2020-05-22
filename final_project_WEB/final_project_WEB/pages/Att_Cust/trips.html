@@ -113,10 +113,10 @@
                         var pdf = trip_customer_list[i].Pdf_Flightticket
                         if (pdf != "") {
                             var pdf_Arr = pdf.split('pdfFiles/');
-                            str += `<div id="choosedFile${trip_customer_list[i].TripID}">${pdf_Arr[1]}</div></td>`;
+                            str += `<div class="fileName" id="choosedFile${trip_customer_list[i].TripID}">${pdf_Arr[1]}</div></td>`;
 
                         } else {
-                            str += `<div id="choosedFile${trip_customer_list[i].TripID}"></div></td>`;}
+                            str += `<div class="fileName" id="choosedFile${trip_customer_list[i].TripID}"></div></td>`;}
 
                         str += "<td><button type='button' title='מחיקת טיול' id='" + trip_customer_list[i].TripID + "' onclick='deleteT(" + trip_customer_list[i].TripID + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button></td></tr>";
                     }

@@ -46,7 +46,6 @@
         }
 
         function successCountNEWRequest(data) {
-            console.log(data);
             var count = data.length/2;
             var strNewRequest;
             if (count) {
@@ -81,8 +80,19 @@
             alert("errorCountNEWRequest");
         }
 
+        //$('#agentMessage').on("keyup ", function (event) {
+        //    console.log("in")
+        //    if (event.keyCode === 13) {
+        //sendMessage();
+        //    }
+        //});
+        $(document).on("keyup", "#agentMessage", function () {
+           if (event.keyCode === 13) 
+                //sendMessage לקרוא לפונקציה של שליחת הודעה
+        });
+
         
-        $(document).on("click", "#sendMessage", function () {
+        $(document).on("click", "#sendMessage", function sendMessage () {
             var today = new Date();
             var h = today.getHours();
             var m = today.getMinutes();
@@ -136,7 +146,6 @@
 
 
         function showConversation(customerID, indexCustomer) {
-            console.log('נכנס')
             let strConversation = "";
             chatObject[customerID] = [];
             firebase.database().ref(`/chat/${customerID}`).on('child_added', function (snapshot) {
@@ -152,7 +161,7 @@
                             <span class="time-left">${chatObject[customerID][i].time}</span>
                             </div>`;
                 } else {
-                    strConversation += `<div class="container_chat">
+                    strConversation += `<div class="container_chat customer_chat">
                             <img src="${customers_list[indexCustomer].Img}" alt="Avatar" style="width:100%;">
                             <p>${chatObject[customerID][i].message}</p>
                             <span class="time-right">${chatObject[customerID][i].time}</span>
@@ -223,7 +232,6 @@
                 let id = customers_list[i].Id;
                 firebase.database().ref(`/chat/${id}`).on('child_added', function (snapshot) {
                     chatObject[id].push((snapshot.val()));
-                    //console.log(chatObject[id])
                 })
             }
         }
