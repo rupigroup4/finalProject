@@ -155,7 +155,7 @@
                     let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
                     str += "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
                     str += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`;
-                    str += `<button type='button' title='שליחת הודעה' id='${customers_list[i].Id}' onclick='sendM(${customers_list[i].Id},"${customers_list[i].FirstName} ${customers_list[i].SureName}")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>`;
+                    str += `<button type='button' title='שליחת הודעה' id='${customers_list[i].Id}' onclick='sendM(${customers_list[i].Id},"${customers_list[i].FirstName} ${customers_list[i].SureName}",${i})' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>`;
                     str += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
                 }
                 document.getElementById("CustomerPH").innerHTML = str;
@@ -185,10 +185,14 @@
             if (sessionStorage.getItem('customerName_click')) {
                 var name = sessionStorage.getItem('customerName_click')
                 sessionStorage.removeItem('customerName_click');
-
                 var table = $('#Table_customer').DataTable();
                 table.search(name).draw();
-                //setTimeout(function () {table.search("").draw();}, 5000);
+            }
+            if (sessionStorage.getItem('add_trip')) {
+                var name = sessionStorage.getItem('add_trip')
+                sessionStorage.removeItem('add_trip');
+                var table = $('#Table_customer').DataTable();
+                table.search(name).draw();
             }
         }
 
@@ -197,17 +201,19 @@
 
         }
 
-        function sendM(id, name) {
+        function sendM(id, name, index) {
             window.location.href = "../Chat/chat.html";
             sessionStorage.setItem('id_chat', id);
             sessionStorage.setItem('name_chat', name);
+            sessionStorage.setItem('index_chat', index);
 
         }
         function cancel_change(index) {
             let i = parseInt(index);
             let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
             str_btn = "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
-            str_btn += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`; str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
+            str_btn += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`;
+            str_btn += `<button type='button' title='שליחת הודעה' id='${customers_list[i].Id}' onclick='sendM(${customers_list[i].Id},"${customers_list[i].FirstName} ${customers_list[i].SureName}",${i})' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>`;
             str_btn += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td>";
             document.getElementById("Table_customer").rows[i + 1].cells.item(5).innerHTML = str_btn;
             document.getElementById("Table_customer").rows[i + 1].cells.item(1).innerHTML = customers_list[i].FirstName + " " + customers_list[i].SureName;
@@ -573,8 +579,8 @@
                                                     <h4 class="card-title">רשימת לקוחות</h4>
                                                 </th>
                                                 <!--<th>
-                                                    <input type="text" id="myInput" onkeyup="Search_byName()" placeholder="חיפוש לפי שם">
-                                                </th>-->
+                                        <input type="text" id="myInput" onkeyup="Search_byName()" placeholder="חיפוש לפי שם">
+                                    </th>-->
                                             </tr>
                                         </thead>
                                     </table>
@@ -611,44 +617,44 @@
                 <!-- content-wrapper ends -->
                 <!-- partial:../partials/_footer.html -->
                 <footer class="footer">
-                    <!--dropdown-->
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2018 <a href="https://www.templatewatch.com/" target="_blank">Templatewatch</a>. All rights reserved.</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-                    </div>
-                    <div class="form-popup" id="loginPopup">
-                        <div id="popupForm">
-                            <form class="form-container" autocomplete="off" id="form_addtrip">
-                                <h2 id="PHaddtrip"></h2>
-                                <label for="destination">
-                                    <strong>יעד טיסה</strong>
-                                </label>
-                                <input onkeyup="finedCity()" id="destination" class="form-control" required>
-                                <label for="departure">
-                                    <strong>טיסה הלוך</strong>
-                                </label>
-                                <input type="date" class="form-control" id="departure" value="20/04/2020" placeholder="dd/mm/yyyy" onchange="ValiditionMin(value)" required />
-                                <label for="return">
-                                    <strong>טיסה חזור</strong>
-                                </label>
-                                <input type="date" class="form-control" id="return" placeholder="dd/mm/yyyy" value="25/04/2020" required />
-                                <label for="TripProfile">
-                                    <strong>מטרת הנסיעה</strong>
-                                </label>
-                                <select id="tripProfile" class="form-control">
-                                    <option value="1">כללי</option>
-                                    <option value="2">טיול משפחות</option>
-                                    <option value="3">מסיבת רווקים/ית</option>
-                                    <option value="4">טיול פנסיונרים</option>   
-                                    <option value="5">טיול עסקי</option>
-                                    <option value="6">טיול זוגי</option>
-                                </select>
-                                <button type="submit" class="btn submit_trip" style="margin-top:10px">הוסף טיול</button>
-                                <button type="button" class="btn cancel" onclick="closeForm()">ביטול</button>
-                            </form>
-                        </div>
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">iAgent System | © 2020 | All rights reserved</span>
+                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made By igroup4_2020 <i class="ti-heart text-danger ml-1"></i></span>
                     </div>
                 </footer>
+                <!--dropdown-->
+                <div class="form-popup" id="loginPopup">
+                    <div id="popupForm">
+                        <form class="form-container" autocomplete="off" id="form_addtrip">
+                            <h2 id="PHaddtrip"></h2>
+                            <label for="destination">
+                                <strong>יעד טיסה</strong>
+                            </label>
+                            <input onkeyup="finedCity()" id="destination" class="form-control" required>
+                            <label for="departure">
+                                <strong>טיסה הלוך</strong>
+                            </label>
+                            <input type="date" class="form-control" id="departure" value="20/04/2020" placeholder="dd/mm/yyyy" onchange="ValiditionMin(value)" required />
+                            <label for="return">
+                                <strong>טיסה חזור</strong>
+                            </label>
+                            <input type="date" class="form-control" id="return" placeholder="dd/mm/yyyy" value="25/04/2020" required />
+                            <label for="TripProfile">
+                                <strong>מטרת הנסיעה</strong>
+                            </label>
+                            <select id="tripProfile" class="form-control">
+                                <option value="1">כללי</option>
+                                <option value="2">טיול משפחות</option>
+                                <option value="3">מסיבת רווקים/ית</option>
+                                <option value="4">טיול פנסיונרים</option>
+                                <option value="5">טיול עסקי</option>
+                                <option value="6">טיול זוגי</option>
+                            </select>
+                            <button type="submit" class="btn submit_trip" style="margin-top:10px">הוסף טיול</button>
+                            <button type="button" class="btn cancel" onclick="closeForm()">ביטול</button>
+                        </form>
+                    </div>
+                </div>
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->

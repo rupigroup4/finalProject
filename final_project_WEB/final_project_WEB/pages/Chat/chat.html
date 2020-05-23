@@ -31,15 +31,25 @@
         var timer;
         $(document).ready(function () {
             setTimeout(Check_new_Request, 1000);
-            if (sessionStorage.getItem('id_chat')) {
-                document.getElementById("chatNamePH").innerHTML = "שלח הודעה ל" + sessionStorage.getItem('name_chat');
-                //bring Conversation from real-timeDB by id_chat
-                sessionStorage.clear();
-            }
             Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
-            ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
+            ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
+
+            var id = sessionStorage.getItem('id_chat');
+            var index = sessionStorage.getItem('index_chat');
+            if (id) {
+                document.getElementById("chatNamePH").innerHTML = "שלח הודעה ל" + sessionStorage.getItem('name_chat');
+                LengthChat = 0;
+                document.getElementById("agentMessage").value = "";
+                showConversation(id, index);
+                clearInterval(timer);
+                timer = setInterval(function () { showConversation(id, index) }, 7000);
+                sessionStorage.removeItem('name_chat');
+                sessionStorage.removeItem('id_chat');
+                sessionStorage.removeItem('index_chat');
+
+            }
         });
         function Check_new_Request() {
             ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
@@ -80,32 +90,28 @@
             alert("errorCountNEWRequest");
         }
 
-        $('#agentMessage').on("keyup", function (event) {
-            console.log("in")
+        //$('#agentMessage').on("keyup", function (event) {
+        //    console.log("in")
+        //    if (event.keyCode === 13) {
+        //    sendMessage();
+        //    }
+        //});
+
+
+
+        $(document).on("keyup", "#agentMessage", function (event) {
+            console.log("here baybe1");
             if (event.keyCode === 13) {
-            sendMessage();
+                console.log("here baybe2");
+                sendMessage();
             }
         });
-
-
-        //$('#agentMessage').on("keyup", function (event) {
-        //    console.log("here baybe2");
-        //    if (event.keyCode === 13) {
-        //    }
-        //});
-
-        //$(document).on("keyup", "#agentMessage", function (event) {
-        //    console.log("here baybe1");
-        //    if (event.keyCode === 13) {
-        //        console.log("here baybe2");
-        //        sendMessage();
-        //    }
-        //});
 
         
         $(document).on("click", "#sendMessage", sendMessage); 
         
-        function sendMessage(){
+        function sendMessage() {
+
             var today = new Date();
             var h = today.getHours();
             var m = today.getMinutes();
@@ -140,9 +146,12 @@
                             <span class="time-left">${realTime}</span>
                             </div>`;
             document.getElementById("ConversationWithCustomerPH").innerHTML += strConversation;
-
+            updateScroll();
         }
-
+        function updateScroll() {
+            var element = document.getElementById("ConversationWithCustomerPH");
+            element.scrollTop = element.scrollHeight;
+        }
         $(document).on("click", ".StartChat", function () {
             LengthChat = 0;
             document.getElementById("agentMessage").value = "";
@@ -189,6 +198,7 @@
             }
             //bring Conversation from real-timeDB by customerID
             document.getElementById("ConversationWithCustomerPH").innerHTML = strConversation;
+            updateScroll();
 
         }
 
@@ -426,10 +436,10 @@
             <!-- partial -->
             <div class="main-panel">
                 <div class="content-wrapper">
-                    <div class="row chat_height" >
+                    <div class="row chat_height">
                         <div class="col-md-8 grid-margin stretch-card chat-style">
                             <div class="card">
-                                <div class="card-body" >
+                                <div class="card-body">
                                     <h4 id="chatNamePH" class="card-title">בחר לקוח מהרשימה</h4>
                                     <div id="ConversationWithCustomerPH" class="card-body">
                                         <!--here will appear the Conversation with the custumer-->
@@ -447,32 +457,31 @@
                                 </div>
                             </div>
                         </div>
-                                <div class="col-md-4 grid-margin stretch-card chat-style">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <input type="text" id="myInput" onkeyup="Search_byName()" placeholder="חיפוש לפי שם">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover" id="Table_customer_chat">
-                                                    <thead>
-                                                    </thead>
-                                                    <tbody id="CustomerPH">
-                                                        <tr>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                        </div>
+                        <div class="col-md-4 grid-margin stretch-card chat-style">
+                            <div class="card">
+                                <div class="card-body">
+                                    <input type="text" id="myInput" onkeyup="Search_byName()" placeholder="חיפוש לפי שם">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="Table_customer_chat">
+                                            <thead>
+                                            </thead>
+                                            <tbody id="CustomerPH">
+                                                <tr></tr>
+                                            </tbody>
+                                        </table>
                                     </div>
+
                                 </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:../partials/_footer.html -->
                 <footer class="footer">
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2018 <a href="https://www.templatewatch.com/" target="_blank">Templatewatch</a>. All rights reserved.</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">iAgent System | © 2020 | All rights reserved</span>
+                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made By igroup4_2020 <i class="ti-heart text-danger ml-1"></i></span>
                     </div>
                 </footer>
                 <!-- partial -->

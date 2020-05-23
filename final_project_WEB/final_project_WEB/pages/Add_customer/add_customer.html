@@ -109,7 +109,7 @@
             let year = dateObj.getUTCFullYear();
             let joinDate = year + "-" + month + "-" + day;
             let agentID = localStorage.getItem('AgentID');
-        
+            Fullname = firstName + " " + sureName;
             newCustomer = {
                 "FirstName": firstName,
                 "SureName": sureName,
@@ -145,7 +145,19 @@
 
         function POSTsuccessNewCustomer(num) {
             if (num == 1) 
-                swal("בוצע בהצלחה", "נוסף לקוח חדש", "success");
+                swal({
+                    title: "הלקוח נוסף בהצלחה",
+                    icon: "success",
+                    buttons: ["סיים", "הוסף טיול ללקוח זה"],
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            sessionStorage.setItem("add_trip", Fullname);
+                            window.location.href = "../Att_Cust/customer_list.html";
+                        }
+                        else {
+                        }
+                    });
             else
                 swal("שגיאה", "הלקוח לא נוסף", "error");
             clearFields();
@@ -349,7 +361,8 @@
                         <div class="col-12 grid-margin">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">הוספת לקוח חדש</h4>
+                                    <h4 class="card-title"><i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i> הוספת לקוח חדש</h4>
+
                                     <form class="form-sample" id="form_add_customer">
                                         <p class="card-description">
                                             פרטים אישיים
@@ -359,7 +372,7 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label">שם פרטי</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="firstName" placeholder="" required value="שמשון">
+                                                        <input type="text" class="form-control" id="firstName" placeholder="" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -367,7 +380,7 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label">שם משפחה</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="sureName" placeholder="" required value="הגיבור">
+                                                        <input type="text" class="form-control" id="sureName" placeholder="" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -398,7 +411,7 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label">טלפון</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="phoneNumber" placeholder="" required pattern="05[0-9]{8}" value="0546872213">
+                                                        <input type="text" class="form-control" id="phoneNumber" placeholder="" required pattern="05[0-9]{8}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -406,7 +419,7 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label">אימייל</label>
                                                     <div class="col-sm-9">
-                                                        <input type="email" class="form-control" id="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" value="shimsonH@walla.com">
+                                                        <input type="email" class="form-control" id="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
                                                     </div>
                                                 </div>
                                             </div>
@@ -429,8 +442,8 @@
                 <!-- partial:../partials/_footer.html -->
                 <footer class="footer">
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2018 <a href="https://www.templatewatch.com/" target="_blank">Templatewatch</a>. All rights reserved.</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">iAgent System | © 2020 | All rights reserved</span>
+                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made By igroup4_2020 <i class="ti-heart text-danger ml-1"></i></span>
                     </div>
                 </footer>
                 <!-- partial -->

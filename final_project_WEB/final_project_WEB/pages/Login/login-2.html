@@ -21,6 +21,8 @@
     <link rel="shortcut icon" href="../../images/favicon.png" />
     <script>
         $(document).ready(function () {
+            localStorage.clear();
+            sessionStorage.clear();
             $('#form_login').submit(function (e) {
                 e.preventDefault()
                 ajaxCall("GET", "../../api/Agent", "", successAgent_list, errorAgent_list);
@@ -55,7 +57,6 @@
                         else {
                         }
                     });
-
             }
             catch (err) {
                 swal(err);
