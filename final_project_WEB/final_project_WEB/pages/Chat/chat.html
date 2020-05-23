@@ -80,19 +80,32 @@
             alert("errorCountNEWRequest");
         }
 
-        //$('#agentMessage').on("keyup ", function (event) {
-        //    console.log("in")
-        //    if (event.keyCode === 13) {
-        //sendMessage();
-        //    }
-        //});
-        $(document).on("keyup", "#agentMessage", function () {
-           if (event.keyCode === 13) 
-                //sendMessage לקרוא לפונקציה של שליחת הודעה
+        $('#agentMessage').on("keyup", function (event) {
+            console.log("in")
+            if (event.keyCode === 13) {
+            sendMessage();
+            }
         });
 
+
+        //$('#agentMessage').on("keyup", function (event) {
+        //    console.log("here baybe2");
+        //    if (event.keyCode === 13) {
+        //    }
+        //});
+
+        //$(document).on("keyup", "#agentMessage", function (event) {
+        //    console.log("here baybe1");
+        //    if (event.keyCode === 13) {
+        //        console.log("here baybe2");
+        //        sendMessage();
+        //    }
+        //});
+
         
-        $(document).on("click", "#sendMessage", function sendMessage () {
+        $(document).on("click", "#sendMessage", sendMessage); 
+        
+        function sendMessage(){
             var today = new Date();
             var h = today.getHours();
             var m = today.getMinutes();
@@ -128,7 +141,7 @@
                             </div>`;
             document.getElementById("ConversationWithCustomerPH").innerHTML += strConversation;
 
-        });
+        }
 
         $(document).on("click", ".StartChat", function () {
             LengthChat = 0;

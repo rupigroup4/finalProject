@@ -215,10 +215,13 @@
                     var today = new Date(yyyy, mm - 1, dd);
                     var color_class;
                     if (today >= from && today <= to) {
-                        num_day_in_trip = (to.getTime() - from.getTime()) / (1000 * 3600 * 24);
+                        num_day_in_trip = (to.getTime() - from.getTime()) / (1000 * 3600 * 24)+1;
                         if (num_day_in_trip == (today.getTime() - from.getTime()) / (1000 * 3600 * 24)) num_day_passed = (today.getTime() - from.getTime()) / (1000 * 3600 * 24);
                         else num_day_passed = (today.getTime() - from.getTime()) / (1000 * 3600 * 24) + 1;
                         percent = Math.round((num_day_passed / num_day_in_trip) * 100);
+                        console.log(trip_list[i + 1].FirstName)
+                        console.log(num_day_in_trip)
+                        console.log(num_day_passed)
                         countInTrip++;
                         strCustomerOnTrip += `<tr class='tr_search' id='${trip_list[i+1].FirstName} ${trip_list[i+1].SureName}' ><td><img src='${trip_list[i+1].Img}' /> </td>`;
                         strCustomerOnTrip += "<td>" + trip_list[i+1].FirstName + " " + trip_list[i+1].SureName + "</td>";
@@ -303,13 +306,26 @@
                 }
                 strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
                 let dataRequest = "data-RequestId='" + Request_customer_list[i].Id + "'";
+                let dataStatus = "data-Status='" + Request_customer_list[i].Status +"'";
                 strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a>
                             <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a>
                             <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a>
-                            <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td>
+                            <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td>`;
+                if (Request_customer_list[i].Status == 'success') {
+                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  
+                        <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
+                } else {
+                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
+                        <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
+                }
+                var pdf = Request_customer_list[i].PdfFile;
+                if (pdf != "") {
+                    var pdf_Arr = pdf.split('pdfFiles/');
+                    strRequest += `<div class="fileName" id="choosedFile${Request_customer_list[i].Id}">${pdf_Arr[1]}</div></td></tr>`;
 
-                        <td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}" /></div>
-                    <button id="upload" ${dataRequest} class="savePdf btn btn-inverse-primary btn-fw">שמור קובץ</button></td></tr>`;
+                } else {
+                    strRequest += `<div class="fileName" id="choosedFile${Request_customer_list[i].Id}"></div></td></tr>`;
+                }
             }
             document.getElementById("requestPH").innerHTML = strRequest;
             document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
@@ -345,8 +361,11 @@
             }
         }
 
-
-        $(document).on("click", ".savePdf", function () {
+        $(document).on("click", ".selectedFile", function () {
+            if (this.getAttribute('data-Status') != 'success') {
+                swal("ראשית עליך לשנות את הסטאטוס לsuccess", "", "error");
+                return false;
+            } else {
             selectedRequest = this.getAttribute('data-RequestId');
             console.log(selectedRequest);
             var data = new FormData();
@@ -369,7 +388,8 @@
                 error: SavedPdfError
             });
 
-            return false;
+                return false;
+            }
         })
 
         function SavePdfSuccess(dataPath) {
@@ -383,8 +403,11 @@
         function SavedPdfError(err) {
             alert("SavedPdfError")
         }
-        function POSTsuccessAddPDF(numEF) {
-            if (numEF == 1) { alert("נוסף בהצלחה") }
+        function POSTsuccessAddPDF(pdf) {
+            if (pdf != "") {
+                var pdf_Arr = pdf.split('pdfFiles/');
+                document.getElementById("choosedFile" + selectedRequest).innerHTML = pdf_Arr[1];
+            }
             else
                 alert("error");
         }

@@ -754,6 +754,7 @@ public class DBservices
                 r.Id = Convert.ToInt32(dr["requestID"]);
                 r.Order_date = (string)dr["date_time"];
                 r.Status = (string)dr["status_"];
+                r.PdfFile = (string)dr["pdfFile"];
                 r.AttractionID = (string)dr["attractionID"];
                 r.NumTickets = Convert.ToInt32(dr["numTickets"]);
                 r.AttractionName = (string)dr["attractionName"];

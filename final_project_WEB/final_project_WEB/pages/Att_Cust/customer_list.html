@@ -1,16 +1,13 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="he" dir="rtl">
-
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>IAgent</title>
     <script src="../../Scripts/ajaxCalls.js"></script>
     <!--data table-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">ss
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
             crossorigin="anonymous"></script>
@@ -21,12 +18,11 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="../../css/style.css">
     <!-- endinject -->
-    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
     <!--style for customer list data table-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
     <!--sorting by date format dd/mm/yyyy-->
-    <!--<link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script>
         if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
@@ -69,16 +65,16 @@
                     strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
                     for (var i = 0; i < data.length; i += 2) {
                         strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${data[i].AttractionName}">
-                                             <div class="item-thumbnail">
-                                                   <div class="item-icon bg-primary">
-                                                      <i class="ti-info mx-0"></i>
-                                                    </div>
-                                              </div>
-                                               <div class="item-content">
-                                                       <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
-                                                         <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
-                                                         </p>
-                                               </div></a >`;
+                                                     <div class="item-thumbnail">
+                                                           <div class="item-icon bg-primary">
+                                                              <i class="ti-info mx-0"></i>
+                                                            </div>
+                                                      </div>
+                                                       <div class="item-content">
+                                                               <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
+                                                                 <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
+                                                                 </p>
+                                                       </div></a >`;
                     }
                     document.getElementById("NewReqMenu").innerHTML = strNewRequest;
                     return;
@@ -223,8 +219,8 @@
             numINlistcustomer = i;
             let data_btn = "data-index='" + i + "'" + " data-id='" + customers_list[i].Id + "'";
             str_btn = "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
-            str_btn += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' 
-            onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`;
+            str_btn += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}'
+                    onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`;
             str_btn += "<button type='button' title='שליחת הודעה' id='" + customers_list[i].Id + "' onclick='sendM(" + customers_list[i].Id + ")' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>";
             str_btn += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td>";
             document.getElementById("Table_customer").rows[i + 1].cells.item(5).innerHTML = str_btn;
@@ -247,7 +243,7 @@
             }
             console.log(birthDay);
             console.log(editCustomer);
-            //ajaxCall("PUT", "../../api/Customer/Change_details", JSON.stringify(editCustomer), successEditCustomer, errorEditCustomer)
+            ajaxCall("PUT", "../../api/Customer/Change_details", JSON.stringify(editCustomer), successEditCustomer, errorEditCustomer)
         }
 
         function successEditCustomer(customer) {
@@ -364,19 +360,6 @@
 
         }
 
-        //function successAgent_name(name) {
-        //    console.log(name);
-        //    document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
-
-        //}
-
-        //function errorAgent_name(err) {
-        //    alert("errorAgent_name");
-        //}
-
-
-
-
         function Moveto_login() {
             localStorage.setItem('Email', "");
             localStorage.setItem('AgentName', "");
@@ -405,13 +388,12 @@
 
 <body dir="rtl">
     <div class="container-scroller">
-        <!-- partial:../partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <a class="navbar-brand brand-logo mr-5" href="../index.html"><img src="../../images/logo_iAgent_png.png" class="mr-2" alt="logo" /></a>
                 <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../../images/logo_mini_iAgent.png" alt="logo" /></a>
             </div>
-            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end"> 
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="ti-view-list"></span>
                 </button>
@@ -574,7 +556,6 @@
                             <span class="menu-title">צ'אט</span>
                         </a>
                     </li>
-
                 </ul>
             </nav>
 
@@ -629,7 +610,7 @@
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:../partials/_footer.html -->
-                <footer class="footer ">
+                <footer class="footer">
                     <!--dropdown-->
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
                         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2018 <a href="https://www.templatewatch.com/" target="_blank">Templatewatch</a>. All rights reserved.</span>
@@ -675,7 +656,6 @@
 
         <!-- page-body-wrapper ends -->
     </div>
-
     <!-- container-scroller -->
     <!-- plugins:js -->
     <!-- endinject -->
@@ -691,8 +671,6 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-    <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
     <!--data table-->
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
@@ -704,5 +682,4 @@
     <script src="../../Scripts/Top1000Cities.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </body>
-
 </html>

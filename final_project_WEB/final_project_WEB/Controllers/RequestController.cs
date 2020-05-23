@@ -65,10 +65,13 @@ namespace final_project_WEB.Controllers
         }
         [HttpPost]
         [Route("api/Request/Add_pdf_AttractionTicket")]
-        public int Post(string id, string pdf)
+        public string Post(string id, string pdf)
         {
             Request request = new Request();
-            return request.Add_pdf_AttractionTicket(id, pdf);
+            int num_aff = request.Add_pdf_AttractionTicket(id, pdf);
+            if (num_aff == 1)
+                return pdf;
+            return "";
         }
     }
 }
