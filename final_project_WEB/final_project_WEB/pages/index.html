@@ -23,7 +23,7 @@
     <!-- inject:css -->
     <link href="../css/style.css" rel="stylesheet" />
     <!-- endinject -->
-    <link rel="shortcut icon" href="../images/As.png" />
+    <link rel="shortcut icon" href="../images/iAgentLogo2b.png" />
     <!--sorting by date format dd/mm/yyyy-->
     <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">
 
@@ -58,19 +58,19 @@
                 for (var i = 0; i < Task_List.length; i++) {
                     if (Task_List[i].Completed == 1) {
                         strTask += `<li class="completed">
-                                          <div class='form-check form-check-flat'>
-                                            <label class='form-check-label'">
-                                                <input style="" data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox' checked='checked'/>
-                                                <i class='input-helper' ></i>
-                                            </label>
-                                          </div>
-                                            <div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div>
-                                          
-                                        <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i>
-                                    </li>`; 
+                                              <div class='form-check form-check-flat'>
+                                                <label class='form-check-label'">
+                                                    <input style="" data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox' checked='checked'/>
+                                                    <i class='input-helper' ></i>
+                                                </label>
+                                              </div>
+                                                <div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div>
+
+                                            <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i>
+                                        </li>`;
                     }
                     else {
-                        strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox'/> <i class='input-helper'></i></label></div><div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`; 
+                        strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox'/> <i class='input-helper'></i></label></div><div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`;
 
                     }
                 }
@@ -138,7 +138,7 @@
 
         function successCountNEWRequest(data) {
             console.log(data);
-            var count = data.length/2;
+            var count = data.length / 2;
             var strNewRequest;
             if (count) {
                 document.getElementById("newRequest").style.display = "block";
@@ -146,16 +146,16 @@
                 strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
                 for (var i = 0; i < data.length; i += 2) {
                     strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${data[i].AttractionName}">
-                                         <div class="item-thumbnail">
-                                               <div class="item-icon bg-primary">
-                                                  <i class="ti-info mx-0"></i>
-                                                </div>
-                                          </div>
-                                           <div class="item-content">
-                                                   <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
-                                                     <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
-                                                     </p>
-                                           </div></a >`;
+                                             <div class="item-thumbnail">
+                                                   <div class="item-icon bg-primary">
+                                                      <i class="ti-info mx-0"></i>
+                                                    </div>
+                                              </div>
+                                               <div class="item-content">
+                                                       <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
+                                                         <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
+                                                         </p>
+                                               </div></a >`;
                 }
                 document.getElementById("NewReqMenu").innerHTML = strNewRequest;
                 return;
@@ -177,7 +177,7 @@
         function successCustomer_list(customers_list) {
             CustomerList = customers_list;
             document.getElementById("customers_numPH").innerHTML = customers_list.length;
-            ajaxCall("GET", "../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTrip_list); 
+            ajaxCall("GET", "../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTrip_list);
 
         }
 
@@ -189,7 +189,7 @@
         function successGETTrip_list(trip_list) {
             var num_day_in_trip;
             var num_day_passed;
-            var percent =100;
+            var percent = 100;
             console.log(trip_list);
             if (trip_list.length == 0) {
                 alert("אין טיולים במערכת !");
@@ -215,7 +215,7 @@
                     var today = new Date(yyyy, mm - 1, dd);
                     var color_class;
                     if (today >= from && today <= to) {
-                        num_day_in_trip = (to.getTime() - from.getTime()) / (1000 * 3600 * 24)+1;
+                        num_day_in_trip = (to.getTime() - from.getTime()) / (1000 * 3600 * 24) + 1;
                         if (num_day_in_trip == (today.getTime() - from.getTime()) / (1000 * 3600 * 24)) num_day_passed = (today.getTime() - from.getTime()) / (1000 * 3600 * 24);
                         else num_day_passed = (today.getTime() - from.getTime()) / (1000 * 3600 * 24) + 1;
                         percent = Math.round((num_day_passed / num_day_in_trip) * 100);
@@ -223,20 +223,20 @@
                         console.log(num_day_in_trip)
                         console.log(num_day_passed)
                         countInTrip++;
-                        strCustomerOnTrip += `<tr class='tr_search' id='${trip_list[i+1].FirstName} ${trip_list[i+1].SureName}' ><td><img src='${trip_list[i+1].Img}' /> </td>`;
-                        strCustomerOnTrip += "<td>" + trip_list[i+1].FirstName + " " + trip_list[i+1].SureName + "</td>";
+                        strCustomerOnTrip += `<tr class='tr_search' id='${trip_list[i + 1].FirstName} ${trip_list[i + 1].SureName}' ><td><img src='${trip_list[i + 1].Img}' /> </td>`;
+                        strCustomerOnTrip += "<td>" + trip_list[i + 1].FirstName + " " + trip_list[i + 1].SureName + "</td>";
                         strCustomerOnTrip += "<td>" + trip_list[i].Destination + "</td>";
                         strCustomerOnTrip += "<td>" + trip_list[i].ReturnDate + "</td>";
 
-                        if (percent < 33) color_class = 'success' 
-                        else if (percent >= 33 && percent<66) color_class = 'warning'
-                            else color_class = 'danger'
-                       
+                        if (percent < 33) color_class = 'success'
+                        else if (percent >= 33 && percent < 66) color_class = 'warning'
+                        else color_class = 'danger'
+
                         strCustomerOnTrip += `<td style="min-width: 100px;">
-                                                 ${percent}% <div dir="ltr" class="progress">
-                                                     <div class="progress-bar bg-${color_class}" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
-                                                  </div>
-                                              </td></tr>`;
+                                                     ${percent}% <div dir="ltr" class="progress">
+                                                         <div class="progress-bar bg-${color_class}" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
+                                                      </div>
+                                                  </td></tr>`;
                     }
                     i = i + 2;
                 }
@@ -249,7 +249,7 @@
             var name = this.id;
             sessionStorage.setItem("customerName_click", name);
             window.location.href = "Att_Cust/customer_list.html";
-        });   
+        });
 
 
         function errorGETTrip_list(err) {
@@ -273,7 +273,7 @@
                     //window.location.href= props[i].value
                 }
             }
-            
+
         }
         function errorSpecificWebsite(err) {
             console.log(err)
@@ -289,11 +289,11 @@
                     countSuccess++;
                 }
                 strRequest += `<tr>
-                                               <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'><img src='${Request_customer_list[i + 1].Img}'/></td>
-                                               <td>${Request_customer_list[i].Order_date}</td>
-                                               <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
-                                               <td id="td_AttName" data-attractionId=${Request_customer_list[i].AttractionID} >${Request_customer_list[i].AttractionName}</td>
-                                               <td>${Request_customer_list[i].NumTickets}</td>`;
+                                                   <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'><img src='${Request_customer_list[i + 1].Img}'/></td>
+                                                   <td>${Request_customer_list[i].Order_date}</td>
+                                                   <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
+                                                   <td id="td_AttName" data-attractionId=${Request_customer_list[i].AttractionID} >${Request_customer_list[i].AttractionName}</td>
+                                                   <td>${Request_customer_list[i].NumTickets}</td>`;
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_customer_list[i].Status) {
                     case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
@@ -306,17 +306,17 @@
                 }
                 strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
                 let dataRequest = "data-RequestId='" + Request_customer_list[i].Id + "'";
-                let dataStatus = "data-Status='" + Request_customer_list[i].Status +"'";
+                let dataStatus = "data-Status='" + Request_customer_list[i].Status + "'";
                 strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a>
-                            <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a>
-                            <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a>
-                            <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td>`;
+                                <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a>
+                                <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a>
+                                <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td>`;
                 if (Request_customer_list[i].Status == 'success') {
-                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  
-                        <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
+                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
+                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
                 } else {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
-                        <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
+                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
                 }
                 var pdf = Request_customer_list[i].PdfFile;
                 if (pdf != "") {
@@ -333,7 +333,7 @@
                 columnDefs: [
                     { type: 'date-euro', targets: 0 }
                 ],
-                "lengthMenu": [[5,10, 25, 50, -1], [5,10, 25, 50, "הצג הכל"]],
+                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "הצג הכל"]],
                 "language": {
                     "search": "חיפוש",
                     "lengthMenu": "שורות להצגה _MENU_",
@@ -366,27 +366,27 @@
                 swal("ראשית עליך לשנות את הסטאטוס לsuccess", "", "error");
                 return false;
             } else {
-            selectedRequest = this.getAttribute('data-RequestId');
-            console.log(selectedRequest);
-            var data = new FormData();
-            var files = $("#chooseFile" + selectedRequest).get(0).files;
+                selectedRequest = this.getAttribute('data-RequestId');
+                console.log(selectedRequest);
+                var data = new FormData();
+                var files = $("#chooseFile" + selectedRequest).get(0).files;
 
-            if (files.length > 0) {
-                for (f = 0; f < files.length; f++) {
-                    data.append(`${selectedRequest}`, files[f]);
+                if (files.length > 0) {
+                    for (f = 0; f < files.length; f++) {
+                        data.append(`${selectedRequest}`, files[f]);
+                    }
                 }
-            }
 
-            // Ajax upload
-            $.ajax({
-                type: "POST",
-                url: "../../Api/pdf/uploadpdf",
-                contentType: false,
-                processData: false,
-                data: data,
-                success: SavePdfSuccess,
-                error: SavedPdfError
-            });
+                // Ajax upload
+                $.ajax({
+                    type: "POST",
+                    url: "../../Api/pdf/uploadpdf",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: SavePdfSuccess,
+                    error: SavedPdfError
+                });
 
                 return false;
             }
@@ -427,7 +427,8 @@
             var table = $('#Request_table').DataTable();
             table.search(Att_name).draw();
             setTimeout(function () {
-                table.search("").draw(); }, 5000);
+                table.search("").draw();
+            }, 5000);
         });
 
 
@@ -483,7 +484,8 @@
         }
 
         function successfullySentMessage(data) {
-            window.location.reload();        }
+            window.location.reload();
+        }
 
         function sendingMessageFailed(err) {
             console.log('err= ', err);
@@ -510,7 +512,7 @@
             alert(PUTEerrorTask);
         }
 
-        function DELETEsuccessTask(num){
+        function DELETEsuccessTask(num) {
             if (num != 1) {
                 alert("לא נמחק")
             }
@@ -528,7 +530,7 @@
                 "Agent_ID": Agent_ID,
             }
             let obj = JSON.stringify(newTask);
-            
+
             ajaxCall("POST", "../api/ToDoList", obj, POSTsuccessNewTask, POSTerrorNewTask);
             return false;
         }
@@ -544,7 +546,7 @@
                 var todoListInput = $('.todo-list-input');
                 $('.todo-list-add-btn').on("click ", function (event) {
                     event.preventDefault();
-                     text_input_todolist = $(this).prevAll('.todo-list-input').val();
+                    text_input_todolist = $(this).prevAll('.todo-list-input').val();
                     if (text_input_todolist) {
                         sendTask(text_input_todolist);
                         todoListInput.val("");
@@ -582,7 +584,7 @@
         })(jQuery);
 
         function POSTsuccessNewTask(taskID) {
-            document.getElementById('ul_todolist').innerHTML += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${taskID}' class='checkbox' type='checkbox'/><i class='input-helper'></i></label></div>  <div class='text_task form-check form-check-flat'>${text_input_todolist}</div><i id="trash_i" data-idTask='${taskID}' class='remove ti-trash'></i></li>`; 
+            document.getElementById('ul_todolist').innerHTML += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${taskID}' class='checkbox' type='checkbox'/><i class='input-helper'></i></label></div>  <div class='text_task form-check form-check-flat'>${text_input_todolist}</div><i id="trash_i" data-idTask='${taskID}' class='remove ti-trash'></i></li>`;
         }
 
         function POSTerrorNewTask(err) {

@@ -18,7 +18,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="../../css/style.css">
     <!-- endinject -->
-    <link rel="shortcut icon" href="../../images/favicon.png"/>
+    <link rel="shortcut icon" href="../../images/iAgentLogo2b.png"/>
     <!--style for customer list data table-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
@@ -40,6 +40,20 @@
                 let destination = $('#destination').val();
                 let departure = $('#departure').val();
                 let returnDate = $('#return').val();
+                var from = departure.split("-");
+                var to = returnDate.split("-");
+                var departureDate = new Date(from[0], parseInt(from[1]) - 1, from[2]); // -1 because months are from 0 to 11
+                var returnDate1 = new Date(to[0], parseInt(to[1]) - 1, to[2]);
+                for (var i = 0; i < Arr_trips.length; i++) {
+                    var fromCheck = Arr_trips[i].DepartDate.split("-");
+                    var toCheck = Arr_trips[i].ReturnDate.split("-");
+                    var departureCheck = new Date(fromCheck[0], parseInt(fromCheck[1]) - 1, fromCheck[2]);
+                    var returnDateCheck = new Date(toCheck[0], parseInt(toCheck[1]) - 1, toCheck[2]);
+                    if (departureDate >= departureCheck && departureDate <= returnDateCheck || returnDate1 >= departureCheck && returnDate1 <= returnDateCheck) {
+                        swal("קים טיול בתאריכים אלו", "", "error");
+                        return false;
+                    }
+                }
                 let tripProfile = $('#tripProfile').val();
                 newTrip = {
                     "Destination": destination,

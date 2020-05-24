@@ -246,6 +246,9 @@
     <Content Include="images\flame-fire-logo.jpg" />
     <Content Include="images\flame-fire.png" />
     <Content Include="images\flame.png" />
+    <Content Include="images\iAgentLogo2.png" />
+    <Content Include="images\iAgentLogo2a.png" />
+    <Content Include="images\iAgentLogo2b.png" />
     <Content Include="images\img_new\מצגת סמסטר א אנסטסיה %282%29.jpg" />
     <Content Include="images\logo-mini.svg" />
     <Content Include="images\logo.svg" />
