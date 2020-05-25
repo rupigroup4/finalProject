@@ -1245,6 +1245,43 @@ public class DBservices
             }
 
         }
+    }public Agent Get_Check_agent(string email, string password)
+    {
+        Agent a = new Agent();
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "select * from Agent_igroup4 where email='" + email + "' and password1='" + password+"'";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+               a.AgentID = Convert.ToInt32(dr["AgentID"]);
+               a.FirstName = (string)dr["firstName"];
+               a.Email = (string)dr["email"];
+            }
+
+            return a;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
     }
 
     public List<string> Read_Customer_Email_list()

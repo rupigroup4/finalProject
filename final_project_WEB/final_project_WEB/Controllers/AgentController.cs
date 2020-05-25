@@ -24,6 +24,13 @@ namespace final_project_WEB.Controllers
             Agent agent = new Agent();
             return agent.Get_Agentname(id);
         }
+        [HttpGet]
+        [Route("api/Agent/Check_agent")]
+        public Agent Get_Check_agent(string email, string password)
+        {
+            Agent agent = new Agent();
+            return agent.Get_Check_agent(email,password);
+        }
 
         [HttpGet]
         [Route("api/Agent/email_list")]

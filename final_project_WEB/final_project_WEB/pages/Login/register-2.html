@@ -81,8 +81,10 @@
         }
 
         function POSTsuccessNewAgent(num) {
-            if (num == 1)
+            if (num == 1) {
                 swal("בוצע בהצלחה", "", "success");
+                window.location.href = "login-2.html";
+            }
             else
                 swal("שגיאה", "הרישום לא הצליח", "error");
             clearFields();

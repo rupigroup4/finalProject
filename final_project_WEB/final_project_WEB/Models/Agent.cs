@@ -48,6 +48,11 @@ namespace final_project_WEB.Models
             DBservices dbs = new DBservices();
             return dbs.Get_Agentname(id);
         }
+        public Agent Get_Check_agent(string email, string password)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.Get_Check_agent(email, password);
+        }
 
         public int insert_agent(Agent agent)
         {

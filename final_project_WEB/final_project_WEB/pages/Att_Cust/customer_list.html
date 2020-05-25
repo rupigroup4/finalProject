@@ -25,14 +25,20 @@
     <!--sorting by date format dd/mm/yyyy-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script>
-        if (localStorage.AgentID == "" || localStorage.getItem("Email") == null) {
+        if (localStorage.getItem("Email") == null && sessionStorage.getItem("Email") == null) {
             window.location.href = "../Login/login-2.html";
+        }
+        if (localStorage.getItem('AgentID')) {
+            Agent_ID = localStorage.getItem('AgentID');
+            Agent_Name = localStorage.getItem('AgentName');
+        } else {
+            Agent_ID = sessionStorage.getItem('AgentID');
+            Agent_Name = sessionStorage.getItem('AgentName');
         }
 
         $(document).ready(function () {
             setTimeout(Check_new_Request, 1000);
-            Agent_ID = localStorage.getItem('AgentID');
-            Agent_Name = localStorage.getItem('AgentName');
+
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
             minDate();
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
@@ -380,13 +386,12 @@
 
         }
 
+
         function Moveto_login() {
-            localStorage.setItem('Email', "");
-            localStorage.setItem('AgentName', "");
-            localStorage.setItem('AgentID', "");
+            localStorage.clear();
+            sessionStorage.clear();
             window.location.href = "../Login/login-2.html";
         }
-
         function successAgent_name(name) {
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
 
