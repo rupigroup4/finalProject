@@ -31,15 +31,22 @@
         if (localStorage.getItem('AgentID')) {
             Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
+            Gender = localStorage.getItem('gender');
+
         } else {
             Agent_ID = sessionStorage.getItem('AgentID');
             Agent_Name = sessionStorage.getItem('AgentName');
+            Gender = sessionStorage.getItem('gender');
+
         }
 
         $(document).ready(function () {
             setTimeout(Check_new_Request, 1000);
-
-            document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
+            if (Gender == "נ")
+                document.getElementById("profileDropdown").innerHTML += `<img id="profileDropdown_img" class="center" src="../../images/PeoplePic/WomenAgent.png" alt="profile" />`;
+            else
+                document.getElementById("profileDropdown").innerHTML += `<img id="profileDropdown_img" class="center" src="../../images/PeoplePic/ManAgent.png" alt="profile" />`;
+            document.getElementById("profileDropdown").innerHTML += `<p id="PH_name_agent">שלום, ${Agent_Name}</p>`;
             minDate();
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
             $('#form_addtrip').submit(function () {
@@ -161,6 +168,7 @@
         });
 
         function successCustomer_list(customers_list1) {
+            console.log(customers_list1);
             customers_list = customers_list1;
             if (customers_list.length == 0)
                 swal("אין לקוחות במערכת !");
@@ -392,10 +400,7 @@
             sessionStorage.clear();
             window.location.href = "../Login/login-2.html";
         }
-        function successAgent_name(name) {
-            document.getElementById("PH_name_agent").innerHTML = "שלום, " + name;
 
-        }
 
         function errorAgent_name(err) {
             alert("errorAgent_name");
@@ -520,8 +525,6 @@
                     </li>
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img class="center" src="../../images/PeoplePic/3.jpg" alt="profile" />
-                            <p id="PH_name_agent"></p>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                             <a class="dropdown-item" onclick="Moveto_login()">

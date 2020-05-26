@@ -14,11 +14,12 @@ namespace final_project_WEB.Models
         private string password;
         private string phoneNumber;
         private string agencyName;
+        private string gender;
 
 
         public Agent() { }
 
-        public Agent(int agentID, string firstName, string sureName, string password, string phoneNumber, string email, string agencyName)
+        public Agent(int agentID, string firstName, string sureName, string password, string phoneNumber, string email, string agencyName, string gender)
         {
             AgentID = agentID;
             FirstName = firstName;
@@ -27,6 +28,7 @@ namespace final_project_WEB.Models
             PhoneNumber = phoneNumber;
             Email = email;
             AgencyName = agencyName;
+            Gender = gender;
         }
 
         public int AgentID { get { return agentID; } set { agentID = value; } }
@@ -36,6 +38,7 @@ namespace final_project_WEB.Models
         public string Password { get { return password; } set { password = value; } }
         public string PhoneNumber { get { return phoneNumber; } set { phoneNumber = value; } }
         public string AgencyName { get { return agencyName; } set { agencyName = value; } }
+        public string Gender { get { return gender; } set { gender = value; } }
 
         public List<Agent> Read_agent()
         {

@@ -37,20 +37,25 @@
         if (localStorage.getItem('AgentID')) {
             Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
+            Gender = localStorage.getItem('gender');
         } else {
             Agent_ID = sessionStorage.getItem('AgentID');
             Agent_Name = sessionStorage.getItem('AgentName');
+            Gender = sessionStorage.getItem('gender');
         }
-
         $(document).ready(function () {
             setTimeout(Check_new_Request, 1000);
-            document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
             ajaxCall("GET", "../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
             ajaxCall("GET", "../api/Request/CountALLRequest?Agent_ID=" + Agent_ID, "", successCountALLRequest, errorCountALLRequest);
             ajaxCall("GET", "../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
             ajaxCall("PUT", "../api/Trip/ActiveTrips?Agent_ID=" + Agent_ID, "", successUpDateActiveTrip, errorUpDateActiveTrip); //Active trips
             ajaxCall("GET", "../api/ToDoList?Agent_ID=" + Agent_ID, "", successGETTask_list, errorGETTask_list);
 
+            if (Gender == "נ")
+                document.getElementById("profileDropdown").innerHTML = `<img id="profileDropdown_img" class="center" src="../images/PeoplePic/WomenAgent.png" alt="profile" />`;
+            else
+                document.getElementById("profileDropdown").innerHTML = `<img id="profileDropdown_img" class="center" src="../images/PeoplePic/ManAgent.png" alt="profile" />`;
+            document.getElementById("profileDropdown").innerHTML += `<p id="PH_name_agent">שלום, ${Agent_Name}</p>`;
             function successGETTask_list(Task_List) {
                 strTask = '<ul id="ul_todolist" dir="rtl" class="d-flex flex-column-reverse todo-list todo-list-custom">';
                 for (var i = 0; i < Task_List.length; i++) {
@@ -407,8 +412,8 @@
 
         function errorShowALLRequest(err) {
             alert("errorRequest_list");
-
         }
+
         $(document).on('click', '#dropdown_Status_item', function () {
             var Att_name = this.getAttribute('data-name');
             var input_AttName = document.getElementById('Request_table_filter').childNodes[0].childNodes[1];
@@ -653,8 +658,6 @@
                     </li>
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img class="center" src="../images/PeoplePic/WomenAgent.jpg" alt="profile" />
-                            <p id="PH_name_agent"></p>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                             <a class="dropdown-item" onclick="Moveto_login()">

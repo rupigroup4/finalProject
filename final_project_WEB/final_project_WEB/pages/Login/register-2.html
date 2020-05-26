@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>RoyalUI Admin</title>
+    <title>IAgent</title>
     <!-- plugins:css -->
     <script src="../../Scripts/ajaxCalls.js"></script>
     <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
@@ -22,8 +22,9 @@
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
             integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
-            crossorigin="anonymous"></script>
-
+            crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
     <script>
         $(document).ready(function () {
@@ -50,8 +51,13 @@
             let agencyName = $('#agencyName').val();
             let password = $('#exampleInputPasswordA').val();
             let password2 = $('#exampleInputPasswordA2').val();
+            let gender = $('#SelectGender').val();
+            if (gender == 'נקבה')
+                gender = 'נ';
+            else 
+                gender = 'ז';
             if (password != password2) {
-              swal("אימות סיסמה נכשל", "הזן סיסמה זהה ", "error");
+                swal("אימות סיסמה נכשל", "הזן סיסמה זהה ", "error");
                 $('#exampleInputPasswordA').val("");
                 $('#exampleInputPasswordA2').val("");
                 return;
@@ -65,6 +71,7 @@
                 "Password": password,
                 "PhoneNumber": phoneNumber,
                 "AgencyName": agencyName,
+                "Gender": gender,
             }
 
             ajaxCall("POST", "../../api/Agent", JSON.stringify(newAgent), POSTsuccessNewAgent, POSTerrorNewAgent);
@@ -150,6 +157,19 @@
                                             </span>
                                         </div>
                                         <input id="phoneNumberA" type="text" class="form-control form-control-lg border-left-0" placeholder="טלפון" value="0524773665" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend bg-transparent">
+                                            <span class="input-group-text bg-transparent border-right-0">
+                                                <i class="fas fa-venus-mars text-primary"></i>
+                                            </span>
+                                        </div>
+                                        <select class="form-control form-control-lg" id="SelectGender">
+                                            <option>זכר</option>
+                                            <option>נקבה</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
