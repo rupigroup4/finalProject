@@ -243,11 +243,6 @@
     <Content Include="images\faces\face8.jpg" />
     <Content Include="images\faces\face9.jpg" />
     <Content Include="images\favicon.png" />
-    <Content Include="images\flame-fire-logo.jpg" />
-    <Content Include="images\flame-fire.png" />
-    <Content Include="images\flame.png" />
-    <Content Include="images\iAgentLogo2.png" />
-    <Content Include="images\iAgentLogo2a.png" />
     <Content Include="images\iAgentLogo2b.png" />
     <Content Include="images\img_new\gender.png" />
     <Content Include="images\img_new\gender_mini.png" />
