@@ -170,9 +170,6 @@
         function successCustomer_list(customers_list1) {
             console.log(customers_list1);
             customers_list = customers_list1;
-            if (customers_list.length == 0)
-                swal("אין לקוחות במערכת !");
-            else {
                 let str = "";
                 for (var i = 0; i < customers_list.length; i++) {
                     str += "<tr id='tr_" + customers_list[i].Id + "'> <td><img src='" + customers_list[i].Img + "' /> </td>";
@@ -194,7 +191,7 @@
                     "language": {
                         "search": "חיפוש",
                         "lengthMenu": "שורות להצגה _MENU_",
-                        "zeroRecords": "אין טיולים במערכת",
+                        "zeroRecords": "אין לקוחות במערכת",
                         "infoFiltered": "",
                         "info": "הצג עמוד _PAGE_ מתוך _PAGES_",
                         "infoEmpty": "",
@@ -209,7 +206,6 @@
 
                 });
 
-            }
             if (sessionStorage.getItem('customerName_click')) {
                 var name = sessionStorage.getItem('customerName_click')
                 sessionStorage.removeItem('customerName_click');

@@ -10,8 +10,10 @@ create table PromotedAttraction_igroup4 (
 	_4 int DEFAULT '0',
 	_5 int DEFAULT '0',
 	_6 int DEFAULT '0',
-	primary key (attractionID)
+	CONSTRAINT PK_Promoted PRIMARY KEY (agent_ID,attractionID)
 );
+select * from PromotedAttraction_igroup4
+
 
 select COUNT(*) as count from PromotedAttraction_igroup4 where agent_ID=1 AND attractionID='Kalverstraat'
 

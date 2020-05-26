@@ -1348,7 +1348,7 @@ public class DBservices
                 a.Password = (string)dr["password1"];
                 a.PhoneNumber = (string)dr["phoneNumber"];
                 a.AgencyName = (string)dr["agencyName"];
-
+                a.Gender = (string)dr["gender"];
                 agents_list.Add(a);
             }
             return agents_list;
