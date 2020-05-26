@@ -59,6 +59,14 @@ namespace final_project_WEB.Controllers
             else return numEffected;
         }
 
+        public int Put(int RequestID, int CustomerID)//Move request to archives
+        {
+            Request req = new Request();
+            Request request = req.Move_to_archives(RequestID, CustomerID);
+            Request ArchivesReq = new Request();
+            return ArchivesReq.PutInArchives(request);
+        }
+
         // DELETE api/<controller>/5
         public void Delete(int id)
         {

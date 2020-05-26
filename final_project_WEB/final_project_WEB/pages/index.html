@@ -308,11 +308,12 @@
                                 <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td>`;
                 if (Request_customer_list[i].Status == 'success') {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
-                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
+                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 } else {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
-                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
+                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 }
+                strRequest += `<td><button onclick="move_to_archives(${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" type="button" class="btn btn-inverse-dark btn-icon"><i class="ti-trash"></i></button></td>`;
                 var pdf = Request_customer_list[i].PdfFile;
                 if (pdf != "") {
                     var pdf_Arr = pdf.split('pdfFiles/');
@@ -325,9 +326,14 @@
             document.getElementById("requestPH").innerHTML = strRequest;
             document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
             $("#Request_table").DataTable({
-                columnDefs: [
-                    { type: 'date-euro', targets: 0 }
-                ],
+                columnDefs: [{
+                    "type": 'date-euro',
+                    "targets": 1
+                }],
+                columnDefs: [{
+                    "targets": [0,6,7],
+                    "orderable": false
+                }],
                 "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "הצג הכל"]],
                 "language": {
                     "search": "חיפוש",
@@ -574,6 +580,32 @@
             });
         })(jQuery);
 
+        //jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        //    "date-euro-pre": function (a) {
+        //        var x;
+
+        //        if ($.trim(a) !== '') {
+        //            var frDatea = $.trim(a).split(' ');
+        //            var frTimea = (undefined != frDatea[1]) ? frDatea[1].split(':') : [00, 00, 00];
+        //            var frDatea2 = frDatea[0].split('/');
+        //            x = (frDatea2[2] + frDatea2[1] + frDatea2[0] + frTimea[0] + frTimea[1] + ((undefined != frTimea[2]) ? frTimea[2] : 0)) * 1;
+        //        }
+        //        else {
+        //            x = Infinity;
+        //        }
+
+        //        return x;
+        //    },
+
+        //    "date-euro-asc": function (a, b) {
+        //        return a - b;
+        //    },
+
+        //    "date-euro-desc": function (a, b) {
+        //        return b - a;
+        //    }
+        //});
+
         function POSTsuccessNewTask(taskID) {
             document.getElementById('ul_todolist').innerHTML += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${taskID}' class='checkbox' type='checkbox'/><i class='input-helper'></i></label></div>  <div class='text_task form-check form-check-flat'>${text_input_todolist}</div><i id="trash_i" data-idTask='${taskID}' class='remove ti-trash'></i></li>`;
         }
@@ -582,7 +614,20 @@
             swal("POSTerrorNewTask");
         }
 
+        function move_to_archives(Req_ID,Customer_ID) {
+            console.log(Req_ID);
+            console.log(Customer_ID);
+            ajaxCall("PUT", "../api/Request?RequestID=" + Req_ID + "&CustomerID=" + Customer_ID, "", success_Archives, error_Archives)
+        }
 
+        function success_Archives(numAff) {
+            if (numAff == 1) {
+                console.log("Done");
+            }
+        }
+        function error_Archives(err) {
+            alert(err);
+        }
     </script>
 </head>
 
@@ -786,6 +831,7 @@
                                                     <th>כמות כרטיסים</th>
                                                     <th>Status</th>
                                                     <th>כרטיסים</th>
+                                                    <th>ארכיון</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="requestPH"></tbody>

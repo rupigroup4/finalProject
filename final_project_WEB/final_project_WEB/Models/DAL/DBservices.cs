@@ -785,6 +785,108 @@ public class DBservices
         }
     }
 
+    public Request Move_to_archives(int RequestID, int CustomerID)
+    {
+        Request Request_archives = new Request();
+
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT * FROM Request_igroup4 where requestID =" + RequestID + " AND customerId=" + CustomerID;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                Request_archives.Id = Convert.ToInt32(dr["requestID"]);
+                Request_archives.Order_date = (string)dr["date_time"];
+                Request_archives.NumTickets = Convert.ToInt32(dr["numTickets"]);
+                Request_archives.Status = (string)dr["status_"];
+                Request_archives.PdfFile = (string)dr["pdfFile"];
+                //string[] pdf = Request_archives.PdfFile.Split("pdfFiles/");
+                //Request_archives.PdfFile = pdf[1];
+                Request_archives.TripID = Convert.ToInt32(dr["TripID"]);
+                Request_archives.AttractionID = (string)dr["attractionId"];
+                Request_archives.AttractionName = (string)dr["attractionName"];
+                Request_archives.CustomerID = Convert.ToInt32(dr["CustomerId"]);
+                //Request_archives.SendDate = Convert.ToDateTime(dr["send_date"]);
+            }
+
+            return Request_archives;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+    public int PutInArchives(Request request)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildInsertCommand(request);
+
+        cmd = CreateCommand(cStr, con);   // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
+    private string BuildInsertCommand(Request request)
+    {
+        String command;
+        StringBuilder sb = new StringBuilder();
+        // use a string builder to create the dynamic string
+        sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')", request.Id, request.Order_date, request.NumTickets, request.Status ,request.TripID, request.AttractionID, request.AttractionName, request.CustomerID);
+        String prefix = "INSERT INTO ArchivesRequest_igroup4 " + "(requestID ,date_time , numTickets , status_,TripID,attractionId,attractionName,customerId) ";
+        command = prefix + sb.ToString();
+
+        return command;
+    }
+
+
     public List<Customer> getShowALLCustomerRequest(int Agent_ID)
     {
         List<Customer> CustomersRequest_list = new List<Customer>();

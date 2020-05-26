@@ -16,12 +16,13 @@ namespace final_project_WEB.Models
         private string attractionID;
         private string attractionName;
         private int customerID;
+        private string sendDate;
 
 
 
         public Request() { }
 
-        public Request(int id, int tripID, string order_date, int numTickets, string status, string pdfFile, string attractionID, string attractionName, int customerID)
+        public Request(int id, int tripID, string order_date, int numTickets, string status, string pdfFile, string attractionID, string attractionName, int customerID,string sendDate)
         {
             Id = id;
             TripID = tripID;
@@ -32,6 +33,7 @@ namespace final_project_WEB.Models
             AttractionID = attractionID;
             AttractionName = attractionName;
             CustomerID = customerID;
+            SendDate = sendDate;
         }
 
         public int Id { get { return id; } set { id = value; } }
@@ -43,12 +45,25 @@ namespace final_project_WEB.Models
         public string AttractionID { get { return attractionID; } set { attractionID = value; } }
         public string AttractionName { get { return attractionName; } set { attractionName = value; } }
         public int CustomerID { get { return customerID; } set { customerID = value; } }
+        public string SendDate { get { return sendDate; } set { sendDate = value; } }
 
 
         public int Update_status(string stat, int RequestID)
         {
             DBservices dbs = new DBservices();
             return dbs.Update_status(stat, RequestID);
+        }
+
+        public Request Move_to_archives(int RequestID, int CustomerID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.Move_to_archives(RequestID, CustomerID);
+        }
+
+        public int PutInArchives(Request request)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.PutInArchives(request);
         }
 
         public List<object> getCountNEWRequest(int Agent_ID)
