@@ -26,11 +26,10 @@
     <link rel="shortcut icon" href="../images/iAgentLogo2b.png" />
     <!--sorting by date format dd/mm/yyyy-->
     <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">
-
+    <script src="../Scripts/loadingScript.js"></script>
     <script>
 
         var RequestID = null;
-
         if (localStorage.getItem("Email") == null && sessionStorage.getItem("Email") == null) {
             window.location.href = "Login/login-2.html";
         }
@@ -43,14 +42,16 @@
             Agent_Name = sessionStorage.getItem('AgentName');
             Gender = sessionStorage.getItem('gender');
         }
+
         $(document).ready(function () {
+            loading();
             setTimeout(Check_new_Request, 1000);
             ajaxCall("GET", "../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
             ajaxCall("GET", "../api/Request/CountALLRequest?Agent_ID=" + Agent_ID, "", successCountALLRequest, errorCountALLRequest);
             ajaxCall("GET", "../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
             ajaxCall("PUT", "../api/Trip/ActiveTrips?Agent_ID=" + Agent_ID, "", successUpDateActiveTrip, errorUpDateActiveTrip); //Active trips
             ajaxCall("GET", "../api/ToDoList?Agent_ID=" + Agent_ID, "", successGETTask_list, errorGETTask_list);
-
+            console.log(Gender);
             if (Gender == "נ")
                 document.getElementById("profileDropdown").innerHTML = `<img id="profileDropdown_img" class="center" src="../images/PeoplePic/WomenAgent.png" alt="profile" />`;
             else
@@ -61,16 +62,16 @@
                 for (var i = 0; i < Task_List.length; i++) {
                     if (Task_List[i].Completed == 1) {
                         strTask += `<li class="completed">
-                                              <div class='form-check form-check-flat'>
-                                                <label class='form-check-label'">
-                                                    <input style="" data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox' checked='checked'/>
-                                                    <i class='input-helper' ></i>
-                                                </label>
-                                              </div>
-                                                <div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div>
+                                                          <div class='form-check form-check-flat'>
+                                                            <label class='form-check-label'">
+                                                                <input style="" data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox' checked='checked'/>
+                                                                <i class='input-helper' ></i>
+                                                            </label>
+                                                          </div>
+                                                            <div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div>
 
-                                            <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i>
-                                        </li>`;
+                                                        <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i>
+                                                    </li>`;
                     }
                     else {
                         strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox'/> <i class='input-helper'></i></label></div><div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`;
@@ -148,16 +149,16 @@
                 strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
                 for (var i = 0; i < data.length; i += 2) {
                     strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${data[i].AttractionName}">
-                                             <div class="item-thumbnail">
-                                                   <div class="item-icon bg-primary">
-                                                      <i class="ti-info mx-0"></i>
-                                                    </div>
-                                              </div>
-                                               <div class="item-content">
-                                                       <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
-                                                         <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
-                                                         </p>
-                                               </div></a >`;
+                                                         <div class="item-thumbnail">
+                                                               <div class="item-icon bg-primary">
+                                                                  <i class="ti-info mx-0"></i>
+                                                                </div>
+                                                          </div>
+                                                           <div class="item-content">
+                                                                   <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
+                                                                     <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
+                                                                     </p>
+                                                           </div></a >`;
                 }
                 document.getElementById("NewReqMenu").innerHTML = strNewRequest;
                 return;
@@ -230,10 +231,10 @@
                         else color_class = 'danger'
 
                         strCustomerOnTrip += `<td style="min-width: 100px;">
-                                                     ${percent}% <div dir="ltr" class="progress">
-                                                         <div class="progress-bar bg-${color_class}" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
-                                                      </div>
-                                                  </td></tr>`;
+                                                                 ${percent}% <div dir="ltr" class="progress">
+                                                                     <div class="progress-bar bg-${color_class}" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
+                                                                  </div>
+                                                              </td></tr>`;
                     }
                     i = i + 2;
                 }
@@ -283,12 +284,13 @@
                 if (Request_customer_list[i].Status == "success") {
                     countSuccess++;
                 }
-                strRequest += `<tr>
-                                                   <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'><img src='${Request_customer_list[i + 1].Img}'/></td>
-                                                   <td>${Request_customer_list[i].Order_date}</td>
-                                                   <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
-                                                   <td id="td_AttName" data-attractionId=${Request_customer_list[i].AttractionID} >${Request_customer_list[i].AttractionName}</td>
-                                                   <td>${Request_customer_list[i].NumTickets}</td>`;
+                let IdRequest = "Row-Request" + Request_customer_list[i].Id + "";
+                strRequest += `<tr id='${IdRequest}'>
+                                                               <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'><img src='${Request_customer_list[i + 1].Img}'/></td>
+                                                               <td>${Request_customer_list[i].Order_date}</td>
+                                                               <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
+                                                               <td id="td_AttName" data-attractionId=${Request_customer_list[i].AttractionID} >${Request_customer_list[i].AttractionName}</td>
+                                                               <td>${Request_customer_list[i].NumTickets}</td>`;
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_customer_list[i].Status) {
                     case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
@@ -303,15 +305,15 @@
                 let dataRequest = "data-RequestId='" + Request_customer_list[i].Id + "'";
                 let dataStatus = "data-Status='" + Request_customer_list[i].Status + "'";
                 strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a>
-                                <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a>
-                                <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a>
-                                <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td>`;
+                                            <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a>
+                                            <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a>
+                                            <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td>`;
                 if (Request_customer_list[i].Status == 'success') {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
-                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
+                                        <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 } else {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
-                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
+                                        <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 }
                 strRequest += `<td><button onclick="move_to_archives(${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" type="button" class="btn btn-inverse-dark btn-icon"><i class="ti-trash"></i></button></td>`;
                 var pdf = Request_customer_list[i].PdfFile;
@@ -331,7 +333,7 @@
                     "targets": 1
                 }],
                 columnDefs: [{
-                    "targets": [0,6,7],
+                    "targets": [0, 6, 7],
                     "orderable": false
                 }],
                 "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "הצג הכל"]],
@@ -580,32 +582,6 @@
             });
         })(jQuery);
 
-        //jQuery.extend(jQuery.fn.dataTableExt.oSort, {
-        //    "date-euro-pre": function (a) {
-        //        var x;
-
-        //        if ($.trim(a) !== '') {
-        //            var frDatea = $.trim(a).split(' ');
-        //            var frTimea = (undefined != frDatea[1]) ? frDatea[1].split(':') : [00, 00, 00];
-        //            var frDatea2 = frDatea[0].split('/');
-        //            x = (frDatea2[2] + frDatea2[1] + frDatea2[0] + frTimea[0] + frTimea[1] + ((undefined != frTimea[2]) ? frTimea[2] : 0)) * 1;
-        //        }
-        //        else {
-        //            x = Infinity;
-        //        }
-
-        //        return x;
-        //    },
-
-        //    "date-euro-asc": function (a, b) {
-        //        return a - b;
-        //    },
-
-        //    "date-euro-desc": function (a, b) {
-        //        return b - a;
-        //    }
-        //});
-
         function POSTsuccessNewTask(taskID) {
             document.getElementById('ul_todolist').innerHTML += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${taskID}' class='checkbox' type='checkbox'/><i class='input-helper'></i></label></div>  <div class='text_task form-check form-check-flat'>${text_input_todolist}</div><i id="trash_i" data-idTask='${taskID}' class='remove ti-trash'></i></li>`;
         }
@@ -614,11 +590,32 @@
             swal("POSTerrorNewTask");
         }
 
-        function move_to_archives(Req_ID,Customer_ID) {
-            console.log(Req_ID);
-            console.log(Customer_ID);
-            ajaxCall("PUT", "../api/Request?RequestID=" + Req_ID + "&CustomerID=" + Customer_ID, "", success_Archives, error_Archives)
+        function move_to_archives(Req_Id, Customer_Id) {
+            idRowReq = 'Row-Request' + Req_Id;
+            Req_ID = Req_Id;
+            Customer_ID = Customer_Id;
+            DeleteOrNot();
+
         }
+
+        function DeleteOrNot() {
+        Swal.fire({
+            title: 'למחוק את הבקשה?',
+            text: "הבקשה תועבר לארכיון ולא ניתן יהיה לצפות בה",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'כן, מחק!',
+            cancelButtonText: 'בטל'
+        }).then((result) => {
+            if (result.value) {
+                $(`#${idRowReq}`).remove();
+                ajaxCall("PUT", "../api/Request?RequestID=" + Req_ID + "&CustomerID=" + Customer_ID, "", success_Archives, error_Archives) //Remove reqeust from Request Table and move to archives. 
+            }
+        });
+        }
+
 
         function success_Archives(numAff) {
             if (numAff == 1) {
@@ -634,7 +631,6 @@
 <body dir="rtl">
     <div class="container-scroller ">
         <!-- partial:partials/_navbar.html -->
-
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="../images/logo_iAgent_png.png" class="mr-2" alt="logo" /></a>
@@ -892,7 +888,7 @@
         </div>
         <!-- container-scroller -->
         <!-- plugins:js -->
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="../vendors/base/vendor.bundle.base.js"></script>
         <!-- endinject -->
@@ -915,7 +911,6 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-
     </div>
 </body>
 

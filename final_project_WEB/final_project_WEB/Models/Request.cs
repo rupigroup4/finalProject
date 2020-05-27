@@ -63,7 +63,11 @@ namespace final_project_WEB.Models
         public int PutInArchives(Request request)
         {
             DBservices dbs = new DBservices();
-            return dbs.PutInArchives(request);
+            int numAff = dbs.PutInArchives(request);
+            if (numAff == 1)
+                return dbs.Delete_Request(request);
+            else
+                return 0;
         }
 
         public List<object> getCountNEWRequest(int Agent_ID)

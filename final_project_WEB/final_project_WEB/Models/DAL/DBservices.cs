@@ -887,6 +887,48 @@ public class DBservices
     }
 
 
+    public int Delete_Request(Request request)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        String rStr = "DELETE FROM Request_igroup4 WHERE requestID='" + request.Id + "' AND customerId='" + request.CustomerID+"'";
+
+        cmd = CreateCommand(rStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
     public List<Customer> getShowALLCustomerRequest(int Agent_ID)
     {
         List<Customer> CustomersRequest_list = new List<Customer>();
@@ -972,7 +1014,9 @@ public class DBservices
             }
         }
 
-    } public int Delete_trip(int tripID)
+    }
+
+    public int Delete_trip(int tripID)
     {
 
         SqlConnection con;
@@ -995,7 +1039,7 @@ public class DBservices
         try
         {
             int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
+            return tripID;
         }
         catch (Exception ex)
         {

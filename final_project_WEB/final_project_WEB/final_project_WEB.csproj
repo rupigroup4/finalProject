@@ -280,6 +280,7 @@
     <Content Include="js\todolist.js" />
     <Content Include="js\tooltips.js" />
     <None Include="packages.config" />
+    <Content Include="Scripts\loadingScript.js" />
     <Content Include="Scripts\Top1000Cities.js" />
     <Content Include="pages\Chat\chat.html" />
     <Content Include="pages\Att_Cust\trips.html" />

@@ -118,7 +118,9 @@
                 else {
                     let str = "";
                     for (var i = 0; i < trip_customer_list.length; i += 3) {
-                        str += "<tr> <td>" + trip_customer_list[i + 1].FirstName + " " + trip_customer_list[i + 1].SureName + "</td>";
+                        console.log(trip_customer_list[i].TripID);
+                        let IdRowTrip = "Row-trip" + trip_customer_list[i].TripID + "";
+                        str += `<tr id='${IdRowTrip}'> <td> ${trip_customer_list[i + 1].FirstName} ${trip_customer_list[i + 1].SureName} </td>`;
                         str += `<td style="font-weight: bold;">${trip_customer_list[i].Destination}</td>
                                <td>${trip_customer_list[i].DepartDate}</td>
                                 <td>${trip_customer_list[i].ReturnDate}</td>
@@ -163,10 +165,13 @@
             ajaxCall("DELETE", "../../api/Trip?tripID=" + id, "", successdeleteTrip, errordeleteTrip)
         }
 
-        function successdeleteTrip(num) {
-            if (num == 1) {
+        function successdeleteTrip(TripId) {
+            console.log(TripId);
+            if (TripId) {
                 swal("נמחק בהצלחה", "הטיול נמחק מהמערכת", "success");
-                window.location.reload(); 
+                idRowTrip = 'Row-trip' + TripId;
+                $(`#${idRowTrip}`).remove();
+                //window.location.reload(); 
             }
             else {
                 swal("הטיול לא נמחק", "ללקוח זה קיימת בקשה זמינה במערכת", "error");// 
