@@ -112,6 +112,12 @@ namespace final_project_WEB.Models
             return dbs.updateTripProfile(tripId, tripProfile);
         }
 
+        public List<string> getTripAlbum(int tripId)
+        {
+            DBservicesMobile dbs = new DBservicesMobile();
+            return dbs.getTripAlbum(tripId);
+        }
+
         //Mobile//
 
     }

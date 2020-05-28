@@ -347,6 +347,44 @@ public class DBservicesMobile
     }
 
 
+    public List<string> getTripAlbum(int tripId)
+    {
+        List<string> TripAlbum = new List<string>();
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT imageUrl FROM tripAlbum_igroup4 where tripId='"+tripId+"'";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+
+                TripAlbum.Add((string)dr["imageUrl"]);
+            }
+            return TripAlbum;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+
 
 
     /////////////////////////////trip////////////////////////////////////////////////////////

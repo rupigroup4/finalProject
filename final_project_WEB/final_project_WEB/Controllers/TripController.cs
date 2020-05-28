@@ -50,6 +50,14 @@ namespace final_project_WEB.Controllers
             return t.updateTripProfile(tripId, tripProfile);
         }
 
+        [HttpGet]
+        [Route("api/Trip/getTripAlbum/{tripId}")]
+        public List<string> getTripAlbum(int tripId)
+        {
+            Trip t = new Trip();
+            return t.getTripAlbum(tripId);
+        }
+
 
         //Mobile//
 
