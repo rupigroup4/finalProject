@@ -66,6 +66,14 @@ namespace final_project_WEB.Controllers
             return t.addToAlbum(tripId,url);
         }
 
+        [HttpDelete]
+        [Route("api/Trip/removeImage/{tripId}")]
+        public int removeImage (int tripId, [FromBody] string url)
+        {
+            Trip t = new Trip();
+            return t.removeImage(tripId,url);
+        }
+
 
         //Mobile//
 

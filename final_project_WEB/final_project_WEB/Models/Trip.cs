@@ -124,6 +124,12 @@ namespace final_project_WEB.Models
             return dbsM.addToAlbum(tripId,url);
         }
 
+        public int removeImage(int tripId,  string url)
+        {
+            DBservicesMobile dbsM = new DBservicesMobile();
+            return dbsM.removeImage(tripId,url);
+        }
+
         //Mobile//
 
     }
