@@ -58,6 +58,14 @@ namespace final_project_WEB.Controllers
             return t.getTripAlbum(tripId);
         }
 
+        [HttpPost]
+        [Route("api/Trip/addToAlbum/{tripId}")]
+        public int addToAlbum(int tripId, [FromBody] string url)
+        {
+            Trip t = new Trip();
+            return t.addToAlbum(tripId,url);
+        }
+
 
         //Mobile//
 

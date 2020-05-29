@@ -118,6 +118,12 @@ namespace final_project_WEB.Models
             return dbs.getTripAlbum(tripId);
         }
 
+        public int addToAlbum(int tripId, string url)
+        {
+            DBservicesMobile dbsM = new DBservicesMobile();
+            return dbsM.addToAlbum(tripId,url);
+        }
+
         //Mobile//
 
     }
