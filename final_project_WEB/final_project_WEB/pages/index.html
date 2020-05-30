@@ -304,10 +304,10 @@
                 strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
                 let dataRequest = "data-RequestId='" + Request_customer_list[i].Id + "'";
                 let dataStatus = "data-Status='" + Request_customer_list[i].Status + "'";
-                strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id})" >new</a>
-                                            <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id})">in prosess</a>
-                                            <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id})" >success</a>
-                                            <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id})">failed</a></div></div></td>`;
+                strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" >new</a>
+                                            <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})">in prosess</a>
+                                            <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" >success</a>
+                                            <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})">failed</a></div></div></td>`;
                 if (Request_customer_list[i].Status == 'success') {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
                                         <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
@@ -439,8 +439,8 @@
         }
 
 
-        function Change_status(status, RequestID) {
-            ajaxCall("PUT", "../api/Request?status=" + status + "&RequestID=" + RequestID, "", successChange_status, errorChange_status)
+        function Change_status(status, RequestID,Customer_Id) {
+            ajaxCall("PUT", "../api/Request?status=" + status + "&RequestID=" + RequestID + "&Customer_Id=" + Customer_Id, "", successChange_status, errorChange_status)
         }
 
         function successChange_status(RequestId) { //שלב ראשון לאחר השינוי בדאטה בייס הוא להביא את הקוד אליו נשלח את ההתראה

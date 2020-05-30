@@ -48,9 +48,10 @@ namespace final_project_WEB.Models
         public string SendDate { get { return sendDate; } set { sendDate = value; } }
 
 
-        public int Update_status(string stat, int RequestID)
+        public int Update_status(string stat, int RequestID, int Customer_Id)
         {
             DBservices dbs = new DBservices();
+            dbs.updateBadge(Customer_Id);
             return dbs.Update_status(stat, RequestID);
         }
 

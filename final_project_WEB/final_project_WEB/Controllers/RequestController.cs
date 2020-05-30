@@ -48,10 +48,10 @@ namespace final_project_WEB.Controllers
         }
 
         // PUT api/<controller>/5
-        public int Put(string status,int RequestID)//Update_status
+        public int Put(string status,int RequestID, int Customer_Id)//Update_status
         { 
             Request reques = new Request();
-            int numEffected = reques.Update_status(status, RequestID);
+            int numEffected = reques.Update_status(status, RequestID, Customer_Id);
             if (numEffected > 0)
             {
                 return RequestID;

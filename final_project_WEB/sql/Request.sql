@@ -26,6 +26,18 @@ drop table ArchivesRequest_igroup4
 select * from ArchivesRequest_igroup4;
 select * from Request_igroup4;
 
+select * from tripAlbum_igroup4
+
+select * from badge_igroup4
+create table badge_igroup4(
+    customerId int not null,
+	numOfNotification int,
+	numOfChatMessages int
+);
+
+select * from Customer_igroup4 
+
+SELECT * FROM Customer_igroup4 where email='oriHa@gmail.com'
 INSERT INTO ArchivesRequest_igroup4 (requestID ,date_time , numTickets , status_,TripID,attractionId,attractionName,customerId) Values('13','20/05/2020','4','success','6','W__31858826','Anne Frank House','1000')
 
 SELECT * FROM Request_igroup4 LEFT JOIN Trip_igroup4 ON Request_igroup4.TripID = Trip_igroup4._id LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where Agent_igroup4.AgentID=1;

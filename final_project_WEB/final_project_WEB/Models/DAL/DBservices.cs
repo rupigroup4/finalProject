@@ -83,6 +83,101 @@ public class DBservices
         return command;
     }
 
+    public int customerAdded(string email)
+    {
+        int customer_Id = 0;
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT * FROM Customer_igroup4 where email='" + email +"'";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                customer_Id = Convert.ToInt32(dr["CustomerID"]);
+            }
+
+            return customer_Id;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+
+
+    public int AddToBadge(int customerId)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildInsertCommand(customerId);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildInsertCommand(int customerId)
+    {
+        String command;
+
+        StringBuilder sb = new StringBuilder();
+        // use a string builder to create the dynamic string
+        sb.AppendFormat("Values('{0}', '{1}','{2}')", customerId, 0,0);
+        String prefix = "INSERT INTO badge_igroup4 " + "(customerId,numOfNotification,numOfChatMessages)";
+        command = prefix + sb.ToString();
+
+        return command;
+    }
+
+
+
     public int insert_agent(Agent agent)
     {
         SqlConnection con;
@@ -508,6 +603,50 @@ public class DBservices
         }
 
         String command = "UPDATE Request_igroup4 SET status_ = '" + stat + "' WHERE requestID = " + RequestID.ToString();
+
+
+        cmd = CreateCommand(command, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    public int updateBadge(int customer_Id)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String command = "UPDATE badge_igroup4 SET numOfNotification = '" + 1 + "' WHERE customerId = " + customer_Id;
 
 
         cmd = CreateCommand(command, con);             // create the command
