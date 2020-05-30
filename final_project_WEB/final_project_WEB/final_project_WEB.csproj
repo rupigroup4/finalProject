@@ -169,6 +169,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AgentController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\badgeController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\flagController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

@@ -121,6 +121,12 @@ namespace final_project_WEB.Models
             return dbs.GetpnToken(requestId);
         }
 
+        public int getNumOfNotificationBefore (int customerId, string type)
+        {
+            DBservicesMobile dbsM = new DBservicesMobile();
+            return dbsM.getNumOfNotificationBefore(customerId,type);
+        }
+
         //Mobile//
 
     }
