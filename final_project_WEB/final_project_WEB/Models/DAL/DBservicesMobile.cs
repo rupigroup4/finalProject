@@ -732,6 +732,45 @@ public class DBservicesMobile
         }
     }
 
+    public void NoNewRequests(int customerId)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = "update badge_igroup4 set numOfNotification=0 where customerId="+customerId;
+
+        cmd = CreateCommand(cStr, con);   // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
     /////////////////////////////notification////////////////////////////////////////////////////////
 
 

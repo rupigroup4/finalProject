@@ -128,6 +128,12 @@ namespace final_project_WEB.Models
             return dbsM.getNumOfNotificationBefore(customerId,type);
         }
 
+        public void NoNewRequests(int customerId)
+        {
+            DBservicesMobile dbsM = new DBservicesMobile();
+            dbsM.NoNewRequests(customerId);
+        }
+
         //Mobile//
 
     }

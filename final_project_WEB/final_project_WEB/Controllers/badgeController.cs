@@ -19,6 +19,14 @@ namespace final_project_WEB.Controllers
             return r.getNumOfNotificationBefore(customerId, type);
         }
 
+        [HttpPut]
+        [Route("api/badge/{customerId}")]
+        public void noNewRequests(int customerId)
+        {
+            Request r = new Request();
+            r.NoNewRequests(customerId);
+        }
+
 
 
         // GET api/<controller>
