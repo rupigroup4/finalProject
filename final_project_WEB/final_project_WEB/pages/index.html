@@ -51,7 +51,6 @@
             ajaxCall("GET", "../api/Request/ShowAllRequest?Agent_ID=" + Agent_ID, "", successShowALLRequest, errorShowALLRequest);
             ajaxCall("PUT", "../api/Trip/ActiveTrips?Agent_ID=" + Agent_ID, "", successUpDateActiveTrip, errorUpDateActiveTrip); //Active trips
             ajaxCall("GET", "../api/ToDoList?Agent_ID=" + Agent_ID, "", successGETTask_list, errorGETTask_list);
-            console.log(Gender);
             if (Gender == "נ")
                 document.getElementById("profileDropdown").innerHTML = `<img id="profileDropdown_img" class="center" src="../images/PeoplePic/WomenAgent.png" alt="profile" />`;
             else
@@ -308,11 +307,14 @@
                                             <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})">in prosess</a>
                                             <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" >success</a>
                                             <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})">failed</a></div></div></td>`;
-                if (Request_customer_list[i].Status == 'success') {
+                if (Request_customer_list[i].AttractionID == "lupa") {
+                    strRequest += `<td><div id="download-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="downloadAlbum(${Request_customer_list[i].TripID})" class="btn btn-inverse-primary btn-fw">הורד תמונות</button>
+                                </div></td>`;
+                } else if (Request_customer_list[i].Status == 'success' ) {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
                                         <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 } else {
-                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
+                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
                                         <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 }
                 strRequest += `<td><button onclick="move_to_archives(${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" type="button" class="btn btn-inverse-dark btn-icon"><i class="ti-trash"></i></button></td>`;
@@ -421,6 +423,14 @@
         function errorShowALLRequest(err) {
             alert("errorRequest_list");
         }
+
+        function downloadAlbum(tripID) {
+            console.log(tripID);
+            ajaxCall("GET", "../api/Request/GetAlbum?TripID=" + tripID, "", successGetAlbum, errorGetAlbum);
+        }
+
+        function successGetAlbum(data) {console.log(data)}
+        function errorGetAlbum() { swal("successGetAlbum")}
 
         $(document).on('click', '#dropdown_Status_item', function () {
             var Att_name = this.getAttribute('data-name');

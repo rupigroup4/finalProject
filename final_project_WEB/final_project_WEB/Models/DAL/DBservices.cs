@@ -898,6 +898,7 @@ public class DBservices
                 r.NumTickets = Convert.ToInt32(dr["numTickets"]);
                 r.AttractionName = (string)dr["attractionName"];
                 r.CustomerID = Convert.ToInt32(dr["CustomerId"]);
+                r.TripID = Convert.ToInt32(dr["TripID"]);
                 Request_customer_list.Add(r);
                 Customer c = new Customer();
                 c.Id = Convert.ToInt32(dr["CustomerID"]);
@@ -908,6 +909,47 @@ public class DBservices
             }
 
             return Request_customer_list;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+    public List<string> GetAlbum(int tripID)
+     {
+        string img = "";
+        List<string> Album = new List<string>();
+        
+
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT * FROM tripAlbum_igroup4 where tripid=" + tripID;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                img = (string)dr["imageUrl"];
+                Album.Add(img);
+            }
+
+            return Album;
         }
         catch (Exception ex)
         {

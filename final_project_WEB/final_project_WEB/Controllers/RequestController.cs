@@ -42,6 +42,14 @@ namespace final_project_WEB.Controllers
             return request.getShowALLRequest(Agent_ID);
         }
 
+        [HttpGet]
+        [Route("api/Request/GetAlbum")]
+        public List<string> GetAlbum(int TripID)
+        {
+            Request request = new Request();
+            return request.GetAlbum(TripID);
+        }
+
         // POST api/<controller>
         public void Post([FromBody]string value)
         {

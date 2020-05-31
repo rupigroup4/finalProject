@@ -83,6 +83,13 @@ namespace final_project_WEB.Models
             return dbs.getCountALLRequest(Agent_ID); ;
         }
 
+
+        public List<string> GetAlbum(int tripID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetAlbum(tripID); ;
+        }
+
         public List<object> getShowALLRequest(int Agent_ID)
         {
             DBservices dbs = new DBservices();
