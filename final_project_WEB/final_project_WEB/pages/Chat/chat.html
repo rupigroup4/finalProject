@@ -115,7 +115,6 @@
 
 
         $(document).on("keyup", "#agentMessage", function (event) {
-            console.log("here baybe1");
             if (event.keyCode === 13) {
                 console.log("here baybe2");
                 sendMessage();
@@ -155,18 +154,57 @@
                 message: messageText,
                 id: id_message
             })
+            
             let strConversation = `<div class="container_chat darker_chat">
                             <img src="../../images/PeoplePic/3.jpg" alt="Avatar" class="right" style="width:100%;">
                             <p>${messageText}</p>
                             <span class="time-left">${realTime}</span>
                             </div>`;
             document.getElementById("ConversationWithCustomerPH").innerHTML += strConversation;
-            updateScroll();
+            updateScroll()
+            ajaxCall('GET', '../../api/notification/getpnTokenByCustomerId/' + customerId, '', getpnTokenByCustomerIdSuccess, getpnTokenByCustomerIdError);
+            ajaxCall('PUT', '../../api/badge/newMessage/' + customerId, '', updateBadgeNewMessageSuccess, updateBadgeNewMessageError);
+
         }
         function updateScroll() {
             var element = document.getElementById("ConversationWithCustomerPH");
             element.scrollTop = element.scrollHeight;
         }
+
+        function updateBadgeNewMessageSuccess() {console.log('badge נוצר')}
+        function updateBadgeNewMessageError() { console.log('badge נכשל') }
+
+
+        function getpnTokenByCustomerIdSuccess(pnToken) {
+            const message = {
+                to: pnToken,
+                sound: 'default',
+                title: "יש הודעה חדשה בצ'ט",
+                body: '',
+                data: {},
+                _displayInForeground: true,
+            }; //בניית ההתראה
+
+            $.ajax({
+                type: "POST",
+                url: "https://cors-anywhere.herokuapp.com/https://exp.host/--/api/v2/push/send",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data: JSON.stringify(message),
+                success: successfullySentChatMessage,
+                error: sendingChatMessageFailed
+            });
+        }
+
+        function getpnTokenByCustomerIdError(err) { console.log(err) }
+
+        function successfullySentChatMessage() { console.log('התראה נשלחה') }
+        function sendingChatMessageFailed() { console.log('התראה לא נשלחה') }
+
+
+
         $(document).on("click", ".StartChat", function () {
             LengthChat = 0;
             document.getElementById("agentMessage").value = "";

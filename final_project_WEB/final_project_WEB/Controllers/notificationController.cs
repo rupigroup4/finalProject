@@ -33,6 +33,15 @@ namespace final_project_WEB.Controllers
         }
 
         [HttpGet]
+        [Route("api/notification/getpnTokenByCustomerId/{customerId}")]
+        public string getpnTokenByCustomerId(int customerId)
+        {
+            Request n = new Request();
+            return n.getpnTokenByCustomerId(customerId);
+        }
+
+
+        [HttpGet]
         [Route("api/notification/{customerId}")]
         public List<Request> Get(int customerId)
         {

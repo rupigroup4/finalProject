@@ -27,6 +27,22 @@ namespace final_project_WEB.Controllers
             r.NoNewRequests(customerId);
         }
 
+        [HttpPut]
+        [Route("api/badge/newMessage/{customerId}")]
+        public void NewMessage(int customerId)
+        {
+            Request r = new Request();
+            r.NewMessage(customerId);
+        }
+
+        [HttpPut]
+        [Route("api/badge/noNewMessage/{customerId}")]
+        public void noNewMessage(int customerId)
+        {
+            Request r = new Request();
+            r.noNewMessage(customerId);
+        }
+
 
 
         // GET api/<controller>

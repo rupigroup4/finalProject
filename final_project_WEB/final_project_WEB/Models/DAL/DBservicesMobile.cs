@@ -771,6 +771,122 @@ public class DBservicesMobile
         }
     }
 
+    public void NewMessage(int customerId)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = "update badge_igroup4 set numOfChatMessages=1 where customerId=" + customerId;
+
+        cmd = CreateCommand(cStr, con);   // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
+
+    public void noNewMessage(int customerId)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = "update badge_igroup4 set numOfChatMessages=0 where customerId=" + customerId;
+
+        cmd = CreateCommand(cStr, con);   // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
+
+    public string getpnTokenByCustomerId(int customerId)
+    {
+        string pnToken = "";
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "select pnToken from customer_igroup4 where CustomerID=" + customerId;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                pnToken = (string)dr["pnToken"];
+            }
+            return pnToken;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
     /////////////////////////////notification////////////////////////////////////////////////////////
 
 

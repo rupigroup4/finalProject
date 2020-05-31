@@ -141,6 +141,25 @@ namespace final_project_WEB.Models
             dbsM.NoNewRequests(customerId);
         }
 
+        public void NewMessage(int customerId)
+        {
+            DBservicesMobile dbsM = new DBservicesMobile();
+            dbsM.NewMessage(customerId);
+        }
+
+        public void noNewMessage(int customerId)
+        {
+            DBservicesMobile dbsM = new DBservicesMobile();
+            dbsM.noNewMessage(customerId);
+        }
+
+
+        public string getpnTokenByCustomerId(int customerId)
+        {
+            DBservicesMobile dbsM = new DBservicesMobile();
+            return dbsM.getpnTokenByCustomerId(customerId);
+        }
+
         //Mobile//
 
     }
