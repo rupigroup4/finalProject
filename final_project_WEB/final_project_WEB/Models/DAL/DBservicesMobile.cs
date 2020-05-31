@@ -698,7 +698,7 @@ public class DBservicesMobile
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-            String selectSTR = "select * from badge where customerId=" + customerId;
+            String selectSTR = "select * from badge_igroup4 where customerId=" + customerId;
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
