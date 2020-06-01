@@ -43,6 +43,14 @@ namespace final_project_WEB.Controllers
             r.noNewMessage(customerId);
         }
 
+        [HttpPut]
+        [Route("api/badge/AgentNewMessage/{customerId}")]
+        public void AgentNewMessage(int customerId)
+        {
+            Request r = new Request();
+            r.AgentNewMessage(customerId);
+        }
+
 
 
         // GET api/<controller>

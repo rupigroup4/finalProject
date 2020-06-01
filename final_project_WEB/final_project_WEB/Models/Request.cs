@@ -153,6 +153,13 @@ namespace final_project_WEB.Models
             dbsM.noNewMessage(customerId);
         }
 
+        public void AgentNewMessage(int customerId)
+        {
+            DBservicesMobile dbsM = new DBservicesMobile();
+            dbsM.AgentNewMessage(customerId);
+        }
+
+
 
         public string getpnTokenByCustomerId(int customerId)
         {
