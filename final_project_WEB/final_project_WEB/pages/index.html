@@ -425,11 +425,24 @@
         }
 
         function downloadAlbum(tripID) {
-            console.log(tripID);
             ajaxCall("GET", "../api/Request/GetAlbum?TripID=" + tripID, "", successGetAlbum, errorGetAlbum);
         }
 
-        function successGetAlbum(data) {console.log(data)}
+        function successGetAlbum(data) {
+            console.log(data);
+            let str = '';
+            for (var i = 0; i < data.length; i++) {
+                //console.log(data[i])
+                //var link = document.createElement("a");
+                //link.id = i;
+                //link.download = data[i];
+                //link.click();
+                str += `<a class="imageDownload" href=${data[i]} download>`
+            }
+            $('#albumImages').html(str);
+            $(document).on('', '.imageDownload').click();
+            //console.log(str)
+        }
         function errorGetAlbum() { swal("successGetAlbum")}
 
         $(document).on('click', '#dropdown_Status_item', function () {
@@ -891,6 +904,7 @@
                         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">iAgent System | © 2020 | All rights reserved</span>
                         <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made By igroup4_2020 <i class="ti-heart text-danger ml-1"></i></span>
                     </div>
+                    <div id="albumImages" hidden></div>
                 </footer>
                 <!-- main-panel ends -->
             </div>
