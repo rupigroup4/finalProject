@@ -28,6 +28,169 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">
     <script src="../Scripts/loadingScript.js"></script>
     <script>
+    //download.js v4.2, by dandavis; 2008-2016. [CCBY2] see http://danml.com/download.html for tests/usage
+        // v1 landed a FF+Chrome compat way of downloading strings to local un-named files, upgraded to use a hidden frame and optional mime
+        // v2 added named files via a[download], msSaveBlob, IE (10+) support, and window.URL support for larger+faster saves than dataURLs
+        // v3 added dataURL and Blob Input, bind-toggle arity, and legacy dataURL fallback was improved with force-download mime and base64 support. 3.1 improved safari handling.
+        // v4 adds AMD/UMD, commonJS, and plain browser support
+        // v4.1 adds url download capability via solo URL argument (same domain/CORS only)
+        // v4.2 adds semantic variable names, long (over 2MB) dataURL support, and hidden by default temp anchors
+        // https://github.com/rndme/download
+
+        (function (root, factory) {
+            if (typeof define === 'function' && define.amd) {
+                // AMD. Register as an anonymous module.
+                define([], factory);
+            } else if (typeof exports === 'object') {
+                // Node. Does not work with strict CommonJS, but
+                // only CommonJS-like environments that support module.exports,
+                // like Node.
+                module.exports = factory();
+            } else {
+                // Browser globals (root is window)
+                root.download = factory();
+            }
+        }(this, function () {
+
+            return function download(data, strFileName, strMimeType) {
+
+                var self = window, // this script is only for browsers anyway...
+                    defaultMime = "application/octet-stream", // this default mime also triggers iframe downloads
+                    mimeType = strMimeType || defaultMime,
+                    payload = data,
+                    url = !strFileName && !strMimeType && payload,
+                    anchor = document.createElement("a"),
+                    toString = function (a) { return String(a); },
+                    myBlob = (self.Blob || self.MozBlob || self.WebKitBlob || toString),
+                    fileName = strFileName || "download",
+                    blob,
+                    reader;
+                myBlob = myBlob.call ? myBlob.bind(self) : Blob;
+
+                if (String(this) === "true") { //reverse arguments, allowing download.bind(true, "text/xml", "export.xml") to act as a callback
+                    payload = [payload, mimeType];
+                    mimeType = payload[0];
+                    payload = payload[1];
+                }
+
+
+                if (url && url.length < 2048) { // if no filename and no mime, assume a url was passed as the only argument
+                    fileName = url.split("/").pop().split("?")[0];
+                    anchor.href = url; // assign href prop to temp anchor
+                    if (anchor.href.indexOf(url) !== -1) { // if the browser determines that it's a potentially valid url path:
+                        var ajax = new XMLHttpRequest();
+                        ajax.open("GET", url, true);
+                        ajax.responseType = 'blob';
+                        ajax.onload = function (e) {
+                            download(e.target.response, fileName, defaultMime);
+                        };
+                        setTimeout(function () { ajax.send(); }, 0); // allows setting custom ajax headers using the return:
+                        return ajax;
+                    } // end if valid url?
+                } // end if url?
+
+
+                //go ahead and download dataURLs right away
+                if (/^data\:[\w+\-]+\/[\w+\-]+[,;]/.test(payload)) {
+
+                    if (payload.length > (1024 * 1024 * 1.999) && myBlob !== toString) {
+                        payload = dataUrlToBlob(payload);
+                        mimeType = payload.type || defaultMime;
+                    } else {
+                        return navigator.msSaveBlob ?  // IE10 can't do a[download], only Blobs:
+                            navigator.msSaveBlob(dataUrlToBlob(payload), fileName) :
+                            saver(payload); // everyone else can save dataURLs un-processed
+                    }
+
+                }//end if dataURL passed?
+
+                blob = payload instanceof myBlob ?
+                    payload :
+                    new myBlob([payload], { type: mimeType });
+
+
+                function dataUrlToBlob(strUrl) {
+                    var parts = strUrl.split(/[:;,]/),
+                        type = parts[1],
+                        decoder = parts[2] == "base64" ? atob : decodeURIComponent,
+                        binData = decoder(parts.pop()),
+                        mx = binData.length,
+                        i = 0,
+                        uiArr = new Uint8Array(mx);
+
+                    for (i; i < mx; ++i) uiArr[i] = binData.charCodeAt(i);
+
+                    return new myBlob([uiArr], { type: type });
+                }
+
+                function saver(url, winMode) {
+
+                    if ('download' in anchor) { //html5 A[download]
+                        anchor.href = url;
+                        anchor.setAttribute("download", fileName);
+                        anchor.className = "download-js-link";
+                        anchor.innerHTML = "downloading...";
+                        anchor.style.display = "none";
+                        document.body.appendChild(anchor);
+                        setTimeout(function () {
+                            anchor.click();
+                            document.body.removeChild(anchor);
+                            if (winMode === true) { setTimeout(function () { self.URL.revokeObjectURL(anchor.href); }, 250); }
+                        }, 66);
+                        return true;
+                    }
+
+                    // handle non-a[download] safari as best we can:
+                    if (/(Version)\/(\d+)\.(\d+)(?:\.(\d+))?.*Safari\//.test(navigator.userAgent)) {
+                        url = url.replace(/^data:([\w\/\-\+]+)/, defaultMime);
+                        if (!window.open(url)) { // popup blocked, offer direct download:
+                            if (confirm("Displaying New Document\n\nUse Save As... to download, then click back to return to this page.")) { location.href = url; }
+                        }
+                        return true;
+                    }
+
+                    //do iframe dataURL download (old ch+FF):
+                    var f = document.createElement("iframe");
+                    document.body.appendChild(f);
+
+                    if (!winMode) { // force a mime that will download:
+                        url = "data:" + url.replace(/^data:([\w\/\-\+]+)/, defaultMime);
+                    }
+                    f.src = url;
+                    setTimeout(function () { document.body.removeChild(f); }, 333);
+
+                }//end saver
+
+
+
+
+                if (navigator.msSaveBlob) { // IE10+ : (has Blob, but not a[download] or URL)
+                    return navigator.msSaveBlob(blob, fileName);
+                }
+
+                if (self.URL) { // simple fast and modern way using Blob and URL:
+                    saver(self.URL.createObjectURL(blob), true);
+                } else {
+                    // handle non-Blob()+non-URL browsers:
+                    if (typeof blob === "string" || blob.constructor === toString) {
+                        try {
+                            return saver("data:" + mimeType + ";base64," + self.btoa(blob));
+                        } catch (y) {
+                            return saver("data:" + mimeType + "," + encodeURIComponent(blob));
+                        }
+                    }
+
+                    // Blob but not URL support:
+                    reader = new FileReader();
+                    reader.onload = function (e) {
+                        saver(this.result);
+                    };
+                    reader.readAsDataURL(blob);
+                }
+                return true;
+            }; /* end download() */
+        }));</script>
+    <script>
 
         var RequestID = null;
         if (localStorage.getItem("Email") == null && sessionStorage.getItem("Email") == null) {
@@ -61,16 +224,16 @@
                 for (var i = 0; i < Task_List.length; i++) {
                     if (Task_List[i].Completed == 1) {
                         strTask += `<li class="completed">
-                                                          <div class='form-check form-check-flat'>
-                                                            <label class='form-check-label'">
-                                                                <input style="" data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox' checked='checked'/>
-                                                                <i class='input-helper' ></i>
-                                                            </label>
-                                                          </div>
-                                                            <div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div>
+                                                              <div class='form-check form-check-flat'>
+                                                                <label class='form-check-label'">
+                                                                    <input style="" data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox' checked='checked'/>
+                                                                    <i class='input-helper' ></i>
+                                                                </label>
+                                                              </div>
+                                                                <div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div>
 
-                                                        <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i>
-                                                    </li>`;
+                                                            <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i>
+                                                        </li>`;
                     }
                     else {
                         strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox'/> <i class='input-helper'></i></label></div><div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`;
@@ -109,8 +272,28 @@
                 return false;
             })
 
+            //$(function () {
+            //    function count($this) {
+            //        var current = parseInt($this.html(), 10);
+            //        current = current + 1; /* Where 50 is increment */
 
+            //        $this.html(++current);
+            //        if (current > $this.data('count')) {
+            //            $this.html($this.data('count'));
+            //        } else {
+            //            setTimeout(function () { count($this) }, 5);
+            //        }
+            //    }
+
+            //    $(".stat-count").each(function () {
+            //        $(this).data('count', parseInt($(this).html(), 10));
+            //        $(this).html('0');
+            //        count($(this));
+            //    });
+
+            //});
         });
+     
 
         function successUpDateActiveTrip(numEffected) {
             console.log(numEffected);
@@ -148,16 +331,16 @@
                 strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
                 for (var i = 0; i < data.length; i += 2) {
                     strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${data[i].AttractionName}">
-                                                         <div class="item-thumbnail">
-                                                               <div class="item-icon bg-primary">
-                                                                  <i class="ti-info mx-0"></i>
-                                                                </div>
-                                                          </div>
-                                                           <div class="item-content">
-                                                                   <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
-                                                                     <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
-                                                                     </p>
-                                                           </div></a >`;
+                                                             <div class="item-thumbnail">
+                                                                   <div class="item-icon bg-primary">
+                                                                      <i class="ti-info mx-0"></i>
+                                                                    </div>
+                                                              </div>
+                                                               <div class="item-content">
+                                                                       <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
+                                                                         <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
+                                                                         </p>
+                                                               </div></a >`;
                 }
                 document.getElementById("NewReqMenu").innerHTML = strNewRequest;
                 return;
@@ -230,22 +413,45 @@
                         else color_class = 'danger'
 
                         strCustomerOnTrip += `<td style="min-width: 100px;">
-                                                                 ${percent}% <div dir="ltr" class="progress">
-                                                                     <div class="progress-bar bg-${color_class}" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
-                                                                  </div>
-                                                              </td></tr>`;
+                                                                     ${percent}% <div dir="ltr" class="progress">
+                                                                         <div class="progress-bar bg-${color_class}" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
+                                                                      </div>
+                                                                  </td></tr>`;
                     }
                     i = i + 2;
                 }
                 document.getElementById("NumberOfCutomersOnTripPH").innerHTML = countInTrip;
                 document.getElementById("CustomerOnTripPH").innerHTML = strCustomerOnTrip;
+                $("#Table_CustomerOnTrip").DataTable({
+                    columnDefs: [{
+                        "targets": [0, 4],
+                        "orderable": false
+                    }],
+                    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "הצג הכל"]],
+                    "language": {
+                        "search": "חיפוש",
+                        "lengthMenu": "שורות להצגה _MENU_",
+                        "zeroRecords": "אין טיולים בחול ",
+                        "infoFiltered": "",
+                        "info": "הצג עמוד _PAGE_ מתוך _PAGES_",
+                        "infoEmpty": "",
+                        "loadingRecords": "טוען...",
+                        "paginate": {
+                            "first": "ראשון",
+                            "last": "אחרון",
+                            "next": "לעמוד הבא",
+                            "previous": "לעמוד הקודם"
+                        },
+                    }
+
+                });
             }
         }
 
         $(document).on('click', '.tr_search, .td_search', function () {
             var name = this.id;
             sessionStorage.setItem("customerName_click", name);
-            window.location.href = "Att_Cust/customer_list.html";
+            window.location.href = "Att_Cust/trips.html";
         });
 
 
@@ -285,11 +491,11 @@
                 }
                 let IdRequest = "Row-Request" + Request_customer_list[i].Id + "";
                 strRequest += `<tr id='${IdRequest}'>
-                                                               <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'><img src='${Request_customer_list[i + 1].Img}'/></td>
-                                                               <td>${Request_customer_list[i].Order_date}</td>
-                                                               <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
-                                                               <td id="td_AttName" data-attractionId=${Request_customer_list[i].AttractionID} >${Request_customer_list[i].AttractionName}</td>
-                                                               <td>${Request_customer_list[i].NumTickets}</td>`;
+                                                                   <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'><img src='${Request_customer_list[i + 1].Img}'/></td>
+                                                                   <td>${Request_customer_list[i].Order_date}</td>
+                                                                   <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
+                                                                   <td id="td_AttName" data-attractionId=${Request_customer_list[i].AttractionID} >${Request_customer_list[i].AttractionName}</td>
+                                                                   <td>${Request_customer_list[i].NumTickets}</td>`;
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_customer_list[i].Status) {
                     case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
@@ -304,18 +510,18 @@
                 let dataRequest = "data-RequestId='" + Request_customer_list[i].Id + "'";
                 let dataStatus = "data-Status='" + Request_customer_list[i].Status + "'";
                 strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" >new</a>
-                                            <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})">in prosess</a>
-                                            <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" >success</a>
-                                            <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})">failed</a></div></div></td>`;
+                                                <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})">in prosess</a>
+                                                <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" >success</a>
+                                                <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})">failed</a></div></div></td>`;
                 if (Request_customer_list[i].AttractionID == "lupa") {
-                    strRequest += `<td><div id="download-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="downloadAlbum(${Request_customer_list[i].TripID})" class="btn btn-inverse-primary btn-fw">הורד תמונות</button>
-                                </div></td>`;
-                } else if (Request_customer_list[i].Status == 'success' ) {
+                    strRequest += `<td><div id="download-${Request_customer_list[i].Id}" class="upload-btn-wrapper"> <button onclick="downloadAlbum(${Request_customer_list[i].TripID})" class="btn btn-inverse-primary btn-fw"> <i class="ti-import"></i> הורד אלבום </button>
+                                    </div></td>`;
+                } else if (Request_customer_list[i].Status == 'success') {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
-                                        <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
+                                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 } else {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
-                                        <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
+                                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 }
                 strRequest += `<td><button onclick="move_to_archives(${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" type="button" class="btn btn-inverse-dark btn-icon"><i class="ti-trash"></i></button></td>`;
                 var pdf = Request_customer_list[i].PdfFile;
@@ -430,20 +636,13 @@
 
         function successGetAlbum(data) {
             console.log(data);
-            let str = '';
             for (var i = 0; i < data.length; i++) {
-                //console.log(data[i])
-                //var link = document.createElement("a");
-                //link.id = i;
-                //link.download = data[i];
-                //link.click();
-                str += `<a class="imageDownload" href=${data[i]} download>`
+                download(data[i], "download1.jpg", "image/jpeg")
             }
-            $('#albumImages').html(str);
-            $(document).on('', '.imageDownload').click();
-            //console.log(str)
         }
-        function errorGetAlbum() { swal("successGetAlbum")}
+
+
+        function errorGetAlbum() { swal("successGetAlbum") }
 
         $(document).on('click', '#dropdown_Status_item', function () {
             var Att_name = this.getAttribute('data-name');
@@ -462,7 +661,7 @@
         }
 
 
-        function Change_status(status, RequestID,Customer_Id) {
+        function Change_status(status, RequestID, Customer_Id) {
             ajaxCall("PUT", "../api/Request?status=" + status + "&RequestID=" + RequestID + "&Customer_Id=" + Customer_Id, "", successChange_status, errorChange_status)
         }
 
@@ -622,21 +821,21 @@
         }
 
         function DeleteOrNot() {
-        Swal.fire({
-            title: 'למחוק את הבקשה?',
-            text: "הבקשה תועבר לארכיון ולא ניתן יהיה לצפות בה",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'כן, מחק!',
-            cancelButtonText: 'בטל'
-        }).then((result) => {
-            if (result.value) {
-                $(`#${idRowReq}`).remove();
-                ajaxCall("PUT", "../api/Request?RequestID=" + Req_ID + "&CustomerID=" + Customer_ID, "", success_Archives, error_Archives) //Remove reqeust from Request Table and move to archives. 
-            }
-        });
+            Swal.fire({
+                title: 'למחוק את הבקשה?',
+                text: "הבקשה תועבר לארכיון ולא ניתן יהיה לצפות בה",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'כן, מחק!',
+                cancelButtonText: 'בטל'
+            }).then((result) => {
+                if (result.value) {
+                    $(`#${idRowReq}`).remove();
+                    ajaxCall("PUT", "../api/Request?RequestID=" + Req_ID + "&CustomerID=" + Customer_ID, "", success_Archives, error_Archives) //Remove reqeust from Request Table and move to archives.
+                }
+            });
         }
 
 
@@ -788,9 +987,9 @@
                         <div class="col-md-3 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="card-title text-md-center text-xl-right">עסקאות שהושלמו</p>
+                                    <p class="  card-title text-md-center text-xl-right">עסקאות שהושלמו</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 id="AmountOfSalesPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
+                                        <h3 id="AmountOfSalesPH" class="stat-count mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
                                         <i class="ti-ticket icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
                                     <!--<p class="mb-0 mt-2 text-danger">0.12% <span class="text-black ml-1"><small>(30 days)</small></span></p>-->
@@ -800,9 +999,9 @@
                         <div class="col-md-3 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="card-title text-md-center text-xl-right">לקוחות רשומים</p>
+                                    <p class="  card-title text-md-center text-xl-right">לקוחות רשומים</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 id="customers_numPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
+                                        <h3 id="customers_numPH" class="stat-count mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
                                         <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
                                     <!--<p class="mb-0 mt-2 text-danger">0.47% <span class="text-black ml-1"><small>(30 days)</small></span></p>-->
@@ -812,9 +1011,9 @@
                         <div class="col-md-3 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="card-title text-md-center text-xl-right">שוהים בחו"ל</p>
+                                    <p class="  card-title text-md-center text-xl-right">שוהים בחו"ל</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 id="NumberOfCutomersOnTripPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
+                                        <h3 id="NumberOfCutomersOnTripPH" class="stat-count mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
                                         <i class="ti-world icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
                                     <!--<p class="mb-0 mt-2 text-success">64.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>-->
@@ -824,9 +1023,9 @@
                         <div class="col-md-3 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="card-title text-md-center text-xl-right">סה"כ בקשות</p>
+                                    <p class="  card-title text-md-center text-xl-right">סה"כ בקשות</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 id="Request_numPH" class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">3</h3>
+                                        <h3 id="Request_numPH" class="stat-count mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
                                         <i class="ti-files icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
                                     <!--<p class="mb-0 mt-2 text-success">23.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>-->
@@ -866,7 +1065,7 @@
                                 <div class="card-body">
                                     <h4 class="card-title">לקוחות בחול</h4>
                                     <div class="table-responsive table_trips">
-                                        <table class="table table-hover">
+                                        <table  id="Table_CustomerOnTrip" class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th></th>
@@ -935,6 +1134,7 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
     </div>
 </body>
 

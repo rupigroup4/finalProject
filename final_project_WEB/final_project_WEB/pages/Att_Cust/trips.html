@@ -43,6 +43,7 @@
         }
 
 
+
         var tripId = null;
 
         $(document).ready(function () {
@@ -58,6 +59,10 @@
             ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTripr_list);
 
         });
+
+
+  
+
         function Check_new_Request() {
             ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
         }
@@ -155,6 +160,12 @@
                             },
                         }
                     });
+                    if (sessionStorage.getItem('customerName_click')) {
+                        var name = sessionStorage.getItem('customerName_click')
+                        sessionStorage.removeItem('customerName_click');
+                        var table = $('#trip_table').DataTable();
+                        table.search(name).draw();
+                    }
                 }
             }
             catch (err) {
