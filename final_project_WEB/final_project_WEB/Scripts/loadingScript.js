@@ -1,6 +1,6 @@
 ﻿function loading() {
 
-    let timerInterval
+    let timerInterval;
     Swal.fire({
         title: 'היי! מכינים לך את המערכת, ממש עוד רגע',
         html: 'נתחיל בעוד <b></b> <i class="ti-timer mx-0"></i>',

@@ -46,8 +46,8 @@
                     localStorage.setItem('Email', inputEmail);
                     localStorage.setItem('AgentName', Agent.FirstName);
                     localStorage.setItem('gender', Agent.Gender);
-
                 }
+                sessionStorage.setItem('firstTime', true);
                 window.location.href = "../index.html";
                 return;
             }

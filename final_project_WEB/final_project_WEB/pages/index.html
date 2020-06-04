@@ -200,14 +200,20 @@
             Agent_ID = localStorage.getItem('AgentID');
             Agent_Name = localStorage.getItem('AgentName');
             Gender = localStorage.getItem('gender');
+
         } else {
             Agent_ID = sessionStorage.getItem('AgentID');
             Agent_Name = sessionStorage.getItem('AgentName');
             Gender = sessionStorage.getItem('gender');
         }
+        if (sessionStorage.getItem('firstTime') == "true") {
+            window.onload = loading;
+            sessionStorage.setItem('firstTime', false);
+        }
+
 
         $(document).ready(function () {
-            loading();
+            
             setTimeout(Check_new_Request, 1000);
             ajaxCall("GET", "../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
             ajaxCall("GET", "../api/Request/CountALLRequest?Agent_ID=" + Agent_ID, "", successCountALLRequest, errorCountALLRequest);
@@ -272,28 +278,8 @@
                 return false;
             })
 
-            //$(function () {
-            //    function count($this) {
-            //        var current = parseInt($this.html(), 10);
-            //        current = current + 1; /* Where 50 is increment */
-
-            //        $this.html(++current);
-            //        if (current > $this.data('count')) {
-            //            $this.html($this.data('count'));
-            //        } else {
-            //            setTimeout(function () { count($this) }, 5);
-            //        }
-            //    }
-
-            //    $(".stat-count").each(function () {
-            //        $(this).data('count', parseInt($(this).html(), 10));
-            //        $(this).html('0');
-            //        count($(this));
-            //    });
-
-            //});
+         
         });
-     
 
         function successUpDateActiveTrip(numEffected) {
             console.log(numEffected);
@@ -637,7 +623,9 @@
         function successGetAlbum(data) {
             console.log(data);
             for (var i = 0; i < data.length; i++) {
-                download(data[i], "download1.jpg", "image/jpeg")
+                //download(data[i], "download1.jpg", "image/jpeg")
+                var link = window.URL.createObjectURL(data[i]);
+                window.location = link;
             }
         }
 
@@ -989,7 +977,7 @@
                                 <div class="card-body">
                                     <p class="  card-title text-md-center text-xl-right">עסקאות שהושלמו</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 id="AmountOfSalesPH" class="stat-count mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
+                                        <h3 id="AmountOfSalesPH" class="stat-count mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">10</h3>
                                         <i class="ti-ticket icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>
                                     <!--<p class="mb-0 mt-2 text-danger">0.12% <span class="text-black ml-1"><small>(30 days)</small></span></p>-->
