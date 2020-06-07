@@ -19,6 +19,16 @@ namespace final_project_WEB.Controllers
             return r.getNumOfNotificationBefore(customerId, type);
         }
 
+
+        [HttpGet]
+        [Route("api/badge/NEWMessage")]
+        public List<Customer> GETNEWmessage(int Agent_ID)
+        {
+            Customer customer = new Customer();
+            return customer.GETNEWmessage(Agent_ID);
+        }
+
+
         [HttpPut]
         [Route("api/badge/{customerId}")]
         public void noNewRequests(int customerId)

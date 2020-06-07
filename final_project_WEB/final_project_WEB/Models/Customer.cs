@@ -90,6 +90,11 @@ namespace final_project_WEB.Models
             DBservices dbs = new DBservices();
             return dbs.getShowALLCustomerRequest(Agent_ID); ;
         }
+        public List<Customer> GETNEWmessage(int Agent_ID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GETNEWmessage(Agent_ID); ;
+        }
 
         public Customer Update_customer(Customer customer)
         {

@@ -881,7 +881,7 @@ public class DBservices
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "SELECT * FROM Request_igroup4 LEFT JOIN Trip_igroup4 ON Request_igroup4.TripID = Trip_igroup4._id LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where Customer_igroup4.AgentID=" + Agent_ID;
+            String selectSTR = "SELECT * FROM Request_igroup4 LEFT JOIN Trip_igroup4 ON Request_igroup4.TripID = Trip_igroup4._id LEFT JOIN Customer_igroup4 ON Trip_igroup4._id_customer = Customer_igroup4.CustomerID LEFT JOIN Agent_igroup4 ON Customer_igroup4.AgentID = Agent_igroup4.AgentID where Customer_igroup4.AgentID=" + Agent_ID+ "order by Request_igroup4.send_date DESC ";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -909,6 +909,48 @@ public class DBservices
             }
 
             return Request_customer_list;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    } public List<Customer> GETNEWmessage(int Agent_ID)
+     {
+        List<Customer> customer_list = new List<Customer>();
+        
+
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = " SELECT * FROM badge_igroup4 LEFT JOIN Customer_igroup4 on badge_igroup4.customerId=Customer_igroup4.CustomerID where Customer_igroup4.AgentID="+Agent_ID+" and badge_igroup4.agentNewMessage=1 order by badge_igroup4.agentNewMessageDateTime";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                Customer c = new Customer();
+                c.Id = Convert.ToInt32(dr["CustomerID"]);
+                c.FirstName = (string)dr["firstName"];
+                c.SureName = (string)dr["sureName"];
+                c.Img = (string)dr["img"];
+                customer_list.Add(c);
+            }
+
+            return customer_list;
         }
         catch (Exception ex)
         {
