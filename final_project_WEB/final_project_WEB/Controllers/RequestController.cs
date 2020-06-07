@@ -50,6 +50,15 @@ namespace final_project_WEB.Controllers
             return request.GetAlbum(TripID);
         }
 
+        [HttpGet]
+        [Route("api/Request/lupaExists/{tripId}")]
+        public int lupaExists(int tripId)
+        {
+            Request request = new Request();
+            return request.lupaExists(tripId);
+        }
+
+
         // POST api/<controller>
         public void Post([FromBody]string value)
         {
