@@ -901,7 +901,17 @@ public class DBservicesMobile
             throw (ex);
         }
 
-        String cStr = "update badge_igroup4 set agentNewMessage=1 where customerId=" + customerId;
+        DateTime thisDay = DateTime.Now;
+        //int month = new DateTime().Month;
+        //int day = new DateTime().Day;
+
+        //int hour = new DateTime().Hour;
+        //int minute = new DateTime().Minute;
+        //int second = new DateTime().Second;
+
+
+
+        String cStr = "update badge_igroup4 set agentNewMessage=1 , agentNewMessageDateTime='"+ thisDay + "' where customerId=" + customerId;
 
         cmd = CreateCommand(cStr, con);   // create the command
 

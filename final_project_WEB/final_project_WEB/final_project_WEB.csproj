@@ -437,6 +437,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Album\" />
     <Folder Include="App_Data\" />
     <Folder Include="pdfFiles\" />
     <Folder Include="uploadImages\" />
