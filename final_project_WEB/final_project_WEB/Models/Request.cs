@@ -22,7 +22,7 @@ namespace final_project_WEB.Models
 
         public Request() { }
 
-        public Request(int id, int tripID, string order_date, int numTickets, string status, string pdfFile, string attractionID, string attractionName, int customerID,string sendDate)
+        public Request(int id, int tripID, string order_date, int numTickets, string status, string pdfFile, string attractionID, string attractionName, int customerID, string sendDate)
         {
             Id = id;
             TripID = tripID;
@@ -111,7 +111,7 @@ namespace final_project_WEB.Models
             return dbs.getCustomerNotification(customerId);
         }
 
-        public int insertNewNotification(Request notification,int customerId)
+        public int insertNewNotification(Request notification, int customerId)
         {
             DBservicesMobile dbs = new DBservicesMobile();
             return dbs.insertNewNotification(notification, customerId);
@@ -129,10 +129,10 @@ namespace final_project_WEB.Models
             return dbs.GetpnToken(requestId);
         }
 
-        public int getNumOfNotificationBefore (int customerId, string type)
+        public int getNumOfNotificationBefore(int customerId, string type)
         {
             DBservicesMobile dbsM = new DBservicesMobile();
-            return dbsM.getNumOfNotificationBefore(customerId,type);
+            return dbsM.getNumOfNotificationBefore(customerId, type);
         }
 
         public void NoNewRequests(int customerId)
@@ -166,6 +166,13 @@ namespace final_project_WEB.Models
             DBservicesMobile dbsM = new DBservicesMobile();
             return dbsM.getpnTokenByCustomerId(customerId);
         }
+
+        public int lupaExists(int tripId)
+        {
+            DBservicesMobile dbsM = new DBservicesMobile();
+            return dbsM.lupaExists(tripId);
+        }
+
 
         //Mobile//
 

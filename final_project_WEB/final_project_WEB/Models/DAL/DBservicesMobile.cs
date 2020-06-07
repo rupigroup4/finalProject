@@ -926,6 +926,44 @@ public class DBservicesMobile
         }
     }
 
+    public int lupaExists(int tripId)
+    {
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "select *  from Request_igroup4 where TripID =" + tripId;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                return 1;
+            }
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+        return 0;
+
+    }
+
+
 
     /////////////////////////////notification////////////////////////////////////////////////////////
 
