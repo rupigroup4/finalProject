@@ -312,11 +312,29 @@
             ajaxCall("GET", "../api/badge/NEWMessage?Agent_ID=" + Agent_ID, "", successGETNEWmessage, errorGETNEWmessage)
         }
 
+        $(document).on('click', '#dropdown_chat_item', function () {
+            var customerID = this.getAttribute("data-id");
+            ajaxCall("PUT", "../api/badge/ReadMessage?customerID=" + customerID, "", successReadMessage, errorReadMessage)
+        });
+        function successReadMessage(id) {
+            if (num == 1) {
+                console.log("נקרא");
+                sessionStorage.setItem("customerID_chat", id);
+                window.location.href = "Chat/chat.html";
+            }
+            else alert("error");
+        }
+
+        function errorReadMessage() {
+            alert("errorReadMessage");
+        }
         function successGETNEWmessage(data) {
-            console.log(data);
+            console.log(data.length);
             var str = "";
-            for (k of data) {
-                str += `<a class="dropdown-item" >
+            if (data.length) {
+                document.getElementById("newMesseages_point").style.display = "block";
+                for (k of data) {
+                    str += `<a id="dropdown_chat_item" class="dropdown-item"  data-id="${k.Id}">
                     <div class="item-thumbnail">
                         <img src="${k.Img}" alt="image" class="profile-pic">
                                 </div>
@@ -327,10 +345,12 @@
                                     </p>
                         </div>
                          </a>`;
+                }
+                document.getElementById("NEWmessage").innerHTML = str;
+                return;
             }
-            document.getElementById("NEWmessage").innerHTML = str;
-         
-                                }
+            document.getElementById("newMesseages_point").style.display = "none";
+        }
         function errorGETNEWmessage() {
             alert("errorGETNEWmessage");
         }
@@ -881,11 +901,12 @@
                 <ul id="nav_open" class="navbar-nav navbar-nav-right">
                     <li class="nav-item dropdown mr-1">
                         <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
+                            <span class="count" id="newMesseages_point"></span>
                             <i class="ti-email mx-0"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown" >
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">הודעות צאט</p>
-                            <div id="NEWmessage"></div>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
+                            <div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">הודעות צאט</p></div>
+                            <div dir="ltr" id="NEWmessage"></div>
                         </div>
                     </li>
                     <li class="nav-item dropdown">

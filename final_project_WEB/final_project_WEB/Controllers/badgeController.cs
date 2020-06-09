@@ -27,6 +27,13 @@ namespace final_project_WEB.Controllers
             Customer customer = new Customer();
             return customer.GETNEWmessage(Agent_ID);
         }
+        [HttpPut]
+        [Route("api/badge/ReadMessage")]
+        public int ReadMessage(int customerID)
+        {
+            Customer customer = new Customer();
+            return customer.ReadMessage(customerID);
+        }
 
 
         [HttpPut]

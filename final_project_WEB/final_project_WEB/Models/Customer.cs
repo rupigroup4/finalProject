@@ -95,6 +95,11 @@ namespace final_project_WEB.Models
             DBservices dbs = new DBservices();
             return dbs.GETNEWmessage(Agent_ID); ;
         }
+        public int ReadMessage( int customerID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.ReadMessage(customerID); ;
+        }
 
         public Customer Update_customer(Customer customer)
         {
