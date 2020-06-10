@@ -312,13 +312,15 @@
             ajaxCall("GET", "../api/badge/NEWMessage?Agent_ID=" + Agent_ID, "", successGETNEWmessage, errorGETNEWmessage)
         }
 
-        $(document).on('click', '#dropdown_chat_item', function () {
+        $(document).on('click', '.dropdown-item', function () {
             var customerID = this.getAttribute("data-id");
+            console.log(customerID);
             ajaxCall("PUT", "../api/badge/ReadMessage?customerID=" + customerID, "", successReadMessage, errorReadMessage)
         });
         function successReadMessage(id) {
-            if (num == 1) {
+            if (id != 0) {
                 console.log("נקרא");
+                console.log(id);
                 sessionStorage.setItem("customerID_chat", id);
                 window.location.href = "Chat/chat.html";
             }
@@ -329,7 +331,7 @@
             alert("errorReadMessage");
         }
         function successGETNEWmessage(data) {
-            console.log(data.length);
+            console.log(data);
             var str = "";
             if (data.length) {
                 document.getElementById("newMesseages_point").style.display = "block";

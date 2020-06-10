@@ -169,8 +169,8 @@ public class DBservices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}')", customerId, 0,0);
-        String prefix = "INSERT INTO badge_igroup4 " + "(customerId,numOfNotification,numOfChatMessages)";
+        sb.AppendFormat("Values('{0}','{1}','{2}','{3}')", customerId,0,0,0);
+        String prefix = "INSERT INTO badge_igroup4 " + "(customerId,numOfNotification,numOfChatMessages, agentNewMessage)";
         command = prefix + sb.ToString();
 
         return command;
@@ -433,7 +433,11 @@ public class DBservices
         try
         {
             int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
+            if (numEffected == 1)
+            {
+                return customerID;
+            }
+            else return numEffected;
         }
         catch (Exception ex)
         {

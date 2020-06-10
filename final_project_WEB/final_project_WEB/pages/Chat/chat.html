@@ -39,6 +39,7 @@
         }
 
         var chatObject = {};
+        var LengthChat = 0;
 
         var timer;
         $(document).ready(function () {
@@ -220,7 +221,11 @@
         });
 
 
-        function showConversation(customerID, indexCustomer) {
+        function showConversation(customerID1, indexCustomer1) {
+            customerID = customerID1;
+            indexCustomer = indexCustomer1;
+            console.log(customerID);
+            console.log(indexCustomer);
             let strConversation = "";
             chatObject[customerID] = [];
             firebase.database().ref(`/chat/${customerID}`).on('child_added', function (snapshot) {
@@ -261,12 +266,14 @@
             for (var i = 0; i < customers_list.length; i++) {
                 chatObject[`${customers_list[i].Id}`] = []
                 let data_btn = "data-name='" + customers_list[i].FirstName + " " + customers_list[i].SureName + "'" + " data-id='" + customers_list[i].Id + "'" + " data-indexC='" + i + "'";
-                str += "<tr style='cursor:pointer;' onMouseOver=this.style.color='#3399ff' onMouseOut=this.style.color='black' class='StartChat'" + data_btn + "><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td><td>";
+                str += "<tr style='cursor:pointer;' onMouseOver=this.style.color='#3399ff' onMouseOut=this.style.color='black' class='StartChat'" + data_btn + "id='" + customers_list[i].Id+"'><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td><td>";
                 str += "<img src='" + customers_list[i].Img + "' />";
                 str += "</td></tr>";
             }
+            idCustomerS = sessionStorage.getItem("customerID_chat");
             document.getElementById("CustomerPH").innerHTML += str;
-
+            x = document.getElementById(idCustomerS);
+            x.click();
             setInterval(Check_new_message_chat(customers_list1), 5000);
         }
 
