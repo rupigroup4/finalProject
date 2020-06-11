@@ -255,6 +255,15 @@
                 console.log(err);
             }
 
+            $('#archives_switch').on('change', function () {
+                if (this.checked) {
+                    document.getElementById("Request_table_div").style.display = "none";
+                }
+                else {
+                    document.getElementById("Request_table_div").style.display = "block";
+                }
+            });
+
             $('#upload').click(function () {
                 var data = new FormData();
                 var files = $("#chooseFile").get(0).files;
@@ -1038,7 +1047,16 @@
                             <div class="card position-relative">
                                 <div class="card-body">
                                     <h4 class="card-title">רשימת בקשות</h4>
-                                    <div class="table-responsive pt-3">
+                                    <p class="card-description archives">
+                                        <span style="vertical-align:-4px">
+                                            צפייה בארכיון
+                                        </span>
+                                        <label class="switch">
+                                            <input id="archives_switch" type="checkbox">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </p>
+                                    <div class="table-responsive pt-3" id="Request_table_div">
                                         <table class="table mdl-data-table" style="width:100%" id="Request_table">
                                             <thead>
                                                 <tr>
