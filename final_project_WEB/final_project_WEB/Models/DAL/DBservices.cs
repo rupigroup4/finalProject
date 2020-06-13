@@ -969,7 +969,63 @@ public class DBservices
             }
 
         }
-    } public List<Customer> GETNEWmessage(int Agent_ID)
+    }
+        public List<object> getArchives(int Agent_ID)
+     {
+        List<object> Request_customer_list = new List<object>();
+        
+
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            String selectSTR = "SELECT * FROM ArchivesRequest_igroup4 LEFT JOIN Customer_igroup4 ON ArchivesRequest_igroup4.customerId = Customer_igroup4.CustomerID where AgentID=" + Agent_ID;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {
+                Request r = new Request();
+                r.Id = Convert.ToInt32(dr["requestID"]);
+                r.Order_date = (string)dr["date_time"];
+                r.Status = (string)dr["status_"];
+                //r.PdfFile = (string)dr["pdfFile"];
+                r.AttractionID = (string)dr["attractionID"];
+                r.NumTickets = Convert.ToInt32(dr["numTickets"]);
+                r.AttractionName = (string)dr["attractionName"];
+                r.CustomerID = Convert.ToInt32(dr["CustomerId"]);
+                r.TripID = Convert.ToInt32(dr["TripID"]);
+                Request_customer_list.Add(r);
+                Customer c = new Customer();
+                c.Id = Convert.ToInt32(dr["CustomerID"]);
+                c.FirstName = (string)dr["firstName"];
+                c.SureName = (string)dr["sureName"];
+                c.Img = (string)dr["img"];
+                Request_customer_list.Add(c);
+            }
+
+            return Request_customer_list;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+    public List<Customer> GETNEWmessage(int Agent_ID)
      {
         List<Customer> customer_list = new List<Customer>();
         

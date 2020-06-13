@@ -41,6 +41,13 @@ namespace final_project_WEB.Controllers
             Request request = new Request();
             return request.getShowALLRequest(Agent_ID);
         }
+        [HttpGet]
+        [Route("api/Request/ShowArchives")]
+        public List<object> ShowArchives(int Agent_ID)
+        {
+            Request request = new Request();
+            return request.getArchives(Agent_ID);
+        }
 
         [HttpGet]
         [Route("api/Request/GetAlbum")]

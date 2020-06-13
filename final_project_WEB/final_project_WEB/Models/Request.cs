@@ -95,6 +95,11 @@ namespace final_project_WEB.Models
             DBservices dbs = new DBservices();
             return dbs.getShowALLRequest(Agent_ID); ;
         }
+         public List<object> getArchives(int Agent_ID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.getArchives(Agent_ID); ;
+        }
 
         public int Add_pdf_AttractionTicket(string id, string pdf)
         {

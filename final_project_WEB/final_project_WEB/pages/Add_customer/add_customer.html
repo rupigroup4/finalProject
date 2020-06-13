@@ -57,7 +57,7 @@
         }
         function successCountNEWRequest(data) {
             console.log(data);
-            var count = data.length/2;
+            var count = data.length / 2;
             var strNewRequest;
             if (count) {
                 document.getElementById("newRequest").style.display = "block";
@@ -65,16 +65,16 @@
                 strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
                 for (var i = 0; i < data.length; i += 2) {
                     strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${data[i].AttractionName}">
-                                         <div class="item-thumbnail">
-                                               <div class="item-icon bg-primary">
-                                                  <i class="ti-info mx-0"></i>
-                                                </div>
-                                          </div>
-                                           <div class="item-content">
-                                                   <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
-                                                     <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
-                                                     </p>
-                                           </div></a >`;
+                                             <div class="item-thumbnail">
+                                                   <div class="item-icon bg-primary">
+                                                      <i class="ti-info mx-0"></i>
+                                                    </div>
+                                              </div>
+                                               <div class="item-content">
+                                                       <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
+                                                         <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
+                                                         </p>
+                                               </div></a >`;
                 }
                 document.getElementById("NewReqMenu").innerHTML = strNewRequest;
                 return;
@@ -89,7 +89,7 @@
         function errorCountNEWRequest(err) {
             alert("errorCountNEWRequest");
         }
-        
+
         function GETsuccessCustomer_Email(email_list) {
 
             let email = $('#email').val();
@@ -143,7 +143,7 @@
             swal("GETerrorCustomer_Email");
         }
 
-       
+
 
         function clearFields() {
             $('#firstName').val("");
@@ -155,7 +155,7 @@
         }
 
         function POSTsuccessNewCustomer(num) {
-            if (num != 0) 
+            if (num != 0)
                 swal({
                     title: "הלקוח נוסף בהצלחה",
                     icon: "success",
@@ -195,7 +195,7 @@
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <a class="navbar-brand brand-logo mr-5" href="../index.html"><img src="../../images/logo_iAgent_png.png" class="mr-2" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../../images/logo_mini_iAgent.png" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../../images/logo_mini_iAgent.png" /></a>
 
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -205,49 +205,12 @@
                 <ul id="nav_open" class="navbar-nav navbar-nav-right">
                     <li class="nav-item dropdown mr-1">
                         <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
+                            <span class="count" id="newMesseages_point"></span>
                             <i class="ti-email mx-0"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <img src="../../images/faces/face4.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div class="item-content flex-grow">
-                                    <h6 class="ellipsis font-weight-normal">
-                                        David Grey
-                                    </h6>
-                                    <p class="font-weight-light small-text text-muted mb-0">
-                                        The meeting is cancelled
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <img src="../../images/faces/face2.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div class="item-content flex-grow">
-                                    <h6 class="ellipsis font-weight-normal">
-                                        Tim Cook
-                                    </h6>
-                                    <p class="font-weight-light small-text text-muted mb-0">
-                                        New product launch
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <img src="../../images/faces/face3.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div class="item-content flex-grow">
-                                    <h6 class="ellipsis font-weight-normal">
-                                        Johnson
-                                    </h6>
-                                    <p class="font-weight-light small-text text-muted mb-0">
-                                        Upcoming board meeting
-                                    </p>
-                                </div>
-                            </a>
+                            <div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">הודעות צאט</p></div>
+                            <div dir="ltr" id="NEWmessage"></div>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -256,46 +219,6 @@
                             <p class="count" id="newRequest" style="display: none;"></p>
                         </a>
                         <div dir="ltr" id="NewReqMenu" class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-success">
-                                        <i class="ti-info-alt mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">Application Error</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        Just now
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-warning">
-                                        <i class="ti-settings mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">Settings</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        Private message
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-info">
-                                        <i class="ti-user mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">New user registration</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        2 days ago
-                                    </p>
-                                </div>
-                            </a>
                         </div>
                     </li>
                     <li class="nav-item nav-profile dropdown">
@@ -314,8 +237,6 @@
                 </button>
             </div>
         </nav>
-
-
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -474,7 +395,9 @@
     <!-- endinject -->
     <!-- Custom js for this page-->
     <script src="../../js/file-upload.js"></script>
-    <!-- End custom js for this page-->
+    <!-- End custom js for this spage-->
+    <script src="../../Scripts/inAllPages.js"></script>
+
 </body>
 
 </html>
