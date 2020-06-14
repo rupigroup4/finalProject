@@ -53,6 +53,13 @@
             
             setTimeout(Check_new_Request, 1000);
             setTimeout(Check_new_message, 1000);
+            $('#closeAlbum').click(function ()
+            {
+                $('#albumContainer').attr('hidden', true);
+                $("html, body").animate({
+                    scrollTop: $('#Archives_table_div').offset().top +200
+                }, 1000);
+            })
             ajaxCall("GET", "../api/Request/ShowArchives?Agent_ID=" + Agent_ID, "", successShowArchivest, errorShowArchives);
             ajaxCall("GET", "../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
             ajaxCall("GET", "../api/Request/CountALLRequest?Agent_ID=" + Agent_ID, "", successCountALLRequest, errorCountALLRequest);
@@ -445,13 +452,13 @@
                                                 <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')" >success</a>
                                                 <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')">failed</a></div></div></td>`;
                 if (Request_customer_list[i].AttractionID == "lupa") {
-                    strRequest += `<td><div id="download-${Request_customer_list[i].Id}" class="upload-btn-wrapper"> <button onclick="downloadAlbum(${Request_customer_list[i].TripID})" class="btn btn-inverse-primary btn-fw"> <i class="ti-import"></i> הורד אלבום </button>
+                    strRequest += `<td><div id="download-${Request_customer_list[i].Id}" class="upload-btn-wrapper"> <button onclick="downloadAlbum(${Request_customer_list[i].TripID})" class="btn btn-inverse-primary btn-fw btn-HW"> <i class="ti-import"></i> צפה באלבום </button>
                                     </div></td>`;
                 } else if (Request_customer_list[i].Status == 'success') {
-                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
+                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw btn-HW">בחר קובץ</button>
                                             <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 } else {
-                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw">בחר קובץ</button>
+                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw btn-HW">בחר קובץ</button>
                                             <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 }
                 strRequest += `<td><button onclick="move_to_archives(${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" type="button" class="btn btn-inverse-dark btn-icon"><i class="ti-trash"></i></button></td>`;
@@ -566,12 +573,131 @@
         }
 
         function successGetAlbum(data) {
-            console.log(data);
-            for (var i = 0; i < data.length; i++) {
-                download(data[i], "download1.jpg", "image/jpeg")
-                var link = window.URL.createObjectURL(data[i]);
-                window.location = link;
+            if (data.length==0) {
+                alert('אין תמונות');
+                return;
             }
+            var albumStr = '';
+            if (data.length % 3 == 0) {
+                for (var i = 0; i < data.length; i += 3) {
+                    albumStr += `<div class="row">`
+
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
+
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i + 1]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i + 1]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
+
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i + 2]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i + 2]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
+
+                    albumStr += `</div>`
+                }
+            }
+
+            else if (data.length % 3 == 1) {
+                for (var i = 0; i < data.length; i += 3) {
+
+                    if (i == data.length - 1) {
+                        albumStr += `<div class="row">`
+
+                            albumStr += `<div class="col-md-4 text-center">`
+                            albumStr += `<a href=${data[i]} target="_blank">`
+                            albumStr += `<img style="width:150px;height:150px;" src=${data[i]} />`
+                            albumStr += `</a>`
+                            albumStr += `</div>`
+
+                        albumStr += `</div>`
+                    }
+
+                    else {
+
+                        albumStr += `<div class="row">`
+
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
+
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i + 1]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i + 1]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
+
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i + 2]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i + 2]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
+
+                        albumStr += `</div>`
+                    }
+                }
+            }
+
+            else {
+                for (var i = 0; i < data.length; i += 3) {
+
+                    if (i == data.length - 2) {
+                        albumStr += `<div class="row">`
+
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
+
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i + 1]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i + 1]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
+
+                        albumStr += `</div>`
+                    }
+                    else {
+                        albumStr += `<div class="row">`
+
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
+
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i + 1]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i + 1]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
+
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i + 2]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i + 2]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
+
+                        albumStr += `</div>`
+                    }
+                }
+            }
+
+            $('#albumPH').html(albumStr);
+            $('#albumContainer').removeAttr('hidden');
+            $("html, body").animate({
+                scrollTop: $('#albumContainer').offset().top-100
+            }, 1500);
+            
         }
 
 
@@ -991,6 +1117,17 @@
                                             <tbody id="ArchivesPH"></tbody>
                                         </table>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="albumContainer" class="row" hidden>
+                        <img id="closeAlbum" style="position:absolute;width:15px;height:15px;z-index:10;" src="../images/closeIcon.png" />
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card position-relative">
+                                <div id="albumPH" class="card-body">
+
                                 </div>
                             </div>
                         </div>

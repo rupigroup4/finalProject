@@ -211,6 +211,7 @@
     <Content Include="images\auth\lockscreen-bg.jpg" />
     <Content Include="images\auth\login-bg.jpg" />
     <Content Include="images\auth\register-bg.jpg" />
+    <Content Include="images\closeIcon.png" />
     <Content Include="images\dashboard\shape-1.svg" />
     <Content Include="images\dashboard\shape-2.svg" />
     <Content Include="images\dashboard\shape-3.svg" />

@@ -21978,3 +21978,7 @@ body_chat {
     float: left;
     vertical-align: middle;
 }
+.btn-HW{
+    min-height:42px;
+    min-width:120.18px;
+}
