@@ -2138,4 +2138,51 @@ public class DBservices
         }
     }
 
+    //Promotion
+    public int Increase_OrderNum(string Attraction_ID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String command = "UPDATE PromotedAttraction_igroup4 SET ordersQuantity = ordersQuantity + 1 WHERE attractionID = '" + Attraction_ID +"'";
+
+
+        cmd = CreateCommand(command, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+    //Promotion ENDS
+
+
 }

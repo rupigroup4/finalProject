@@ -97,6 +97,12 @@ namespace final_project_WEB.Models
             return dbs.GetPromotedAttraction(Agent_ID); ;
         }
 
+        public int Increase_OrderNum(string Attraction_ID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.Increase_OrderNum(Attraction_ID); 
+        }
+
         //Mobile//
 
         public List<string> getPromotionByCity(int agentId,string city,int tripProfile)

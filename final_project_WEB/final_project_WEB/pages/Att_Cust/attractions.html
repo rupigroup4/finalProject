@@ -71,7 +71,8 @@
                 return false;
             });
             $('#attraction_form_ByName').submit(function () {
-                 city = $('#city').val();
+                city = $('#city').val();
+                console.log(city);
                 var name = $('#att_Name').val();
                 var urlResults = "https://www.triposo.com/api/20190906/poi.json?location_id="+city+"&annotate=trigram:"+name+"&trigram=>=0.3&count=10&fields=all&order_by=-score&account=6B5J2SIO&token=hgiq3zyo304rc0p3kfkh19zd224lunxh";
                 $.get(urlResults).done(successByName);
@@ -119,7 +120,6 @@
         }
 
         function successByName(data) {
-            console.log(data);
             var str_buildAtt = "";
             var arr_data = data.results;
             text = "";
@@ -131,8 +131,8 @@
                 </div></div>`;
                 return;
             }
+            city = $('#city_Name').val();
             for (var i = 0; i < arr_data.length; i++) {
-                //<input type="checkbox" class="form-check-input">
                 str_buildAtt += `<div class="row">
                                             <div dir="rtl" class="col-md-12 grid-margin att_width" id="promotion_row">
                                             <form id="promotion_form" data-id="${arr_data[i].id}" data-city="${city}"">
@@ -271,7 +271,6 @@
         //ResultsURL
 
         function successAttractions(data) {
-
             console.log(data);
             str_buildAtt = "";
             arr_data = data.results;

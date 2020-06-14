@@ -51,6 +51,13 @@ namespace final_project_WEB.Controllers
             return promotion.RemovePromotion(attractionID, AgentID);
         }
 
+        public int Put(string Attraction_ID)//Update_status
+        {
+            Promotion promotion = new Promotion();
+            int numEffected = promotion.Increase_OrderNum(Attraction_ID);
+            return numEffected;
+        }
+
         // DELETE api/<controller>/5
         public void Delete(int id)
         {

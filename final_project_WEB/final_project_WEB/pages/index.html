@@ -413,6 +413,7 @@
         }
 
         function successShowALLRequest(Request_customer_list) {
+            console.log(Request_customer_list);
             strRequest = "";
             var countSuccess = 0;
             for (var i = 0; i < Request_customer_list.length; i += 2) {
@@ -439,10 +440,10 @@
                 strRequest += '<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px,46px,0px);">';
                 let dataRequest = "data-RequestId='" + Request_customer_list[i].Id + "'";
                 let dataStatus = "data-Status='" + Request_customer_list[i].Status + "'";
-                strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" >new</a>
-                                                <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})">in prosess</a>
-                                                <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" >success</a>
-                                                <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})">failed</a></div></div></td>`;
+                strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')" >new</a>
+                                                <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')">in prosess</a>
+                                                <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')" >success</a>
+                                                <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')">failed</a></div></div></td>`;
                 if (Request_customer_list[i].AttractionID == "lupa") {
                     strRequest += `<td><div id="download-${Request_customer_list[i].Id}" class="upload-btn-wrapper"> <button onclick="downloadAlbum(${Request_customer_list[i].TripID})" class="btn btn-inverse-primary btn-fw"> <i class="ti-import"></i> הורד אלבום </button>
                                     </div></td>`;
@@ -593,8 +594,11 @@
         }
 
 
-        function Change_status(status, RequestID, Customer_Id) {
+        function Change_status(status, RequestID, Customer_Id, Attraction_ID) {
             ajaxCall("PUT", "../api/Request?status=" + status + "&RequestID=" + RequestID + "&Customer_Id=" + Customer_Id, "", successChange_status, errorChange_status)
+            if (status == "success" && Attraction_ID != 'lupa') {
+                ajaxCall("PUT", "../api/Promotion?attraction_ID=" + Attraction_ID, "", successIncrease_QuantityOrder, errorIncrease_QuantityOrder)
+            }
         }
 
         function successChange_status(RequestId) { //שלב ראשון לאחר השינוי בדאטה בייס הוא להביא את הקוד אליו נשלח את ההתראה
@@ -604,6 +608,19 @@
         }
 
         function errorChange_status() {
+            alert("errorChange_status");
+        }
+
+        function successIncrease_QuantityOrder(num) {
+            if (num == 1) {
+                console.log("גדל ב1")
+            }
+            else {
+                console.log("אטרקציה זו לא קודמה")
+            }
+        }
+
+        function errorIncrease_QuantityOrder() {
             alert("errorChange_status");
         }
 
