@@ -206,6 +206,7 @@
 
         function successPromotedAttractionList(promotionAttraction_List) {
             promotion_List = promotionAttraction_List;
+            console.log(promotion_List);
         }
 
         function errorPromotedAttractionList(err) {
@@ -271,7 +272,6 @@
         //ResultsURL
 
         function successAttractions(data) {
-            console.log(data);
             str_buildAtt = "";
             arr_data = data.results;
             text = "";
@@ -341,7 +341,8 @@
                                             <div class="col-md-12 grid-margin att_width">
                                             <div class="card">
                                             <div class="card-body"> <h4 class="card-title">${arr_data[i].name}</h4>
-                                            <div class="card-description">ציון: ${(arr_data[i].score).toFixed(2)}</div>
+                                            <div class="card-description">ציון: ${(arr_data[i].score).toFixed(2)} </div>
+                                            <div class="card-description" id="Quantity${arr_data[i].id}"></div>
                                             <div class="row"><div dir="rtl" class="col-md-6 overflow1" ><p style="text-align: left;">${arr_data[i].intro}</p><br/></div>`;
                 if (arr_data[i].images[0] == null || arr_data[i].images[0].sizes == null || arr_data[i].images[0].sizes.medium == null || arr_data[i].images[0].sizes.medium.url == null)
                     str_buildAtt += '<div class="col-md-6"> <img class="img_att" src="../../images/NoImg.png" /> </div></div> </div></div></div>';
@@ -373,6 +374,8 @@
                             document.getElementById('TripProfile_6_' + arr_data[i].id).checked = true;
                         promotion_List[k].Rate
                         document.getElementById('Range_' + arr_data[i].id).value = promotion_List[k].Rate;
+                        console.log(promotion_List[k].OrdersQuantity);
+                        document.getElementById(`Quantity${arr_data[i].id}`).innerHTML =`כמות הזמנות: ${promotion_List[k].OrdersQuantity}`;
                     }
                 }
             }
