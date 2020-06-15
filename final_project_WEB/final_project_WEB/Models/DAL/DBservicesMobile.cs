@@ -902,12 +902,6 @@ public class DBservicesMobile
         }
 
         DateTime thisDay = DateTime.Now;
-        //int month = new DateTime().Month;
-        //int day = new DateTime().Day;
-
-        //int hour = new DateTime().Hour;
-        //int minute = new DateTime().Minute;
-        //int second = new DateTime().Second;
 
 
 
