@@ -313,7 +313,7 @@
             for (var i = 0; i < customers_list.length; i++) {
                 chatObject[`${customers_list[i].Id}`] = []
                 let data_btn = "data-name='" + customers_list[i].FirstName + " " + customers_list[i].SureName + "'" + " data-id='" + customers_list[i].Id + "'" + " data-indexC='" + i + "'";
-                str += "<tr style='cursor:pointer;' onMouseOver=this.style.color='#3399ff' onMouseOut=this.style.color='black' class='StartChat'" + data_btn + "id='" + customers_list[i].Id+"'><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td><td>";
+                str += "<tr style='cursor:pointer;' onMouseOver=this.style.color='#3399ff' onMouseOut=this.style.color='black' class='StartChat'" + data_btn + "id='" + customers_list[i].Id + "'><td><i class='ti-comments-smiley'></i></td><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td><td>";
                 str += "<img src='" + customers_list[i].Img + "' />";
                 str += "</td></tr>";
             }
