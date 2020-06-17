@@ -571,8 +571,13 @@
         }
 
         function successGetAlbum(data) {
-            if (data.length==0) {
-                alert('אין תמונות');
+            if (data.length == 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'אין תמונות',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
                 return;
             }
             var albumStr = '';
@@ -582,22 +587,21 @@
 
                         albumStr += `<div class="col-md-4 text-center">`
                         albumStr += `<a href=${data[i]} target="_blank">`
-                        albumStr += `<img style="width:150px;height:150px;" src=${data[i]} />`
+                        albumStr += `<img style="width:150px;height:150px;border-radius:10px" src=${data[i]} />`
                         albumStr += `</a>`
                         albumStr += `</div>`
 
                         albumStr += `<div class="col-md-4 text-center">`
                         albumStr += `<a href=${data[i + 1]} target="_blank">`
-                        albumStr += `<img style="width:150px;height:150px;" src=${data[i + 1]} />`
+                        albumStr += `<img style="width:150px;height:150px;border-radius:10px" src=${data[i + 1]} />`
                         albumStr += `</a>`
                         albumStr += `</div>`
 
                         albumStr += `<div class="col-md-4 text-center">`
                         albumStr += `<a href=${data[i + 2]} target="_blank">`
-                        albumStr += `<img style="width:150px;height:150px;" src=${data[i + 2]} />`
+                        albumStr += `<img style="width:150px;height:150px;border-radius:10px" src=${data[i + 2]} />`
                         albumStr += `</a>`
                         albumStr += `</div>`
-
                     albumStr += `</div>`
                 }
             }
@@ -1026,7 +1030,8 @@
                                     <p class="  card-title text-md-center text-xl-right">עסקאות שהושלמו</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                         <h3 id="AmountOfSalesPH" class="stat-count mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
-                                        <i class="ti-ticket icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                        <!--<i class="ti-ticket icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>-->
+                                        <img src="../images/indexIcons/icons8-card-payment-64.png" />
                                     </div>
                                     <!--<p class="mb-0 mt-2 text-danger">0.12% <span class="text-black ml-1"><small>(30 days)</small></span></p>-->
                                 </div>
@@ -1038,7 +1043,8 @@
                                     <p class="  card-title text-md-center text-xl-right">לקוחות רשומים</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                         <h3 id="customers_numPH" class="stat-count mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
-                                        <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                        <!--<i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>-->
+                                        <img src="../images/indexIcons/icons8-contact-details-64.png" />
                                     </div>
                                     <!--<p class="mb-0 mt-2 text-danger">0.47% <span class="text-black ml-1"><small>(30 days)</small></span></p>-->
                                 </div>
@@ -1050,7 +1056,8 @@
                                     <p class="  card-title text-md-center text-xl-right">שוהים בחו"ל</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                         <h3 id="NumberOfCutomersOnTripPH" class="stat-count mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
-                                        <i class="ti-world icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                        <!--<i class="ti-world icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>-->
+                                        <img src="../images/indexIcons/globe6.PNG" />
                                     </div>
                                     <!--<p class="mb-0 mt-2 text-success">64.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>-->
                                 </div>
@@ -1062,7 +1069,8 @@
                                     <p class="  card-title text-md-center text-xl-right">סה"כ בקשות</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                         <h3 id="Request_numPH" class="stat-count mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"></h3>
-                                        <i class="ti-files icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                        <!--<i class="ti-files icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>-->
+                                        <img src="../images/indexIcons/icons8-bell-1001.png" />
                                     </div>
                                     <!--<p class="mb-0 mt-2 text-success">23.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>-->
                                 </div>

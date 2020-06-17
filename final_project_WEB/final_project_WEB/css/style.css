@@ -12895,15 +12895,15 @@ input[type="button"].btn-block {
 }
 
 .card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-color: #fff;
-  background-clip: border-box;
-  border: 1px solid #e3e3e3;
-  border-radius: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #e3e3e3;
+    border-radius: 0.437rem
 }
 
 .card > hr {
@@ -21888,7 +21888,9 @@ body_chat {
 #promotion_row {
     padding: 10px;
     margin-bottom: 0;
-    background-color: #ececeb; 
+    background-color: #ececeb;
+    border-radius: 0.437rem;
+    margin-bottom: 5px;
 }
 .checkbox_style{
     float:right ;

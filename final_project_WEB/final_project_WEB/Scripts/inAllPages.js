@@ -45,7 +45,7 @@ function successReadMessage(id) {
         console.log("נקרא");
         console.log(id);
         sessionStorage.setItem("customerID_chat", id);
-        window.location.href = "Chat/chat.html";
+        window.location.href = "../Chat/chat.html";
     }
     else alert("error");
 }

@@ -44,6 +44,7 @@
         var timer;
         $(document).ready(function () {
             setTimeout(Check_new_Request, 1000);
+            setTimeout(Check_new_message, 1000);
             if (Gender == "נ")
                 document.getElementById("profileDropdown").innerHTML = `<img id="profileDropdown_img" class="center" src="../../images/PeoplePic/WomenAgent.png" alt="profile" />`;
             else
@@ -69,6 +70,52 @@
         });
         function Check_new_Request() {
             ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
+        }
+        function Check_new_message() {
+            ajaxCall("GET", "../../api/badge/NEWMessage?Agent_ID=" + Agent_ID, "", successGETNEWmessage, errorGETNEWmessage)
+        }
+        $(document).on('click', '.dropdown-item', function () {
+            var customerID = this.getAttribute("data-id");
+            console.log(customerID);
+            ajaxCall("PUT", "../../api/badge/ReadMessage?customerID=" + customerID, "", successReadMessage, errorReadMessage)
+        });
+        function successReadMessage(id) {
+            if (id != 0) {
+                console.log("נקרא");
+                console.log(id);
+                sessionStorage.setItem("customerID_chat", id);
+                window.location.href = "../Chat/chat.html";
+            }
+            else alert("error");
+        }
+        function errorReadMessage() {
+            alert("errorReadMessage");
+        }
+        function successGETNEWmessage(data) {
+            console.log(data);
+            var str = "";
+            if (data.length) {
+                document.getElementById("newMesseages_point").style.display = "block";
+                for (k of data) {
+                    str += `<a id="dropdown_chat_item" class="dropdown-item"  data-id="${k.Id}">
+                    <div class="item-thumbnail">
+                        <img src="${k.Img}" alt="image" class="profile-pic">
+                                </div>
+                        <div class="item-content flex-grow">
+                            <h6 class="ellipsis font-weight-normal">${k.FirstName} ${k.SureName}</h6>
+                            <p class="font-weight-light small-text text-muted mb-0">
+                                The meeting is cancelled
+                                    </p>
+                        </div>
+                         </a>`;
+                }
+                document.getElementById("NEWmessage").innerHTML = str;
+                return;
+            }
+            document.getElementById("newMesseages_point").style.display = "none";
+        }
+        function errorGETNEWmessage() {
+            alert("errorGETNEWmessage");
         }
 
         function successCountNEWRequest(data) {
@@ -337,49 +384,12 @@
                 <ul id="nav_open" class="navbar-nav navbar-nav-right">
                     <li class="nav-item dropdown mr-1">
                         <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
+                            <span class="count" id="newMesseages_point"></span>
                             <i class="ti-email mx-0"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <img src="../../images/faces/face4.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div class="item-content flex-grow">
-                                    <h6 class="ellipsis font-weight-normal">
-                                        David Grey
-                                    </h6>
-                                    <p class="font-weight-light small-text text-muted mb-0">
-                                        The meeting is cancelled
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <img src="../../images/faces/face2.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div class="item-content flex-grow">
-                                    <h6 class="ellipsis font-weight-normal">
-                                        Tim Cook
-                                    </h6>
-                                    <p class="font-weight-light small-text text-muted mb-0">
-                                        New product launch
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <img src="../../images/faces/face3.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div class="item-content flex-grow">
-                                    <h6 class="ellipsis font-weight-normal">
-                                        Johnson
-                                    </h6>
-                                    <p class="font-weight-light small-text text-muted mb-0">
-                                        Upcoming board meeting
-                                    </p>
-                                </div>
-                            </a>
+                            <div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">הודעות צאט</p></div>
+                            <div dir="ltr" id="NEWmessage"></div>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -388,46 +398,6 @@
                             <p class="count" id="newRequest" style="display: none;"></p>
                         </a>
                         <div dir="ltr" id="NewReqMenu" class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-success">
-                                        <i class="ti-info-alt mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">Application Error</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        Just now
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-warning">
-                                        <i class="ti-settings mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">Settings</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        Private message
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-info">
-                                        <i class="ti-user mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">New user registration</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        2 days ago
-                                    </p>
-                                </div>
-                            </a>
                         </div>
                     </li>
                     <li class="nav-item nav-profile dropdown">

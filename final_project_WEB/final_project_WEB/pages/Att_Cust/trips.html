@@ -26,7 +26,7 @@
 
     <script>
 
-        const TripProfile = ['','כללי', 'טיול משפחתי', 'מסיבת רווקים/רווקות', 'טיול פנסיונרים', 'נסיעת עסקים', 'טיול זוגי/ירח דבש'];
+        const TripProfile = ['', 'כללי', 'טיול משפחתי', 'מסיבת רווקים/רווקות', 'טיול פנסיונרים', 'נסיעת עסקים', 'טיול זוגי/ירח דבש'];
         if (localStorage.getItem("Email") == null && sessionStorage.getItem("Email") == null) {
             window.location.href = "../Login/login-2.html";
         }
@@ -54,6 +54,7 @@
             document.getElementById("profileDropdown").innerHTML += `<p id="PH_name_agent">שלום, ${Agent_Name}</p>`;
 
             setTimeout(Check_new_Request, 1000);
+            setTimeout(Check_new_message, 1000);
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
             ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTripr_list);
@@ -61,15 +62,61 @@
         });
 
 
-  
+
 
         function Check_new_Request() {
             ajaxCall("GET", "../../api/Request/CountNEWRequest?Agent_ID=" + Agent_ID, "", successCountNEWRequest, errorCountNEWRequest)
         }
+        function Check_new_message() {
+            ajaxCall("GET", "../../api/badge/NEWMessage?Agent_ID=" + Agent_ID, "", successGETNEWmessage, errorGETNEWmessage)
+        }
+        $(document).on('click', '.dropdown-item', function () {
+            var customerID = this.getAttribute("data-id");
+            console.log(customerID);
+            ajaxCall("PUT", "../../api/badge/ReadMessage?customerID=" + customerID, "", successReadMessage, errorReadMessage)
+        });
+        function successReadMessage(id) {
+            if (id != 0) {
+                console.log("נקרא");
+                console.log(id);
+                sessionStorage.setItem("customerID_chat", id);
+                window.location.href = "../Chat/chat.html";
+            }
+            else alert("error");
+        }
+        function errorReadMessage() {
+            alert("errorReadMessage");
+        }
+        function successGETNEWmessage(data) {
+            console.log(data);
+            var str = "";
+            if (data.length) {
+                document.getElementById("newMesseages_point").style.display = "block";
+                for (k of data) {
+                    str += `<a id="dropdown_chat_item" class="dropdown-item"  data-id="${k.Id}">
+                    <div class="item-thumbnail">
+                        <img src="${k.Img}" alt="image" class="profile-pic">
+                                </div>
+                        <div class="item-content flex-grow">
+                            <h6 class="ellipsis font-weight-normal">${k.FirstName} ${k.SureName}</h6>
+                            <p class="font-weight-light small-text text-muted mb-0">
+                                The meeting is cancelled
+                                    </p>
+                        </div>
+                         </a>`;
+                }
+                document.getElementById("NEWmessage").innerHTML = str;
+                return;
+            }
+            document.getElementById("newMesseages_point").style.display = "none";
+        }
+        function errorGETNEWmessage() {
+            alert("errorGETNEWmessage");
+        }
 
         function successCountNEWRequest(data) {
             console.log(data);
-            var count = data.length/2;
+            var count = data.length / 2;
             var strNewRequest;
             if (count) {
                 document.getElementById("newRequest").style.display = "block";
@@ -77,16 +124,16 @@
                 strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
                 for (var i = 0; i < data.length; i += 2) {
                     strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${data[i].AttractionName}">
-                                         <div class="item-thumbnail">
-                                               <div class="item-icon bg-primary">
-                                                  <i class="ti-info mx-0"></i>
-                                                </div>
-                                          </div>
-                                           <div class="item-content">
-                                                   <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
-                                                     <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
-                                                     </p>
-                                           </div></a >`;
+                                             <div class="item-thumbnail">
+                                                   <div class="item-icon bg-primary">
+                                                      <i class="ti-info mx-0"></i>
+                                                    </div>
+                                              </div>
+                                               <div class="item-content">
+                                                       <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
+                                                         <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
+                                                         </p>
+                                               </div></a >`;
                 }
                 document.getElementById("NewReqMenu").innerHTML = strNewRequest;
                 return;
@@ -113,8 +160,8 @@
         //    return 1;
         //}
 
-         function successGETTrip_list(trip_customer_list) {
-             console.log(trip_customer_list);
+        function successGETTrip_list(trip_customer_list) {
+            console.log(trip_customer_list);
             //let flagUrlArr = await getFlagUrl(trip_customer_list);
             //console.log(flagUrlArr);
             try {
@@ -127,9 +174,9 @@
                         let IdRowTrip = "Row-trip" + trip_customer_list[i].TripID + "";
                         str += `<tr id='${IdRowTrip}'> <td> ${trip_customer_list[i + 1].FirstName} ${trip_customer_list[i + 1].SureName} </td>`;
                         str += `<td style="font-weight: bold;">${trip_customer_list[i].Destination}</td>
-                               <td>${trip_customer_list[i].DepartDate}</td>
-                                <td>${trip_customer_list[i].ReturnDate}</td>
-                                <td>${TripProfile[trip_customer_list[i].TripProfileID]}</td>`;
+                                   <td>${trip_customer_list[i].DepartDate}</td>
+                                    <td>${trip_customer_list[i].ReturnDate}</td>
+                                    <td>${TripProfile[trip_customer_list[i].TripProfileID]}</td>`;
                         let dataTrip = "data-tripId='" + trip_customer_list[i].TripID + "'";
                         str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw">בחר קובץ</button>  <input class="selectedFile" type="file" name="myfile" id ="chooseFile${trip_customer_list[i].TripID}" ${dataTrip}/></div>`;
                         var pdf = trip_customer_list[i].Pdf_Flightticket
@@ -142,7 +189,7 @@
                         }
                         str += "<td><button type='button' title='מחיקת טיול' id='" + trip_customer_list[i].TripID + "' onclick='deleteT(" + trip_customer_list[i].TripID + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button></td></tr>";
                     }
-                document.getElementById("TripPH").innerHTML = str;
+                    document.getElementById("TripPH").innerHTML = str;
                     $('#trip_table').DataTable({
                         "language": {
                             "search": "חיפוש",
@@ -182,10 +229,10 @@
                 swal("נמחק בהצלחה", "הטיול נמחק מהמערכת", "success");
                 idRowTrip = 'Row-trip' + TripId;
                 $(`#${idRowTrip}`).remove();
-                //window.location.reload(); 
+                //window.location.reload();
             }
             else {
-                swal("הטיול לא נמחק", "ללקוח זה קיימת בקשה זמינה במערכת", "error");// 
+                swal("הטיול לא נמחק", "ללקוח זה קיימת בקשה זמינה במערכת", "error");//
             }
             clearFields();
         }
@@ -246,7 +293,7 @@
             alert("POSTerrorAddPDF");
         }
 
-        
+
 
         function successCustomer_list(customers_list) {
             CustomerList = customers_list;
@@ -283,49 +330,12 @@
                 <ul id="nav_open" class="navbar-nav navbar-nav-right">
                     <li class="nav-item dropdown mr-1">
                         <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
+                            <span class="count" id="newMesseages_point"></span>
                             <i class="ti-email mx-0"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <img src="../../images/faces/face4.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div class="item-content flex-grow">
-                                    <h6 class="ellipsis font-weight-normal">
-                                        David Grey
-                                    </h6>
-                                    <p class="font-weight-light small-text text-muted mb-0">
-                                        The meeting is cancelled
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <img src="../../images/faces/face2.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div class="item-content flex-grow">
-                                    <h6 class="ellipsis font-weight-normal">
-                                        Tim Cook
-                                    </h6>
-                                    <p class="font-weight-light small-text text-muted mb-0">
-                                        New product launch
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <img src="../../images/faces/face3.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div class="item-content flex-grow">
-                                    <h6 class="ellipsis font-weight-normal">
-                                        Johnson
-                                    </h6>
-                                    <p class="font-weight-light small-text text-muted mb-0">
-                                        Upcoming board meeting
-                                    </p>
-                                </div>
-                            </a>
+                            <div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">הודעות צאט</p></div>
+                            <div dir="ltr" id="NEWmessage"></div>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -334,46 +344,6 @@
                             <p class="count" id="newRequest" style="display: none;"></p>
                         </a>
                         <div dir="ltr" id="NewReqMenu" class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-success">
-                                        <i class="ti-info-alt mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">Application Error</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        Just now
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-warning">
-                                        <i class="ti-settings mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">Settings</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        Private message
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item">
-                                <div class="item-thumbnail">
-                                    <div class="item-icon bg-info">
-                                        <i class="ti-user mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="item-content">
-                                    <h6 class="font-weight-normal">New user registration</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        2 days ago
-                                    </p>
-                                </div>
-                            </a>
                         </div>
                     </li>
                     <li class="nav-item nav-profile dropdown">
