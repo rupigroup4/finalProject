@@ -170,14 +170,18 @@
                 else {
                     let str = "";
                     for (var i = 0; i < trip_customer_list.length; i += 3) {
-                        console.log(trip_customer_list[i].TripID);
+                        let DepartDateArr = trip_customer_list[i].DepartDate.split('/');
+                        var newDepartDate = `${DepartDateArr[1]}/${DepartDateArr[0]}/${DepartDateArr[2]}`;
+                        let ReturnDateArr = trip_customer_list[i].ReturnDate.split('/');
+                        var newReturnDate = `${ReturnDateArr[1]}/${ReturnDateArr[0]}/${ReturnDateArr[2]}`;
+
                         let IdRowTrip = "Row-trip" + trip_customer_list[i].TripID + "";
                         str += `<tr id='${IdRowTrip}'>
                                  <td><img src='${trip_customer_list[i + 1].Img}'/></td>
                                  <td> ${trip_customer_list[i + 1].FirstName} ${trip_customer_list[i + 1].SureName} </td>`;
                         str += `<td style="font-weight: bold;">${trip_customer_list[i].Destination}</td>
-                                   <td>${trip_customer_list[i].DepartDate}</td>
-                                    <td>${trip_customer_list[i].ReturnDate}</td>
+                                   <td><p hidden>${Date.parse(newDepartDate)}</p><p>${trip_customer_list[i].DepartDate}</p></td>
+                                    <td><p hidden>${Date.parse(newReturnDate)}</p><p>${trip_customer_list[i].ReturnDate}</p></td>
                                     <td>${TripProfile[trip_customer_list[i].TripProfileID]}</td>`;
                         let dataTrip = "data-tripId='" + trip_customer_list[i].TripID + "'";
                         str += `<td><div class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw btn-HW">בחר קובץ</button>  <input class="selectedFile" type="file" name="myfile" id ="chooseFile${trip_customer_list[i].TripID}" ${dataTrip}/></div>`;

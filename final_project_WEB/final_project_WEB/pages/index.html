@@ -418,10 +418,12 @@
         }
 
         function successShowALLRequest(Request_customer_list) {
-
+            
             strRequest = "";
             var countSuccess = 0;
             for (var i = 0; i < Request_customer_list.length; i += 2) {
+                let dateArr = Request_customer_list[i].Order_date.split('/');
+                var newDate = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
                 if (Request_customer_list[i].Status == "success") {
                     countSuccess++;
                 }
@@ -430,7 +432,7 @@
                                                                    <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'><img src='${Request_customer_list[i + 1].Img}'/></td>
                                                                    <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
                                                                    <td id="td_AttName" data-attractionId=${Request_customer_list[i].AttractionID} >${Request_customer_list[i].AttractionName}</td>
-                                                                    <td><p hidden>${Date.parse(Request_customer_list[i].Order_date)}</p><p>${Request_customer_list[i].Order_date}</p></td>
+                                                                    <td><p hidden>${Date.parse(newDate)}</p><p>${Request_customer_list[i].Order_date}</p></td>
                                                                     <td>${Request_customer_list[i].NumTickets}</td>`;
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_customer_list[i].Status) {
