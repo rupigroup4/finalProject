@@ -50,7 +50,8 @@
 
 
         $(document).ready(function () {
-            
+            Spinner();
+            Spinner.show();
             setTimeout(Check_new_Request, 1000);
             setTimeout(Check_new_message, 1000);
             $('#closeAlbum').click(function ()
@@ -498,7 +499,6 @@
                         "previous": "לעמוד הקודם"
                     },
                 }
-
             });
             if (sessionStorage.getItem('dropdown_ATT_Name')) {
                 var Att_name = sessionStorage.getItem('dropdown_ATT_Name')
@@ -508,6 +508,7 @@
                 table.search(Att_name).draw();
                 //setTimeout(function () {table.search("").draw();}, 5000);
             }
+            Spinner.hide();
         }
 
         $(document).on("click", ".selectedFile", function () {
@@ -1207,7 +1208,7 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-
+        <script src="../Scripts/loading-spinner.js"></script> 
     </div>
 </body>
 

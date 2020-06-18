@@ -4,7 +4,7 @@
     Swal.fire({
         title: 'היי! מכינים לך את המערכת, ממש עוד רגע',
         html: 'נתחיל בעוד <b></b> <i class="ti-timer mx-0"></i>',
-        timer: 5000,
+        //timer: 4000,
         timerProgressBar: true,
         onBeforeOpen: () => {
             Swal.showLoading()
