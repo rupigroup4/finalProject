@@ -47,14 +47,13 @@
         var tripId = null;
 
         $(document).ready(function () {
+            setInterval(Check_new_Request, 5000);
+            setInterval(Check_new_message, 5000);
             if (Gender == "נ")
                 document.getElementById("profileDropdown").innerHTML = `<img id="profileDropdown_img" class="center" src="../../images/PeoplePic/WomenAgent.png" alt="profile" />`;
             else
                 document.getElementById("profileDropdown").innerHTML = `<img id="profileDropdown_img" class="center" src="../../images/PeoplePic/ManAgent.png" alt="profile" />`;
             document.getElementById("profileDropdown").innerHTML += `<p id="PH_name_agent">שלום, ${Agent_Name}</p>`;
-
-            setTimeout(Check_new_Request, 1000);
-            setTimeout(Check_new_message, 1000);
             document.getElementById("PH_name_agent").innerHTML = "שלום, " + Agent_Name;
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
             ajaxCall("GET", "../../api/Trip?Agent_ID=" + Agent_ID, "", successGETTrip_list, errorGETTripr_list);

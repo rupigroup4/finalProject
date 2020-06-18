@@ -52,8 +52,8 @@
         $(document).ready(function () {
             Spinner();
             Spinner.show();
-            setTimeout(Check_new_Request, 1000);
-            setTimeout(Check_new_message, 1000);
+            setInterval(Check_new_Request, 5000);
+            setInterval(Check_new_message, 5000);
             $('#closeAlbum').click(function ()
             {
                 $('#albumContainer').attr('hidden', true);

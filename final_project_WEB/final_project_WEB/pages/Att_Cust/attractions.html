@@ -40,8 +40,8 @@
 
         city = "";
         $(document).ready(function () {
-            setTimeout(Check_new_Request, 1000);
-            setTimeout(Check_new_message, 1000);
+            setInterval(Check_new_Request, 5000);
+            setInterval(Check_new_message, 5000);
             if (Gender == "נ")
                 document.getElementById("profileDropdown").innerHTML = `<img id="profileDropdown_img" class="center" src="../../images/PeoplePic/WomenAgent.png" alt="profile" />`;
             else
