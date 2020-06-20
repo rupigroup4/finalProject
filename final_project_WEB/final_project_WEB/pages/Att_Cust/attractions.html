@@ -183,10 +183,12 @@
                 str_buildAtt += `<div class="row">
                                             <div dir="rtl" class="col-md-12 grid-margin att_width" id="promotion_row">
                                             <form id="promotion_form" data-id="${arr_data[i].id}" data-city="${city}"">
-                                            <input dir="ltr" type="range" min="1" max="5" value="1" class ="slider1" id="Range_${arr_data[i].id}">
+                                            <input onclick="showRange('${arr_data[i].id}', value)" dir="ltr" type="range" min="1" max="5" value="1" class ="slider1" id="Range_${arr_data[i].id}">
+                                            <div id="P_${arr_data[i].id}" class ="form-check form-check-flat form-check-primary checkbox_style star">
+                                            </div>
                                             <div class ="form-check form-check-flat form-check-primary checkbox_style">
-                                             <label class="form-check-label">
-                                           <input class="checkbox_1 form-check-input" data-id="${arr_data[i].id}" type="checkbox" id="TripProfile_1_${arr_data[i].id}" />
+                                            <label class="form-check-label">
+                                            <input class="checkbox_1 form-check-input" data-id="${arr_data[i].id}" type="checkbox" id="TripProfile_1_${arr_data[i].id}" />
                                             <i class="input-helper"></i>
                                             כללי</label>
                                             </div>
@@ -318,6 +320,11 @@
 
         //ResultsURL
 
+        function showRange(id, val) {
+            console.log(val);
+            document.getElementById("P_" + id).innerHTML = val;
+        }
+
         function successAttractions(data) {
             str_buildAtt = "";
             arr_data = data.results;
@@ -335,10 +342,12 @@
                 str_buildAtt += `<div class="row">
                                             <div dir="rtl" class="col-md-12 grid-margin att_width" id="promotion_row">
                                             <form id="promotion_form" data-id="${arr_data[i].id}" data-city="${city}"">
-                                            <input dir="ltr" type="range" min="1" max="5" value="1" class ="slider1" id="Range_${arr_data[i].id}">
+                                            <input onclick="showRange('${arr_data[i].id}', value)" dir="ltr" type="range" min="1" max="5" value="1" class ="slider1" id="Range_${arr_data[i].id}">
+                                            <div id="P_${arr_data[i].id}" class ="form-check form-check-flat form-check-primary checkbox_style star">
+                                            </div>
                                             <div class ="form-check form-check-flat form-check-primary checkbox_style">
                                              <label class="form-check-label">
-                                           <input class="checkbox_1 form-check-input" data-id="${arr_data[i].id}" type="checkbox" id="TripProfile_1_${arr_data[i].id}" />
+                                            <input class="checkbox_1 form-check-input" data-id="${arr_data[i].id}" type="checkbox" id="TripProfile_1_${arr_data[i].id}" />
                                             <i class="input-helper"></i>
                                             כללי</label>
                                             </div>
@@ -421,7 +430,6 @@
                             document.getElementById('TripProfile_6_' + arr_data[i].id).checked = true;
                         promotion_List[k].Rate
                         document.getElementById('Range_' + arr_data[i].id).value = promotion_List[k].Rate;
-                        console.log(promotion_List[k].OrdersQuantity);
                         document.getElementById(`Quantity${arr_data[i].id}`).innerHTML =`כמות הזמנות: ${promotion_List[k].OrdersQuantity}`;
                     }
                 }

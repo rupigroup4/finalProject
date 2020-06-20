@@ -21992,3 +21992,12 @@ body_chat {
     color: #484848
 
 }
+
+.star {
+    background-image: url('../../images/star2.jpg');
+    width: 30px;
+    height: 30px;
+    padding-top: 6px;
+    padding-right: 10px;
+    margin-top: 5.5px
+}

@@ -275,6 +275,7 @@
     <Content Include="images\PeoplePic\ManAgent.png" />
     <Content Include="images\PeoplePic\WomenAgent.png" />
     <Content Include="images\register.jpg" />
+    <Content Include="images\star2.jpg" />
     <Content Include="images\Welcom.jpg" />
     <Content Include="js\chart.js" />
     <Content Include="js\dashboard.js" />
