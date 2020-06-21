@@ -255,9 +255,9 @@
 
 
         $(document).on("click", ".StartChat", function () {
-            Spinner();
-            Spinner.hide();
-            Spinner.show();
+            //Spinner();
+            //Spinner.hide();
+            //Spinner.show();
             LengthChat = 0;
             document.getElementById("agentMessage").value = "";
             $('.StartChat').css("background-color", "white")
@@ -279,8 +279,9 @@
             chatObject[customerID] = [];
             firebase.database().ref(`/chat/${customerID}`).on('child_added', function (snapshot) {
                 chatObject[customerID].push((snapshot.val()));
-            })
 
+            })
+            console.log(chatObject[customerID].length)
             for (var i = 0; i < chatObject[customerID].length; i++) {
                 if (chatObject[customerID][i].userId == Agent_ID) {
                     strConversation += `<div class="container_chat darker_chat">
@@ -296,16 +297,16 @@
                             </div>`;
                 }
                 LengthChat = customerID + "-" + chatObject[customerID].length;
-                Spinner.hide();
+                //Spinner.hide();
             }
 
             if (LengthChat == 0) {
                 LengthChat = customerID + "-" + chatObject[customerID].length;
-
             } 
 
             //bring Conversation from real-timeDB by customerID
             document.getElementById("ConversationWithCustomerPH").innerHTML = strConversation;
+
             updateScroll();
         }
         function successCustomer_list(customers_list1) {
