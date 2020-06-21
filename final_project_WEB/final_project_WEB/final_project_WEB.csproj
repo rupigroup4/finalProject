@@ -246,6 +246,7 @@
     <Content Include="images\faces\face9.jpg" />
     <Content Include="images\favicon.png" />
     <Content Include="images\iAgentLogo2b.png" />
+    <Content Include="images\icon-star.png" />
     <Content Include="images\img_new\gender.png" />
     <Content Include="images\img_new\gender_mini.png" />
     <Content Include="images\img_new\מצגת סמסטר א אנסטסיה %282%29.jpg" />
@@ -275,7 +276,6 @@
     <Content Include="images\PeoplePic\ManAgent.png" />
     <Content Include="images\PeoplePic\WomenAgent.png" />
     <Content Include="images\register.jpg" />
-    <Content Include="images\star2.jpg" />
     <Content Include="images\Welcom.jpg" />
     <Content Include="js\chart.js" />
     <Content Include="js\dashboard.js" />

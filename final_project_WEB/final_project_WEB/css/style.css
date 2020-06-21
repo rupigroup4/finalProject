@@ -21725,6 +21725,41 @@ div.dataTables_wrapper div.dataTables_paginate {
 
 /*slider*/
 .slider1 {
+    margin-left: 10px;
+    margin-top: 17px;
+    float: right;
+    -webkit-appearance: none;
+    height: 10px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+    .slider1:hover {
+        opacity: 1;
+    }
+
+    .slider1::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 23px;
+        height: 27px;
+        border: 0;
+        background: url('../images/icon-star.png');
+        cursor: pointer;
+    }
+
+    .slider1::-moz-range-thumb {
+        width: 23px;
+        height: 24px;
+        border: 0;
+        background: url('star.png');
+        cursor: pointer;
+    }
+/*.slider1 {
     float: right;
     margin-left: 10px;
     margin-top: 8px;
@@ -21755,7 +21790,8 @@ div.dataTables_wrapper div.dataTables_paginate {
         height: 25px;
         background: #4CAF50;
         cursor: pointer;
-    }
+    }*/
+/*slider*/
 
 #attractionPH, #Category, #city_label {
     width: 100%;
@@ -21989,15 +22025,18 @@ body_chat {
     min-width:120.18px;
 }
 .color-number {
-    color: #484848
-
+    color: #484848;
+    cursor: pointer;
 }
 
 .star {
-    background-image: url('../../images/star2.jpg');
-    width: 30px;
-    height: 30px;
-    padding-top: 6px;
-    padding-right: 10px;
-    margin-top: 5.5px
+    /*background-image: url('../../images/star2.jpg');*/
+    background-color: #f8e653;
+    width: 25px;
+    height: 25px;
+    padding-top: 1px;
+    padding-right: 7.5px;
+    margin-top: 5.5px;
+    border: solid 1.5px gray;
+    border-radius: 2px;
 }

@@ -40,6 +40,8 @@
 
         city = "";
         $(document).ready(function () {
+            Check_new_Request();
+            Check_new_message();
             setInterval(Check_new_Request, 5000);
             setInterval(Check_new_message, 5000);
             if (Gender == "נ")
@@ -148,7 +150,7 @@
                         <div class="item-content flex-grow">
                             <h6 class="ellipsis font-weight-normal">${k.FirstName} ${k.SureName}</h6>
                             <p class="font-weight-light small-text text-muted mb-0">
-                                The meeting is cancelled
+                                ישנה הודעה חדשה
                                     </p>
                         </div>
                          </a>`;
@@ -184,8 +186,7 @@
                                             <div dir="rtl" class="col-md-12 grid-margin att_width" id="promotion_row">
                                             <form id="promotion_form" data-id="${arr_data[i].id}" data-city="${city}"">
                                             <input onclick="showRange('${arr_data[i].id}', value)" dir="ltr" type="range" min="1" max="5" value="1" class ="slider1" id="Range_${arr_data[i].id}">
-                                            <div id="P_${arr_data[i].id}" class ="form-check form-check-flat form-check-primary checkbox_style star">
-                                            </div>
+                                            <div id="P_${arr_data[i].id}" class ="form-check form-check-flat form-check-primary checkbox_style star">1</div>
                                             <div class ="form-check form-check-flat form-check-primary checkbox_style">
                                             <label class="form-check-label">
                                             <input class="checkbox_1 form-check-input" data-id="${arr_data[i].id}" type="checkbox" id="TripProfile_1_${arr_data[i].id}" />
@@ -321,11 +322,11 @@
         //ResultsURL
 
         function showRange(id, val) {
-            console.log(val);
             document.getElementById("P_" + id).innerHTML = val;
         }
 
         function successAttractions(data) {
+            console.log(data);
             str_buildAtt = "";
             arr_data = data.results;
             text = "";
@@ -343,8 +344,7 @@
                                             <div dir="rtl" class="col-md-12 grid-margin att_width" id="promotion_row">
                                             <form id="promotion_form" data-id="${arr_data[i].id}" data-city="${city}"">
                                             <input onclick="showRange('${arr_data[i].id}', value)" dir="ltr" type="range" min="1" max="5" value="1" class ="slider1" id="Range_${arr_data[i].id}">
-                                            <div id="P_${arr_data[i].id}" class ="form-check form-check-flat form-check-primary checkbox_style star">
-                                            </div>
+                                            <div id="P_${arr_data[i].id}" class ="form-check form-check-flat form-check-primary checkbox_style star">1</div>
                                             <div class ="form-check form-check-flat form-check-primary checkbox_style">
                                              <label class="form-check-label">
                                             <input class="checkbox_1 form-check-input" data-id="${arr_data[i].id}" type="checkbox" id="TripProfile_1_${arr_data[i].id}" />
@@ -407,8 +407,7 @@
             }
             document.getElementById('PH_Attraction').innerHTML = str_buildAtt;
             Existing_promotions(arr_data);
-
-        }
+          }
 
         function errorAttractions(err) {
             console.log(err);
@@ -428,9 +427,9 @@
                             document.getElementById('TripProfile_5_' + arr_data[i].id).checked = true;
                         if (promotion_List[k].TripProfile_6 == 1)
                             document.getElementById('TripProfile_6_' + arr_data[i].id).checked = true;
-                        promotion_List[k].Rate
                         document.getElementById('Range_' + arr_data[i].id).value = promotion_List[k].Rate;
-                        document.getElementById(`Quantity${arr_data[i].id}`).innerHTML =`כמות הזמנות: ${promotion_List[k].OrdersQuantity}`;
+                        //document.getElementById(`Quantity${arr_data[i].id}`).innerHTML = `כמות הזמנות: ${promotion_List[k].OrdersQuantity}`;
+                        document.getElementById(`P_${arr_data[i].id}`).innerHTML = promotion_List[k].Rate;
                     }
                 }
             }
@@ -781,6 +780,7 @@
 
     <script src="../../Scripts/Top1000Cities.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="../Scripts/loading-spinner.js"></script>
 
 </body>
 

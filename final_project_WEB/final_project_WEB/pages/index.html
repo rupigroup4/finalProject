@@ -26,7 +26,6 @@
     <link rel="shortcut icon" href="../images/iAgentLogo2b.png" />
     <!--sorting by date format dd/mm/yyyy-->
     <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">
-    <script src="../Scripts/loadingScript.js"></script>
     <script>
 
         var RequestID = null;
@@ -44,7 +43,7 @@
             Gender = sessionStorage.getItem('gender');
         }
         if (sessionStorage.getItem('firstTime') == "true") {
-            window.onload = loading;
+            //window.onload = loading;
             sessionStorage.setItem('firstTime', false);
         }
 
@@ -54,12 +53,27 @@
             Spinner.show();
             setInterval(Check_new_Request, 5000);
             setInterval(Check_new_message, 5000);
+            Check_new_Request();
+            Check_new_message();
             $('#closeAlbum').click(function ()
             {
                 $('#albumContainer').attr('hidden', true);
                 $("html, body").animate({
                     scrollTop: $('#Archives_table_div').offset().top +200
                 }, 1000);
+            })
+            $('#NumberOfCutomersOnTripPH').click(function () {
+                $("html, body").animate({
+                    scrollTop: $('#Archives_table_div').offset().top + 800
+                }, 1000);
+            })
+            $('#Request_numPH,#AmountOfSalesPH').click(function () {
+                $("html, body").animate({
+                    scrollTop: $('#Archives_table_div').offset().top + 160
+                }, 1000);
+            })
+            $('#customers_numPH').click(function () {
+                window.location.href = "Att_Cust/customer_list.html";
             })
             ajaxCall("GET", "../api/Request/ShowArchives?Agent_ID=" + Agent_ID, "", successShowArchivest, errorShowArchives);
             ajaxCall("GET", "../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list);
@@ -215,7 +229,7 @@
             ajaxCall("GET", "../api/badge/NEWMessage?Agent_ID=" + Agent_ID, "", successGETNEWmessage, errorGETNEWmessage)
         }
 
-        $(document).on('click', '.dropdown-item', function () {
+        $(document).on('click', '.ReadMessage', function () {
             var customerID = this.getAttribute("data-id");
             console.log(customerID);
             ajaxCall("PUT", "../api/badge/ReadMessage?customerID=" + customerID, "", successReadMessage, errorReadMessage)
@@ -238,14 +252,14 @@
             if (data.length) {
                 document.getElementById("newMesseages_point").style.display = "block";
                 for (k of data) {
-                    str += `<a id="dropdown_chat_item" class="dropdown-item"  data-id="${k.Id}">
+                    str += `<a id="dropdown_chat_item" class="dropdown-item ReadMessage"  data-id="${k.Id}">
                     <div class="item-thumbnail">
                         <img src="${k.Img}" alt="image" class="profile-pic">
                                 </div>
                         <div class="item-content flex-grow">
                             <h6 class="ellipsis font-weight-normal">${k.FirstName} ${k.SureName}</h6>
                             <p class="font-weight-light small-text text-muted mb-0">
-                                The meeting is cancelled
+                                ישנה הודעה חדשה
                                     </p>
                         </div>
                          </a>`;
@@ -449,7 +463,7 @@
                 let dataRequest = "data-RequestId='" + Request_customer_list[i].Id + "'";
                 let dataStatus = "data-Status='" + Request_customer_list[i].Status + "'";
                 strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')" >new</a>
-                                                <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')">in prosess</a>
+                                                <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')">in process</a>
                                                 <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')" >success</a>
                                                 <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')">failed</a></div></div></td>`;
                 if (Request_customer_list[i].AttractionID == "lupa") {

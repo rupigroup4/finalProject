@@ -43,6 +43,8 @@
 
         var timer;
         $(document).ready(function () {
+            Check_new_Request();
+            Check_new_message();
             setInterval(Check_new_Request, 5000);
             setInterval(Check_new_message, 5000);
             if (Gender == "נ")
@@ -104,7 +106,7 @@
                         <div class="item-content flex-grow">
                             <h6 class="ellipsis font-weight-normal">${k.FirstName} ${k.SureName}</h6>
                             <p class="font-weight-light small-text text-muted mb-0">
-                                The meeting is cancelled
+                                ישנה הודעה חדשה
                                     </p>
                         </div>
                          </a>`;
