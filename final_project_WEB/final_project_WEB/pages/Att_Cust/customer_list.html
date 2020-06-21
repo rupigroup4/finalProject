@@ -232,7 +232,7 @@
                     str += "<td style='text-align: center;'><button type='button' title='עריכת לקוח' id='" + customers_list[i].Id + "' " + data_btn + " class='btn btn-primary btn-rounded btn-icon saveBtn'><i class='ti-pencil'></i></button>"
                     str += `<button type='button' title='הוספת טיול' id=' ${customers_list[i].Id}' onclick='showPopUp(${customers_list[i].Id},"${customers_list[i].FirstName}")' class='btn btn-success btn-rounded btn-icon'><i class='ti-plus'></i></button>`;
                     str += `<button type='button' title='שליחת הודעה' id='${customers_list[i].Id}' onclick='sendM(${customers_list[i].Id},"${customers_list[i].FirstName} ${customers_list[i].SureName}",${i})' class='btn btn-danger btn-rounded btn-icon'><i class='ti-comment' ></i></button>`;
-                    str += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id + ")' class='btn btn-dark btn-rounded btn-icon'><i class='ti-trash' ></i></button ></td></tr>";
+                    str += "<button type='button' title='מחיקת לקוח' id='" + customers_list[i].Id + "' onclick='deleteC(" + customers_list[i].Id +")' class='btn btn-dark btn-rounded btn-icon delete'><i class='ti-trash' ></i></button ></td></tr>";
                 }
                 document.getElementById("CustomerPH").innerHTML = str;
                 $("#Table_customer").DataTable({
@@ -338,6 +338,7 @@
             alert("errorEditCustomer");
         }
         function deleteC(id) {
+            idRowReq = 'tr_' + id;
             ajaxCall("DELETE", "../../api/Customer?customerID=" + id, "", successdeleteCustomer, errordeleteCustomer)
         }
 
@@ -353,8 +354,7 @@
         }
 
         function successCustomer_list_new(data) {
-            var table = $('#Table_customer').DataTable();
-            table.row(this).delete();
+            $(`#${idRowReq}`).remove();
         }
 
         function errordeleteCustomer(err) {
