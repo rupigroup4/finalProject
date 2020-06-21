@@ -80,7 +80,6 @@
             alert("errorReadMessage");
         }
         function successGETNEWmessage(data) {
-            console.log(data);
             var str = "";
             if (data.length) {
                 document.getElementById("newMesseages_point").style.display = "block";
@@ -107,7 +106,6 @@
         }
 
         function successCountNEWRequest(data) {
-            console.log(data);
             var count = data.length / 2;
             var strNewRequest;
             if (count) {
@@ -206,14 +204,29 @@
         }
 
         function POSTsuccessNewCustomer(num) {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+
+            h = checkTime(h);
+            m = checkTime(m);
+            realTime = h + ":" + m;
+
+            function checkTime(i) {
+                if (i < 10) {
+                    i = "0" + i;
+                }
+                return i;
+            }
+            console.log(num);
             if (num != 0) {
                 let messageLength = 0;
-                firebase.database().ref(`/chat/1004`).on('child_added', function (snapshot) {
+                firebase.database().ref(`/chat/${num}`).on('child_added', function (snapshot) {
                     messageLength = snapshot.length();
                 })
-                let messageText = 'שמחים לקבל אותך ללקוחותינו!!'
-                firebase.database().ref(`/chat/${1004}`).push().set({
-                    time: Date.now,
+                let messageText = 'ברוך הבא ל-iAgent '
+                firebase.database().ref(`/chat/${num}`).push().set({
+                    time: realTime,
                     userId: Agent_ID,
                     message: messageText,
                     id: messageLength
@@ -461,8 +474,30 @@
     <!-- Custom js for this page-->
     <script src="../../js/file-upload.js"></script>
     <!-- End custom js for this spage-->
-    <script src="../../Scripts/inAllPages.js"></script>
 
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-database.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAId8Srmj8cJP0EZKGeQAQXkzS_k0KDHJY",
+            authDomain: "iagent-2c5fc.firebaseapp.com",
+            databaseURL: "https://iagent-2c5fc.firebaseio.com",
+            projectId: "iagent-2c5fc",
+            storageBucket: "iagent-2c5fc.appspot.com",
+            messagingSenderId: "46905251276",
+            appId: "1:46905251276:web:cb9d229b59320dc13b7969",
+            measurementId: "G-G8YDY5CXCH"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
 </body>
 
 </html>

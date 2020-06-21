@@ -94,7 +94,6 @@
             alert("errorReadMessage");
         }
         function successGETNEWmessage(data) {
-            console.log(data);
             var str = "";
             if (data.length) {
                 document.getElementById("newMesseages_point").style.display = "block";
@@ -211,10 +210,10 @@
                             <span class="time-left">${realTime}</span>
                             </div>`;
             document.getElementById("ConversationWithCustomerPH").innerHTML += strConversation;
+        
             updateScroll()
             ajaxCall('GET', '../../api/notification/getpnTokenByCustomerId/' + customerId, '', getpnTokenByCustomerIdSuccess, getpnTokenByCustomerIdError);
             ajaxCall('PUT', '../../api/badge/newMessage/' + customerId, '', updateBadgeNewMessageSuccess, updateBadgeNewMessageError);
-
         }
         function updateScroll() {
             var element = document.getElementById("ConversationWithCustomerPH");
@@ -256,6 +255,9 @@
 
 
         $(document).on("click", ".StartChat", function () {
+            Spinner();
+            Spinner.hide();
+            Spinner.show();
             LengthChat = 0;
             document.getElementById("agentMessage").value = "";
             $('.StartChat').css("background-color", "white")
@@ -273,14 +275,11 @@
         function showConversation(customerID1, indexCustomer1) {
             customerID = customerID1;
             indexCustomer = indexCustomer1;
-            console.log(customerID);
-            console.log(indexCustomer);
             let strConversation = "";
             chatObject[customerID] = [];
             firebase.database().ref(`/chat/${customerID}`).on('child_added', function (snapshot) {
                 chatObject[customerID].push((snapshot.val()));
             })
-
 
             for (var i = 0; i < chatObject[customerID].length; i++) {
                 if (chatObject[customerID][i].userId == Agent_ID) {
@@ -297,18 +296,18 @@
                             </div>`;
                 }
                 LengthChat = customerID + "-" + chatObject[customerID].length;
+                Spinner.hide();
             }
 
             if (LengthChat == 0) {
                 LengthChat = customerID + "-" + chatObject[customerID].length;
 
-            }
+            } 
+
             //bring Conversation from real-timeDB by customerID
             document.getElementById("ConversationWithCustomerPH").innerHTML = strConversation;
             updateScroll();
-
         }
-
         function successCustomer_list(customers_list1) {
             customers_list = customers_list1;
             let str = "";
@@ -534,8 +533,6 @@
     <!-- Custom js for this page-->
     <script src="../../js/file-upload.js"></script>
     <!-- End custom js for this page-->
-
-
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
     <!-- TODO: Add SDKs for Firebase products that you want to use
@@ -560,6 +557,8 @@
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
     </script>
+    <script src="../../Scripts/loading-spinner.js"></script>
+    
 
 </body>
 

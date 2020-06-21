@@ -64,7 +64,8 @@ namespace final_project_WEB.Models
             DBservices dbs = new DBservices();
             dbs.insert_customer(customer);
             int customer_Id = dbs.customerAdded(customer.Email);
-            return dbs.AddToBadge(customer_Id);
+            dbs.AddToBadge(customer_Id);
+            return customer_Id;
         }
 
         public int Delete_customer(int customerID)
