@@ -938,7 +938,7 @@ public class DBservicesMobile
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "select *  from Request_igroup4 where TripID =" + tripId;
+            String selectSTR = "select *  from Request_igroup4 where TripID =" + tripId + " and attractionId ='lupa'";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
