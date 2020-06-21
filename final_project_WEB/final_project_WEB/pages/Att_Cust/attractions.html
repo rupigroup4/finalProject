@@ -52,6 +52,8 @@
             ajaxCall("GET", "../../api/Promotion/GetPromotedAttraction?Agent_ID=" + Agent_ID, "", successPromotedAttractionList, errorPromotedAttractionList);
 
             $('#attraction_form_ByCategory').submit(function () {
+                Spinner();
+                Spinner.show();
                 Category_second = $('#category_sec_select').val();
                  city = $('#city').val();
                 if (Category_first == 'tours') {
@@ -74,6 +76,8 @@
                 return false;
             });
             $('#attraction_form_ByName').submit(function () {
+                Spinner();
+                Spinner.show();
                 city = $('#city').val();
                 console.log(city);
                 var name = $('#att_Name').val();
@@ -248,6 +252,7 @@
             }
             document.getElementById('PH_Attraction').innerHTML = str_buildAtt;
             Existing_promotions(arr_data);
+            Spinner.hide();
         }
 
         function errorCountNEWRequest(err) {
@@ -407,6 +412,7 @@
             }
             document.getElementById('PH_Attraction').innerHTML = str_buildAtt;
             Existing_promotions(arr_data);
+            Spinner.hide();
           }
 
         function errorAttractions(err) {
@@ -780,8 +786,7 @@
 
     <script src="../../Scripts/Top1000Cities.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="../Scripts/loading-spinner.js"></script>
-
+    <script src="../../Scripts/loading-spinner.js"></script>
 </body>
 
 </html>

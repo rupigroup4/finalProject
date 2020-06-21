@@ -206,7 +206,18 @@
         }
 
         function POSTsuccessNewCustomer(num) {
-            if (num != 0)
+            if (num != 0) {
+                let messageLength = 0;
+                firebase.database().ref(`/chat/1004`).on('child_added', function (snapshot) {
+                    messageLength = snapshot.length();
+                })
+                let messageText = 'שמחים לקבל אותך ללקוחותינו!!'
+                firebase.database().ref(`/chat/${1004}`).push().set({
+                    time: Date.now,
+                    userId: Agent_ID,
+                    message: messageText,
+                    id: messageLength
+                })
                 swal({
                     title: "הלקוח נוסף בהצלחה",
                     icon: "success",
@@ -215,11 +226,14 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             sessionStorage.setItem("add_trip", Fullname);
+
                             window.location.href = "../Att_Cust/customer_list.html";
+
                         }
                         else {
                         }
                     });
+            }
             else
                 swal("שגיאה", "הלקוח לא נוסף", "error");
             clearFields();
