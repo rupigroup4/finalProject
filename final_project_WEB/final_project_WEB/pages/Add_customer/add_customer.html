@@ -204,33 +204,33 @@
         }
 
         function POSTsuccessNewCustomer(num) {
-            var today = new Date();
-            var h = today.getHours();
-            var m = today.getMinutes();
+            //var today = new Date();
+            //var h = today.getHours();
+            //var m = today.getMinutes();
 
-            h = checkTime(h);
-            m = checkTime(m);
-            realTime = h + ":" + m;
+            //h = checkTime(h);
+            //m = checkTime(m);
+            //realTime = h + ":" + m;
 
-            function checkTime(i) {
-                if (i < 10) {
-                    i = "0" + i;
-                }
-                return i;
-            }
+            //function checkTime(i) {
+            //    if (i < 10) {
+            //        i = "0" + i;
+            //    }
+            //    return i;
+            //}
             console.log(num);
             if (num != 0) {
-                let messageLength = 0;
-                firebase.database().ref(`/chat/${num}`).on('child_added', function (snapshot) {
-                    messageLength = snapshot.length();
-                })
-                let messageText = 'ברוך הבא ל-iAgent '
-                firebase.database().ref(`/chat/${num}`).push().set({
-                    time: realTime,
-                    userId: Agent_ID,
-                    message: messageText,
-                    id: messageLength
-                })
+                //let messageLength = 0;
+                //firebase.database().ref(`/chat/${num}`).on('child_added', function (snapshot) {
+                //    messageLength = snapshot.length();
+                //})
+                //let messageText = 'ברוך הבא ל-iAgent '
+                //firebase.database().ref(`/chat/${num}`).push().set({
+                //    time: realTime,
+                //    userId: Agent_ID,
+                //    message: messageText,
+                //    id: messageLength
+                //})
                 swal({
                     title: "הלקוח נוסף בהצלחה",
                     icon: "success",
@@ -476,10 +476,10 @@
     <!-- End custom js for this spage-->
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+    <!--<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>-->
     <!-- TODO: Add SDKs for Firebase products that you want to use
          https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-database.js"></script>
+    <!--<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-database.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
     <script>
@@ -497,7 +497,7 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
-    </script>
+    </script>-->
 </body>
 
 </html>
