@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, Modal, Image } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, Modal, Image, Dimensions } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import axios from 'axios';
@@ -69,14 +69,16 @@ const tripAlbumScreen = ({ navigation }) => {
     };
 
     saveToAlbumDb = async (imageUrl) => {
+
         const options = {
             method: "POST",
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8',
             }),
-            body: JSON.stringify(`http://proj.ruppin.ac.il/igroup4/prod/${imageUrl[0]}`)
+            body: JSON.stringify(`${imageUrl[0]}`)
         }
-        fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/addToAlbum/${trip}`, options)
+
+        fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/addToAlbum/${trip.TripID}`, options)
             .then(
                 () => {
                     let newImage = { url: `http://proj.ruppin.ac.il/igroup4/prod/${imageUrl[0]}` }
@@ -84,12 +86,11 @@ const tripAlbumScreen = ({ navigation }) => {
                     setImages(prevImages => [newImage, ...prevImages])
                 },
                 (error) => {
-                    console.log("err post=", error);
+                    console.log("err post imageUrl =", error);
                 });
     }
 
     uploadImageToAlbum = async (result) => {
-        console.log(result)
         const data = createFormData(result)
 
         fetch("http://proj.ruppin.ac.il/igroup4/prod/api/image/uploadimage", {
@@ -178,20 +179,22 @@ const tripAlbumScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={{ flex: 0.8 }}>
+        <View style={{ flex: 0.8, alignItems: 'center' }}>
             {images.length > 0 ?
                 <>
                     <View>
                         <FlatList
                             data={images}
+                            numColumns={2}
                             keyExtractor={(item) => item.url}
                             renderItem={({ item }) => {
                                 return (
                                     <TouchableOpacity
+                                        style={{ padding: 5 }}
                                         onPress={selected == '' ? () => imageClick(item.url) : null}
                                         onLongPress={() => showDelteIcon(item.url)}
                                     >
-                                        <Image style={selected == item.url ? styles.selected : { width: 130, height: 130 }} source={{ uri: item.url }} />
+                                        <Image style={selected == item.url ? styles.selected : styles.notSelected} source={{ uri: item.url }} />
                                     </TouchableOpacity>
                                 )
                             }}
@@ -223,7 +226,7 @@ const tripAlbumScreen = ({ navigation }) => {
 tripAlbumScreen.navigationOptions = ({ navigation }) => {
     const imagesLength = navigation.getParam('imagesLength')
     const lupaExists = navigation.getParam('lupaExists');
-    
+
     return {
         headerTitle: () => {
             return (
@@ -280,9 +283,13 @@ const styles = StyleSheet.create({
     },
     selected: {
         height: 130,
-        width: 130,
+        width: Dimensions.get('screen').width / 2 - 20,
         borderWidth: 4,
         borderColor: 'black'
+    },
+    notSelected: {
+        width: Dimensions.get('screen').width / 2 - 20,
+        height: 130
     }
 });
 

@@ -386,6 +386,7 @@ public class DBservicesMobile
 
     public int addToAlbum(int tripId, string url)
     {
+        string fullUrl = "http://proj.ruppin.ac.il/igroup4/prod/" + url;
         SqlConnection con;
         SqlCommand cmd;
         try
@@ -398,7 +399,7 @@ public class DBservicesMobile
             throw (ex);
         }
 
-        String cStr = "insert into tripAlbum_igroup4 (tripId , imageUrl) values ("+tripId+",'"+url+"')";
+        String cStr = "insert into tripAlbum_igroup4 (tripId , imageUrl) values ("+tripId+",'"+ fullUrl + "')";
 
         cmd = CreateCommand(cStr, con);   // create the command
 
