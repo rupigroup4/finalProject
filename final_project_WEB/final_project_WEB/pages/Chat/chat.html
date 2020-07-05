@@ -76,17 +76,18 @@
         function Check_new_message() {
             ajaxCall("GET", "../../api/badge/NEWMessage?Agent_ID=" + Agent_ID, "", successGETNEWmessage, errorGETNEWmessage)
         }
-        $(document).on('click', '.dropdown-item', function () {
+        $(document).on('click', '.dropdown-item-click', function () {
             var customerID = this.getAttribute("data-id");
             console.log(customerID);
             ajaxCall("PUT", "../../api/badge/ReadMessage?customerID=" + customerID, "", successReadMessage, errorReadMessage)
         });
         function successReadMessage(id) {
             if (id != 0) {
-                console.log("נקרא");
-                console.log(id);
                 sessionStorage.setItem("customerID_chat", id);
-                window.location.href = "../Chat/chat.html";
+                idCustomerS = sessionStorage.getItem("customerID_chat");
+                x = document.getElementById('tr_'+idCustomerS);
+                x.click();
+                sessionStorage.removeItem("customerID_chat")
             }
             else alert("error");
         }
@@ -98,7 +99,7 @@
             if (data.length) {
                 document.getElementById("newMesseages_point").style.display = "block";
                 for (k of data) {
-                    str += `<a id="dropdown_chat_item" class="dropdown-item"  data-id="${k.Id}">
+                    str += `<a id="dropdown_chat_item" class="dropdown-item dropdown-item-click"  data-id="${k.Id}">
                     <div class="item-thumbnail">
                         <img src="${k.Img}" alt="image" class="profile-pic">
                                 </div>
@@ -255,9 +256,6 @@
 
 
         $(document).on("click", ".StartChat", function () {
-            //Spinner();
-            //Spinner.hide();
-            //Spinner.show();
             LengthChat = 0;
             document.getElementById("agentMessage").value = "";
             $('.StartChat').css("background-color", "white")
@@ -306,7 +304,6 @@
 
             //bring Conversation from real-timeDB by customerID
             document.getElementById("ConversationWithCustomerPH").innerHTML = strConversation;
-
             updateScroll();
         }
         function successCustomer_list(customers_list1) {
@@ -315,18 +312,25 @@
             for (var i = 0; i < customers_list.length; i++) {
                 chatObject[`${customers_list[i].Id}`] = []
                 let data_btn = "data-name='" + customers_list[i].FirstName + " " + customers_list[i].SureName + "'" + " data-id='" + customers_list[i].Id + "'" + " data-indexC='" + i + "'";
-                str += "<tr style='cursor:pointer;' onMouseOver=this.style.color='#3399ff' onMouseOut=this.style.color='black' class='StartChat'" + data_btn + "id='" + customers_list[i].Id + "'><td><i class='ti-comments-smiley'></i></td><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td><td>";
+                str += "<tr id='tr_" + customers_list[i].Id+"' style='cursor:pointer;' onMouseOver=this.style.color='#3399ff' onMouseOut=this.style.color='black' class='StartChat'" + data_btn + "><td><i class='ti-comments-smiley'></i></td><td>" + customers_list[i].FirstName + " " + customers_list[i].SureName + "</td><td>";
                 str += "<img src='" + customers_list[i].Img + "' />";
                 str += "</td></tr>";
             }
-            idCustomerS = sessionStorage.getItem("customerID_chat");
             document.getElementById("CustomerPH").innerHTML += str;
-            x = document.getElementById(idCustomerS);
-            x.click();
             setInterval(Check_new_message_chat(customers_list1), 5000);
+            if (sessionStorage.getItem("customerID_chat")) {
+                click_on_customer()
+            }
         }
 
-
+        function click_on_customer() {
+            idCustomerS = sessionStorage.getItem("customerID_chat");
+            console.log(idCustomerS)
+            console.log('tr_' + idCustomerS)
+            x = document.getElementById('tr_' + idCustomerS);
+            x.click();
+            sessionStorage.removeItem("customerID_chat")
+        }
 
         function Search_byName() {
             var input, filter, table, tr, td, i, txtValue;

@@ -62,7 +62,7 @@
         function Check_new_message() {
             ajaxCall("GET", "../../api/badge/NEWMessage?Agent_ID=" + Agent_ID, "", successGETNEWmessage, errorGETNEWmessage)
         }
-        $(document).on('click', '.dropdown-item', function () {
+        $(document).on('click', '.dropdown-item-click', function () {
             var customerID = this.getAttribute("data-id");
             console.log(customerID);
             ajaxCall("PUT", "../../api/badge/ReadMessage?customerID=" + customerID, "", successReadMessage, errorReadMessage)
@@ -84,7 +84,7 @@
             if (data.length) {
                 document.getElementById("newMesseages_point").style.display = "block";
                 for (k of data) {
-                    str += `<a id="dropdown_chat_item" class="dropdown-item"  data-id="${k.Id}">
+                    str += `<a id="dropdown_chat_item" class="dropdown-item dropdown-item-click"  data-id="${k.Id}">
                     <div class="item-thumbnail">
                         <img src="${k.Img}" alt="image" class="profile-pic">
                                 </div>
@@ -202,35 +202,34 @@
             $('#birthDay').val("");
             $('#email').val("");
         }
-
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
         function POSTsuccessNewCustomer(num) {
-            //var today = new Date();
-            //var h = today.getHours();
-            //var m = today.getMinutes();
-
-            //h = checkTime(h);
-            //m = checkTime(m);
-            //realTime = h + ":" + m;
-
-            //function checkTime(i) {
-            //    if (i < 10) {
-            //        i = "0" + i;
-            //    }
-            //    return i;
-            //}
             console.log(num);
             if (num != 0) {
-                //let messageLength = 0;
-                //firebase.database().ref(`/chat/${num}`).on('child_added', function (snapshot) {
-                //    messageLength = snapshot.length();
-                //})
-                //let messageText = 'ברוך הבא ל-iAgent '
-                //firebase.database().ref(`/chat/${num}`).push().set({
-                //    time: realTime,
-                //    userId: Agent_ID,
-                //    message: messageText,
-                //    id: messageLength
-                //})
+                var today = new Date();
+                var h = today.getHours();
+                var m = today.getMinutes();
+
+                h = checkTime(h);
+                m = checkTime(m);
+                realTime = h + ":" + m;
+
+                let messageLength = 0;
+                firebase.database().ref(`/chat/${num}`).on('child_added', function (snapshot) {
+                    messageLength = snapshot.length();
+                })
+                let messageText = 'ברוך הבא ל-iAgent '
+                firebase.database().ref(`/chat/${num}`).push().set({
+                    time: realTime,
+                    userId: Agent_ID,
+                    message: messageText,
+                    id: messageLength
+                })
                 swal({
                     title: "הלקוח נוסף בהצלחה",
                     icon: "success",

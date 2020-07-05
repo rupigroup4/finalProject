@@ -125,7 +125,7 @@
             }
             document.getElementById("newRequest").style.display = "none";
         }
-        $(document).on('click', '.dropdown-item', function () {
+        $(document).on('click', '.dropdown-item-click', function () {
             var customerID = this.getAttribute("data-id");
             console.log(customerID);
             ajaxCall("PUT", "../../api/badge/ReadMessage?customerID=" + customerID, "", successReadMessage, errorReadMessage)
@@ -147,7 +147,7 @@
             if (data.length) {
                 document.getElementById("newMesseages_point").style.display = "block";
                 for (k of data) {
-                    str += `<a id="dropdown_chat_item" class="dropdown-item"  data-id="${k.Id}">
+                    str += `<a id="dropdown_chat_item" class="dropdown-item dropdown-item-click"  data-id="${k.Id}">
                     <div class="item-thumbnail">
                         <img src="${k.Img}" alt="image" class="profile-pic">
                                 </div>

@@ -26,6 +26,8 @@
     <link rel="shortcut icon" href="../images/iAgentLogo2b.png" />
     <!--sorting by date format dd/mm/yyyy-->
     <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.21/sorting/date-euro.js">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <script>
 
         var RequestID = null;
@@ -55,11 +57,10 @@
             setInterval(Check_new_message, 5000);
             Check_new_Request();
             Check_new_message();
-            $('#closeAlbum').click(function ()
-            {
+            $('#closeAlbum').click(function () {
                 $('#albumContainer').attr('hidden', true);
                 $("html, body").animate({
-                    scrollTop: $('#Archives_table_div').offset().top +200
+                    scrollTop: $('#Archives_table_div').offset().top + 200
                 }, 1000);
             })
             $('#NumberOfCutomersOnTripPH').click(function () {
@@ -91,16 +92,16 @@
                 for (var i = 0; i < Task_List.length; i++) {
                     if (Task_List[i].Completed == 1) {
                         strTask += `<li class="completed">
-                                                              <div class='form-check form-check-flat'>
-                                                                <label class='form-check-label'">
-                                                                    <input style="" data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox' checked='checked'/>
-                                                                    <i class='input-helper' ></i>
-                                                                </label>
-                                                              </div>
-                                                                <div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div>
+                                                                      <div class='form-check form-check-flat'>
+                                                                        <label class='form-check-label'">
+                                                                            <input style="" data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox' checked='checked'/>
+                                                                            <i class='input-helper' ></i>
+                                                                        </label>
+                                                                      </div>
+                                                                        <div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div>
 
-                                                            <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i>
-                                                        </li>`;
+                                                                    <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i>
+                                                                </li>`;
                     }
                     else {
                         strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox'/> <i class='input-helper'></i></label></div><div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`;
@@ -134,12 +135,12 @@
                 strRequest = "";
                 for (var i = 0; i < ArchivestList.length; i += 2) {
                     strRequest += `<tr>
-                                   <td id='${ArchivestList[i + 1].FirstName} ${ArchivestList[i + 1].SureName}'><img src='${ArchivestList[i + 1].Img}'/></td>
-                                   <td id='${ArchivestList[i + 1].FirstName} ${ArchivestList[i + 1].SureName}'>${ArchivestList[i + 1].FirstName} ${ArchivestList[i + 1].SureName}</td>
-                                   <td id="td_AttName" data-attractionId=${ArchivestList[i].AttractionID} >${ArchivestList[i].AttractionName}</td>
-                                   <td>${ArchivestList[i].Order_date}</td>
-                                   <td>${ArchivestList[i].NumTickets}</td>
-                                   <td> ${ArchivestList[i].Status}</td>`;
+                                           <td id='${ArchivestList[i + 1].FirstName} ${ArchivestList[i + 1].SureName}'><img src='${ArchivestList[i + 1].Img}'/></td>
+                                           <td id='${ArchivestList[i + 1].FirstName} ${ArchivestList[i + 1].SureName}'>${ArchivestList[i + 1].FirstName} ${ArchivestList[i + 1].SureName}</td>
+                                           <td id="td_AttName" data-attractionId=${ArchivestList[i].AttractionID} >${ArchivestList[i].AttractionName}</td>
+                                           <td>${ArchivestList[i].Order_date}</td>
+                                           <td>${ArchivestList[i].NumTickets}</td>
+                                           <td> ${ArchivestList[i].Status}</td>`;
 
                 }
                 document.getElementById("ArchivesPH").innerHTML = strRequest;
@@ -170,7 +171,7 @@
                     }
                 });
             }
-            function errorShowArchives() { alert("error")}
+            function errorShowArchives() { alert("error") }
 
             $('#upload').click(function () {
                 var data = new FormData();
@@ -196,11 +197,11 @@
                 return false;
             })
 
-         
+
         });
 
         function successUpDateActiveTrip(numEffected) {
-            console.log('successUpDateActiveTrip=',numEffected);
+            console.log('successUpDateActiveTrip=', numEffected);
         }
 
         function errorUpDateActiveTrip() {
@@ -253,16 +254,16 @@
                 document.getElementById("newMesseages_point").style.display = "block";
                 for (k of data) {
                     str += `<a id="dropdown_chat_item" class="dropdown-item ReadMessage"  data-id="${k.Id}">
-                    <div class="item-thumbnail">
-                        <img src="${k.Img}" alt="image" class="profile-pic">
+                            <div class="item-thumbnail">
+                                <img src="${k.Img}" alt="image" class="profile-pic">
+                                        </div>
+                                <div class="item-content flex-grow">
+                                    <h6 class="ellipsis font-weight-normal">${k.FirstName} ${k.SureName}</h6>
+                                    <p class="font-weight-light small-text text-muted mb-0">
+                                        ישנה הודעה חדשה
+                                            </p>
                                 </div>
-                        <div class="item-content flex-grow">
-                            <h6 class="ellipsis font-weight-normal">${k.FirstName} ${k.SureName}</h6>
-                            <p class="font-weight-light small-text text-muted mb-0">
-                                ישנה הודעה חדשה
-                                    </p>
-                        </div>
-                         </a>`;
+                                 </a>`;
                 }
                 document.getElementById("NEWmessage").innerHTML = str;
                 return;
@@ -282,16 +283,16 @@
                 strNewRequest = `<div style="float:right;"><p class="mb-0 font-weight-normal float-left dropdown-header">בקשות חדשות</p></div>`;
                 for (var i = 0; i < data.length; i += 2) {
                     strNewRequest += `<a id="dropdown_Status_item" class="dropdown-item" data-name="${data[i].AttractionName}">
-                                                             <div class="item-thumbnail">
-                                                                   <div class="item-icon bg-primary">
-                                                                      <i class="ti-info mx-0"></i>
-                                                                    </div>
-                                                              </div>
-                                                               <div class="item-content">
-                                                                       <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
-                                                                         <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
-                                                                         </p>
-                                                               </div></a >`;
+                                                                     <div class="item-thumbnail">
+                                                                           <div class="item-icon bg-primary">
+                                                                              <i class="ti-info mx-0"></i>
+                                                                            </div>
+                                                                      </div>
+                                                                       <div class="item-content">
+                                                                               <h6 class="att_name_item font-weight-normal">${data[i].AttractionName}</h6 >
+                                                                                 <p class="font-weight-light small-text mb-0 text-muted"> ${data[i + 1].FirstName} ${data[i + 1].SureName}
+                                                                                 </p>
+                                                                       </div></a >`;
                 }
                 document.getElementById("NewReqMenu").innerHTML = strNewRequest;
                 return;
@@ -364,10 +365,10 @@
                         else color_class = 'danger'
 
                         strCustomerOnTrip += `<td style="min-width: 100px;">
-                                                                     ${percent}% <div dir="ltr" class="progress">
-                                                                         <div class="progress-bar bg-${color_class}" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
-                                                                      </div>
-                                                                  </td></tr>`;
+                                                                             ${percent}% <div dir="ltr" class="progress">
+                                                                                 <div class="progress-bar bg-${color_class}" role="progressbar" style="width: ${percent}%" aria-valuenow="75" aria-valuemin="${num_day_passed}" aria-valuemax="${num_day_in_trip}"></div>
+                                                                              </div>
+                                                                          </td></tr>`;
                     }
                     i = i + 2;
                 }
@@ -433,7 +434,7 @@
         }
 
         function successShowALLRequest(Request_customer_list) {
-            
+
             strRequest = "";
             var countSuccess = 0;
             for (var i = 0; i < Request_customer_list.length; i += 2) {
@@ -444,11 +445,11 @@
                 }
                 let IdRequest = "Row-Request" + Request_customer_list[i].Id + "";
                 strRequest += `<tr id='${IdRequest}'>
-                                                                   <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'><img src='${Request_customer_list[i + 1].Img}'/></td>
-                                                                   <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
-                                                                   <td id="td_AttName" data-attractionId=${Request_customer_list[i].AttractionID} >${Request_customer_list[i].AttractionName}</td>
-                                                                    <td><p hidden>${Date.parse(newDate)}</p><p>${Request_customer_list[i].Order_date}</p></td>
-                                                                    <td>${Request_customer_list[i].NumTickets}</td>`;
+                                                                           <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'><img src='${Request_customer_list[i + 1].Img}'/></td>
+                                                                           <td class='td_search' id='${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}'>${Request_customer_list[i + 1].FirstName} ${Request_customer_list[i + 1].SureName}</td>
+                                                                           <td id="td_AttName" data-attractionId=${Request_customer_list[i].AttractionID} >${Request_customer_list[i].AttractionName}</td>
+                                                                            <td><p hidden>${Date.parse(newDate)}</p><p>${Request_customer_list[i].Order_date}</p></td>
+                                                                            <td>${Request_customer_list[i].NumTickets}</td>`;
                 strRequest += '<td><div class="input-group-prepend">';
                 switch (Request_customer_list[i].Status) {
                     case "new": strRequest += '<button id="dropdown_Status" class="btn btn-sm btn-outline-primary dropdown-toggle min-btn-index" type ="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >' + Request_customer_list[i].Status + '</button >';
@@ -463,18 +464,18 @@
                 let dataRequest = "data-RequestId='" + Request_customer_list[i].Id + "'";
                 let dataStatus = "data-Status='" + Request_customer_list[i].Status + "'";
                 strRequest += `<a class="dropdown-item" onclick="Change_status('new',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')" >new</a>
-                                                <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')">in process</a>
-                                                <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')" >success</a>
-                                                <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')">failed</a></div></div></td>`;
+                                                        <a class="dropdown-item" onclick="Change_status('in process',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')">in process</a>
+                                                        <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')" >success</a>
+                                                        <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')">failed</a></div></div></td>`;
                 if (Request_customer_list[i].AttractionID == "lupa") {
                     strRequest += `<td><div id="download-${Request_customer_list[i].Id}" class="upload-btn-wrapper"> <button onclick="downloadAlbum(${Request_customer_list[i].TripID})" class="btn btn-inverse-primary btn-fw btn-HW"> <i class="ti-import"></i> צפה באלבום </button>
-                                    </div></td>`;
+                                            </div></td>`;
                 } else if (Request_customer_list[i].Status == 'success') {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw btn-HW">בחר קובץ</button>
-                                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
+                                                    <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 } else {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw btn-HW">בחר קובץ</button>
-                                            <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
+                                                    <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
                 }
                 strRequest += `<td><button onclick="move_to_archives(${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" type="button" class="btn btn-inverse-dark btn-icon"><i class="ti-trash"></i></button></td>`;
                 var pdf = Request_customer_list[i].PdfFile;
@@ -602,23 +603,23 @@
                 for (var i = 0; i < data.length; i += 3) {
                     albumStr += `<div class="row">`
 
-                        albumStr += `<div class="col-md-4 text-center">`
-                        albumStr += `<a href=${data[i]} target="_blank">`
-                        albumStr += `<img style="width:150px;height:150px;border-radius:10px" src=${data[i]} />`
-                        albumStr += `</a>`
-                        albumStr += `</div>`
+                    albumStr += `<div class="col-md-4 text-center">`
+                    albumStr += `<a href=${data[i]} target="_blank">`
+                    albumStr += `<img style="width:150px;height:150px;border-radius:10px" src=${data[i]} />`
+                    albumStr += `</a>`
+                    albumStr += `</div>`
 
-                        albumStr += `<div class="col-md-4 text-center">`
-                        albumStr += `<a href=${data[i + 1]} target="_blank">`
-                        albumStr += `<img style="width:150px;height:150px;border-radius:10px" src=${data[i + 1]} />`
-                        albumStr += `</a>`
-                        albumStr += `</div>`
+                    albumStr += `<div class="col-md-4 text-center">`
+                    albumStr += `<a href=${data[i + 1]} target="_blank">`
+                    albumStr += `<img style="width:150px;height:150px;border-radius:10px" src=${data[i + 1]} />`
+                    albumStr += `</a>`
+                    albumStr += `</div>`
 
-                        albumStr += `<div class="col-md-4 text-center">`
-                        albumStr += `<a href=${data[i + 2]} target="_blank">`
-                        albumStr += `<img style="width:150px;height:150px;border-radius:10px" src=${data[i + 2]} />`
-                        albumStr += `</a>`
-                        albumStr += `</div>`
+                    albumStr += `<div class="col-md-4 text-center">`
+                    albumStr += `<a href=${data[i + 2]} target="_blank">`
+                    albumStr += `<img style="width:150px;height:150px;border-radius:10px" src=${data[i + 2]} />`
+                    albumStr += `</a>`
+                    albumStr += `</div>`
                     albumStr += `</div>`
                 }
             }
@@ -629,11 +630,11 @@
                     if (i == data.length - 1) {
                         albumStr += `<div class="row">`
 
-                            albumStr += `<div class="col-md-4 text-center">`
-                            albumStr += `<a href=${data[i]} target="_blank">`
-                            albumStr += `<img style="width:150px;height:150px;" src=${data[i]} />`
-                            albumStr += `</a>`
-                            albumStr += `</div>`
+                        albumStr += `<div class="col-md-4 text-center">`
+                        albumStr += `<a href=${data[i]} target="_blank">`
+                        albumStr += `<img style="width:150px;height:150px;" src=${data[i]} />`
+                        albumStr += `</a>`
+                        albumStr += `</div>`
 
                         albumStr += `</div>`
                     }
@@ -714,9 +715,9 @@
             $('#albumPH').html(albumStr);
             $('#albumContainer').removeAttr('hidden');
             $("html, body").animate({
-                scrollTop: $('#albumContainer').offset().top-100
+                scrollTop: $('#albumContainer').offset().top - 100
             }, 1500);
-            
+
         }
 
 
@@ -875,6 +876,7 @@
                         }
                     }
                 });
+
                 $(document).on('change', '.checkbox', function () {
                     var idTask = this.getAttribute('data-idTask');
                     if ($(this).attr('checked')) {
@@ -1152,7 +1154,7 @@
                                 <div class="card-body">
                                     <h4 class="card-title">לקוחות בחול</h4>
                                     <div class="table-responsive table_trips">
-                                        <table  id="Table_CustomerOnTrip" class="table table-hover">
+                                        <table id="Table_CustomerOnTrip" class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th></th>
@@ -1221,7 +1223,10 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-        <script src="../Scripts/loading-spinner.js"></script> 
+        <script src="../Scripts/loading-spinner.js"></script>
+        <!--autocomplete-->
+        <script src="../../Scripts/Top1000Cities.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </div>
 </body>
 

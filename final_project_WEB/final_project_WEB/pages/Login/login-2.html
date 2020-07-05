@@ -24,6 +24,8 @@
             localStorage.clear();
             sessionStorage.clear();
             $('#form_login').submit(function (e) {
+                Spinner();
+                Spinner.show();
                 e.preventDefault();
                  inputEmail = $('#InputEmail').val();
                  inputPassword = $('#InputPassword').val();
@@ -112,7 +114,7 @@
                             <!--<div class="brand-logo">
                                 logo
                             </div>-->
-                            <h2 class=".h2 text_lonin" >כניסה לחשבון שלי</h2>
+                            <h2 class=".h2 text_lonin">כניסה לחשבון שלי</h2>
                             <form id="form_login" class="pt-3">
                                 <div class="form-group">
                                     <div class="input-group">
@@ -182,6 +184,8 @@
     <script src="../../js/template.js"></script>
     <script src="../../js/todolist.js"></script>
     <!-- endinject -->
+    <script src="../../Scripts/loading-spinner.js"></script>
+    
 </body>
 
 </html>
