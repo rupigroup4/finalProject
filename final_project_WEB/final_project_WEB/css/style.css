@@ -20540,7 +20540,7 @@ Button {
 }
 
 .list-wrapper ul li .form-check {
-  max-width: 90%;
+  max-width: 85%;
   margin-top: .25rem;
   margin-bottom: .25rem;
 }
