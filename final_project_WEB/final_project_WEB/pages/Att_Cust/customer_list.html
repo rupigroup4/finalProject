@@ -344,8 +344,8 @@
 
         function successdeleteCustomer(num) {
             if (num == 1) {
-                swal("נמחק בהצלחה", "הלקוח נמחק מהמערכת", "success");
                 ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list_new, errorCustomer_list)
+                //swal("נמחק בהצלחה", "הלקוח נמחק מהמערכת", "success");
             }
             else {
                 swal("הלקוח לא נמחק", "ללקוח זה קיים טיול זמין במערכת", "error");// בהמשך לבדוק האם הטיל עבר
@@ -355,6 +355,7 @@
 
         function successCustomer_list_new(data) {
             $(`#${idRowReq}`).remove();
+            window.location.reload();
         }
 
         function errordeleteCustomer(err) {
