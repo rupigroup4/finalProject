@@ -22040,3 +22040,7 @@ body_chat {
     border: solid 1.5px gray;
     border-radius: 2px;
 }
+
+.axisX{
+    overflow-x:auto;
+}

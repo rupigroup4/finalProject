@@ -331,6 +331,7 @@
             document.getElementById("Table_customer").rows[numINlistcustomer + 1].cells.item(1).innerHTML = customer.FirstName + " " + customer.SureName;
             document.getElementById("Table_customer").rows[numINlistcustomer + 1].cells.item(2).innerHTML = customer.PhoneNumber;
             document.getElementById("Table_customer").rows[numINlistcustomer + 1].cells.item(3).innerHTML = customer.BirthDay;
+            ("#Table_customer").DataTable.draw();
             ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list, errorCustomer_list)
         }
 

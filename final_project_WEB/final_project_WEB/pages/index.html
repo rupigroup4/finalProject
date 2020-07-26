@@ -92,19 +92,19 @@
                 for (var i = 0; i < Task_List.length; i++) {
                     if (Task_List[i].Completed == 1) {
                         strTask += `<li class="completed">
-                                                                      <div class='form-check form-check-flat'>
+                                                                      <div class='form-check form-check-flat col-sm-1'>
                                                                         <label class='form-check-label'">
                                                                             <input style="" data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox' checked='checked'/>
                                                                             <i class='input-helper' ></i>
                                                                         </label>
                                                                       </div>
-                                                                        <div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div>
+                                                                        <div class='text_task form-check form-check-flat col-sm-10'>${Task_List[i].Text}</div>
 
-                                                                    <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i>
+                                                                    <i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash col-sm-1'></i>
                                                                 </li>`;
                     }
                     else {
-                        strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox'/> <i class='input-helper'></i></label></div><div class='text_task form-check form-check-flat'>${Task_List[i].Text}</div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`;
+                        strTask += `<li><div class='form-check form-check-flat'><label class='form-check-label'><input data-idTask='${Task_List[i].TaskID}' class='checkbox' type='checkbox'/> <i class='input-helper'></i></label></div><div class='text_task form-check form-check-flat' style='overflow-x:auto'>${Task_List[i].Text}</div><i id="trash_i" data-idTask='${Task_List[i].TaskID}' class='remove ti-trash'></i></li>`;
 
                     }
                 }
@@ -861,10 +861,11 @@
                 var todoListInput = $('.todo-list-input');
                 $('.todo-list-add-btn').on("click ", function (event) {
                     event.preventDefault();
-                    text_input_todolist = $(this).prevAll('.todo-list-input').val();
+                    text_input_todolist = $(this).prevAll('.todo-list-input ').val();
                     if (text_input_todolist) {
                         sendTask(text_input_todolist);
                         todoListInput.val("");
+                        location.reload();
                     }
                 });
                 $('.todo-list-input').on("keyup ", function (event) {
