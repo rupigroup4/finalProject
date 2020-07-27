@@ -470,11 +470,11 @@
                 if (Request_customer_list[i].AttractionID == "lupa") {
                     strRequest += `<td><div id="download-${Request_customer_list[i].Id}" class="upload-btn-wrapper"> <button onclick="downloadAlbum(${Request_customer_list[i].TripID})" class="btn btn-inverse-primary btn-fw btn-HW"> <i class="ti-import"></i> צפה באלבום </button></div>`;
                 } else if (Request_customer_list[i].Status == 'success') {
-                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw btn-HW">בחר קובץ</button>
-                                                    <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
+                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw btn-HW">בחר קובץ</button>
+                                                    <input ${dataRequest} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}" ${dataStatus}/></div>`;
                 } else {
-                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw btn-HW">בחר קובץ</button>
-                                                    <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
+                    strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button class="btn btn-inverse-warning btn-fw btn-HW">בחר קובץ</button>
+                                                    <input ${dataRequest} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}" ${dataStatus}/></div>`;
                 }
                 var pdf = Request_customer_list[i].PdfFile;
                 if (pdf != "") {
@@ -525,15 +525,16 @@
             Spinner.hide();
         }
 
-        $(document).on("click", ".selectedFile", function () {
+        $(document).on("change", ".selectedFile", function () {
             if (this.getAttribute('data-Status') != 'success') {
                 swal("ראשית עליך לשנות את הסטאטוס לsuccess", "", "error");
                 return false;
             } else {
                 selectedRequest = this.getAttribute('data-RequestId');
+                console.log(selectedRequest);
                 var data = new FormData();
                 var files = $("#chooseFile" + selectedRequest).get(0).files;
-
+                console.log(files);
                 if (files.length > 0) {
                     for (f = 0; f < files.length; f++) {
                         data.append(`${selectedRequest}`, files[f]);
