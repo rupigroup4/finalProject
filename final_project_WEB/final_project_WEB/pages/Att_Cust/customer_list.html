@@ -346,15 +346,15 @@
         function successdeleteCustomer(num) {
             if (num == 1) {
                 ajaxCall("GET", "../../api/Customer?Agent_ID=" + Agent_ID, "", successCustomer_list_new, errorCustomer_list)
-                //swal("נמחק בהצלחה", "הלקוח נמחק מהמערכת", "success");
             }
             else {
-                swal("הלקוח לא נמחק", "ללקוח זה קיים טיול זמין במערכת", "error");// בהמשך לבדוק האם הטיל עבר
+                swal("הלקוח לא נמחק", "ללקוח זה קיים טיול זמין במערכת", "error");
             }
             clearFields();
         }
 
         function successCustomer_list_new(data) {
+            swal("נמחק בהצלחה", "הלקוח נמחק מהמערכת", "success");
             $(`#${idRowReq}`).remove();
             window.location.reload();
         }
@@ -368,7 +368,7 @@
             console.log(document.getElementById('departure'));
             document.getElementById("loginPopup").style.display = "block";
             document.getElementById("PHaddtrip").innerHTML = " הזן פרטי טיסה עבור " + name;
-            ajaxCall("GET", "../../api/Trip/customertrips?customerID=" + id, "", successCustomerTrips_list, errorCustomerTrips_list)// dina- add id
+            ajaxCall("GET", "../../api/Trip/customertrips?customerID=" + id, "", successCustomerTrips_list, errorCustomerTrips_list)
 
             id_customer = id;
         }

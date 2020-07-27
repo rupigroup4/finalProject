@@ -37,13 +37,11 @@
         function successCheck_agent(Agent) {
             if (Agent.AgentID != 0) {
                 if (save_details == false) {
-                    localStorage.setItem('one_entry', true);
                     sessionStorage.setItem('AgentID', Agent.AgentID);
                     sessionStorage.setItem('Email', inputEmail);
                     sessionStorage.setItem('AgentName', Agent.FirstName);
                     sessionStorage.setItem('gender', Agent.Gender);
                 } else {
-                    localStorage.setItem('one_entry', false);
                     localStorage.setItem('AgentID', Agent.AgentID);
                     localStorage.setItem('Email', inputEmail);
                     localStorage.setItem('AgentName', Agent.FirstName);
@@ -68,35 +66,7 @@
             }
 
         }
-        //function successAgent_list(Agent_list) {
-        //    let inputEmail = $('#InputEmail').val();
-        //    let inputPassword = $('#InputPassword').val();
-        //    let save_details = $('#checkbox_saveD').is(":checked");
-        //    try {
-        //        for (var i = 0; i < Agent_list.length; i++) {
-        //            if (inputEmail == Agent_list[i].Email && inputPassword == Agent_list[i].Password) {
-        //               
-        //            }
-        //            window.location.href = "../index.html";
-        //            return;
-        //        }
-        //        swal({
-        //            title: "משתמש אינו קיים במערכת, האם לעבור לעמוד הרשמה?",
-        //            buttons: ["לא, התחבר מחדש", "כן, עבור לעמוד הרשמה"],
-        //        })
-        //            .then((willDelete) => {
-        //                if (willDelete) {
-        //                    window.location.href = "register-2.html";
-        //                }
-        //                else {
-        //                }
-        //            });
-        //    }
-        //    catch (err) {
-        //        swal(err);
-        //    }
-        //}
-        
+     
         function errorCheck_agent(err) {
             swal("error");
             }
