@@ -468,24 +468,23 @@
                                                         <a class="dropdown-item"  onclick="Change_status('success',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')" >success</a>
                                                         <a class="dropdown-item" onclick="Change_status('failed',${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id},'${Request_customer_list[i].AttractionID}')">failed</a></div></div></td>`;
                 if (Request_customer_list[i].AttractionID == "lupa") {
-                    strRequest += `<td><div id="download-${Request_customer_list[i].Id}" class="upload-btn-wrapper"> <button onclick="downloadAlbum(${Request_customer_list[i].TripID})" class="btn btn-inverse-primary btn-fw btn-HW"> <i class="ti-import"></i> צפה באלבום </button>
-                                            </div></td>`;
+                    strRequest += `<td><div id="download-${Request_customer_list[i].Id}" class="upload-btn-wrapper"> <button onclick="downloadAlbum(${Request_customer_list[i].TripID})" class="btn btn-inverse-primary btn-fw btn-HW"> <i class="ti-import"></i> צפה באלבום </button></div>`;
                 } else if (Request_customer_list[i].Status == 'success') {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw btn-HW">בחר קובץ</button>
-                                                    <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
+                                                    <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
                 } else {
                     strRequest += `<td><div id="upload-${Request_customer_list[i].Id}" class="upload-btn-wrapper">  <button onclick="Check_Status()" ${dataRequest} class="btn btn-inverse-warning btn-fw btn-HW">בחר קובץ</button>
-                                                    <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div></td>`;
+                                                    <input ${dataStatus} class="selectedFile" type="file" name="myfile" id ="chooseFile${Request_customer_list[i].Id}"/></div>`;
                 }
-                strRequest += `<td><button onclick="move_to_archives(${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" type="button" class="btn btn-inverse-dark btn-icon"><i class="ti-trash"></i></button></td>`;
                 var pdf = Request_customer_list[i].PdfFile;
                 if (pdf != "") {
                     var pdf_Arr = pdf.split('pdfFiles/');
-                    strRequest += `<div class="fileName" id="choosedFile${Request_customer_list[i].Id}">${pdf_Arr[1]}</div></td></tr>`;
+                    strRequest += `<div class="fileName" id="choosedFile${Request_customer_list[i].Id}">${pdf_Arr[1]}</div></td>`;
 
                 } else {
-                    strRequest += `<div class="fileName" id="choosedFile${Request_customer_list[i].Id}"></div></td></tr>`;
+                    strRequest += `<div class="fileName" id="choosedFile${Request_customer_list[i].Id}"></div></td>`;
                 }
+                strRequest += `<td><button onclick="move_to_archives(${Request_customer_list[i].Id},${Request_customer_list[i + 1].Id})" type="button" class="btn btn-inverse-dark btn-icon"><i class="ti-trash"></i></button></td></tr>`;
             }
             document.getElementById("requestPH").innerHTML = strRequest;
             document.getElementById("AmountOfSalesPH").innerHTML = countSuccess;
