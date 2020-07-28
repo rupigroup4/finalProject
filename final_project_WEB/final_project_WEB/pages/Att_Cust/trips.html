@@ -256,7 +256,7 @@
         }
 
         $(document).on("change", ".selectedFile", function () {
-            selectedTrip = this.getAttribute('data-tripId'); //זה מחזיק את ה TRIPiD
+            selectedTrip = this.getAttribute('data-tripId'); 
             var data = new FormData();
             var files = $("#chooseFile" + selectedTrip).get(0).files;
             console.log(files);

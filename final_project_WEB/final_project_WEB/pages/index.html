@@ -770,7 +770,7 @@
             alert("errorChange_status");
         }
 
-        function getPnTokenSucess(pnToken) { // אחרי שקיבלנו את קוד אליו נשלח את ההתראה נבצע את השליחה
+        function getPnTokenSucess(pnToken) { 
             //Push realTime notification
             const message = {
                 to: pnToken,
@@ -797,7 +797,6 @@
         }
 
         function getPnTokenError(err) {
-            //להוסיף פה הודעת שגיאה על שלא התקבל PnToken
             console.log("getPnTokenError");
         }
 

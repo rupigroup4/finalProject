@@ -90,13 +90,10 @@
             }
             $(document).on('click', '.dropdown-item-click', function () {
                 var customerID = this.getAttribute("data-id");
-                console.log(customerID);
                 ajaxCall("PUT", "../../api/badge/ReadMessage?customerID=" + customerID, "", successReadMessage, errorReadMessage)
             });
             function successReadMessage(id) {
                 if (id != 0) {
-                    console.log("נקרא");
-                    console.log(id);
                     sessionStorage.setItem("customerID_chat", id);
                     window.location.href = "../Chat/chat.html";
                 }
@@ -106,7 +103,6 @@
                 alert("errorReadMessage");
             }
             function successGETNEWmessage(data) {
-                console.log(data);
                 var str = "";
                 if (data.length) {
                     document.getElementById("newMesseages_point").style.display = "block";
@@ -134,7 +130,6 @@
 
 
             function successCountNEWRequest(data) {
-                console.log(data);
                 var count = data.length / 2;
                 var strNewRequest;
                 if (count) {
@@ -182,7 +177,6 @@
                         TripsDepartDate = Arr_trips[i].DepartDate.split("/");
                         TripsDepartDateCheck = new Date(TripsDepartDate[2], parseInt(TripsDepartDate[1]) - 1, TripsDepartDate[0])
                         if (TripsDepartDateCheck >= from) {
-                            console.log('ok');
                             this.validity.valid = false;
                             this.setCustomValidity('קיים טיול ללקוח בתאריך זה');
                             return;
@@ -196,8 +190,9 @@
 
 
             $(document).on("click", ".saveBtn", function () {
+                var x = $("#Table_customer_length select").val();
                 let id = this.getAttribute('data-id');
-                let i = this.getAttribute('data-index');
+                let i = this.getAttribute('data-index');                    i
                 let num_row = 1 + parseInt(i);
                 let table = document.getElementById("Table_customer");
                 str_save = '<button type="button" onclick="save_change(' + i + ',' + id + ')" class="btn btn-primary btn-sm"><i>שמור שינוים</i ></button >';
@@ -210,7 +205,6 @@
                 var birthDay = customers_list[i].BirthDay;
                 var birthDay_Arr = birthDay.split("/");
                 var birthDay_date = `${birthDay_Arr[2]}-${birthDay_Arr[1]}-${birthDay_Arr[0]}`; //new Date(birthDay_Arr[0], parseInt(birthDay_Arr[1]) - 1, birthDay_Arr[2]);
-                console.log(birthDay_date);
                 var change_Bday = `<input type="date" class="form-control td-change " id="new_birthDay" value="${birthDay_date}" required />`;
                 table.rows[num_row].cells.item(3).innerHTML = change_Bday;
             });
@@ -219,7 +213,6 @@
         });
 
         function successCustomer_list(customers_list1) {
-            console.log(customers_list1);
             customers_list = customers_list1;
                 let str = "";
                 for (var i = 0; i < customers_list.length; i++) {
@@ -239,9 +232,10 @@
                     "columnDefs": [
                         { "orderable": false, "targets": [0, 5] }
                     ],
+                    "lengthMenu": [100, 200],
                     "language": {
+                        "lengthMenu": "רשומות להצגה _MENU_",
                         "search": "חיפוש",
-                        "lengthMenu": "שורות להצגה _MENU_",
                         "zeroRecords": "אין לקוחות במערכת",
                         "infoFiltered": "",
                         "info": "הצג עמוד _PAGE_ מתוך _PAGES_",
@@ -322,8 +316,6 @@
                 "PhoneNumber": phoneNumber,
                 "BirthDay": birthDay,
             }
-            console.log(birthDay);
-            console.log(editCustomer);
             ajaxCall("PUT", "../../api/Customer/Change_details", JSON.stringify(editCustomer), successEditCustomer, errorEditCustomer)
         }
 
@@ -365,7 +357,6 @@
 
         function showPopUp(id, name) {
             document.getElementById('departure').setAttribute('data-id', id);
-            console.log(document.getElementById('departure'));
             document.getElementById("loginPopup").style.display = "block";
             document.getElementById("PHaddtrip").innerHTML = " הזן פרטי טיסה עבור " + name;
             ajaxCall("GET", "../../api/Trip/customertrips?customerID=" + id, "", successCustomerTrips_list, errorCustomerTrips_list)
@@ -375,7 +366,6 @@
 
         function successCustomerTrips_list(data) {
             Arr_trips = data;
-            console.log(Arr_trips);
         }
         function errorCustomerTrips_list(err) {
             alert("errorTrip_list");
@@ -402,7 +392,6 @@
         }
 
         function POSTerrorNewTrip(err) {
-            console.log(err);
             swal("error");
         }
 

@@ -1427,16 +1427,6 @@ public class DBservices
 
     }
 
-    //private String BuildDelete_CustomerCommand(int customerID)
-    //{
-    //    String command;
-    //    command = "DELETE FROM Customer_igroup4 WHERE CustomerID='"+ customerID+"'";//להוסיף פקודת מחיקה מהSQL
-    //    return command;
-    //}
-
-
-
-
 
     public List<Customer> Read_customers(int Agent_ID)
     {
@@ -1931,42 +1921,7 @@ public class DBservices
         return cmd;
     }
 
-    //public int check_attractionID(string attractionID)
-    //{
-    //    int checkattractionID=0;
-    //    SqlConnection con = null;
-
-    //    try
-    //    {
-    //        con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-
-    //        String selectSTR = "select COUNT(attractionID) as count_ from PromotedAttraction_igroup4 where attractionID='" + attractionID+"'";
-    //        SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-    //        // get a reader
-    //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-
-    //        while (dr.Read())
-    //        {
-    //            checkattractionID = Convert.ToInt32(dr["count_"]);
-    //        }
-    //        return checkattractionID;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            con.Close();
-    //        }
-
-    //    }
-    //}
-
+    
     public int ExistsAttraction(string attractionID, int AgentID)
     {
         int count = 0;
