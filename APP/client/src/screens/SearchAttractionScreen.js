@@ -49,7 +49,6 @@ const searchAttractionScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (base != '') {
-            console.log('base=', base)
             setBases();
         }
     }, [base])
@@ -92,7 +91,6 @@ const searchAttractionScreen = ({ navigation }) => {
             }
             arr.push(obj);
         })
-        console.log('arr=',arr[1])
         setBaseAttractions(arr);
     }
 

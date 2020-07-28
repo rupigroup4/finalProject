@@ -20,7 +20,6 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
     useEffect(() => {
         const itemsArr = notifications.filter(not => not.tripId === tripId)
         let obj = {};
-        console.log('itemsArr=', itemsArr);
 
         itemsArr.forEach(itemArr => {
             if (!obj[itemArr.orderDate]) {

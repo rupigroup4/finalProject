@@ -45,8 +45,8 @@ const indexScreen = ({ navigation }) => {
         fingLocalHighlights(loc.coords.latitude, loc.coords.longitude)
     };
 
-    fingLocalHighlights = (latitude, longitude) => {
-        const url = `https://www.triposo.com/api/20190906/local_highlights.json?latitude=41.890692&longitude=12.488647&poi_fields=all&account=${accountId}&token=${key}`
+    fingLocalHighlights = (latitude,longitude) => {
+        const url = `https://www.triposo.com/api/20190906/local_highlights.json?latitude=41.382194&longitude=2.172198&poi_fields=all&account=${accountId}&token=${key}`
         fetch(url)
             .then((results) => {
                 return results.json();
@@ -152,7 +152,7 @@ const indexScreen = ({ navigation }) => {
                                     renderItem={({ item }) => {
                                         return (
                                             <LocalHighlight
-                                                myCoords={{ latitude: 41.890692, longitude: 12.488647 }}
+                                                myCoords={{ latitude: 41.382194, longitude: 2.172198 }}
                                                 item={item}
                                                 id={item.id}
                                                 name={item.name}

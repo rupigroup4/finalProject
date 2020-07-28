@@ -101,7 +101,6 @@ const pushNotificationToDb = dispatch => async (
                 let attractionName = AttractionName;
                 let dateArr = Order_date.split('/')
                 let orderDate = `${dateArr[2]}-${dateArr[1]}-${dateArr[0]}`
-                console.log(subject, message, pdfPath, TripID, AttractionName, orderDate)
                 dispatch({ type: 'add_notification', payload: { subject, message, pdfPath, tripId, attractionName, Order_date } })
             }
         })

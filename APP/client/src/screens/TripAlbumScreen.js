@@ -82,7 +82,6 @@ const tripAlbumScreen = ({ navigation }) => {
             .then(
                 () => {
                     let newImage = { url: `http://proj.ruppin.ac.il/igroup4/prod/${imageUrl[0]}` }
-                    console.log(newImage)
                     setImages(prevImages => [newImage, ...prevImages])
                 },
                 (error) => {
